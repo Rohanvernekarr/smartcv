@@ -67,6 +67,7 @@ export default function ResumeForm({ onSave, onChange }: { onSave?: (data: any) 
         Upload Resume
       </button>
       <input
+      title='label'
         type="file"
         accept=".pdf,.doc,.docx"
         className="hidden"
