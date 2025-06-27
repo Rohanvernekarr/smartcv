@@ -15,11 +15,13 @@ export default function SettingsPage() {
   if (!user) return null;
 
   return (
-    <div className="w-full min-h-[80vh] flex flex-col items-center justify-center bg-gray-50 dark:bg-gray-900">
-      <div className="card w-full max-w-2xl mx-auto mt-12">
-        <h1 className="text-4xl font-extrabold text-accent mb-2">Settings</h1>
-        <p className="text-gray-600 dark:text-gray-300 mb-6">Manage your profile and account options.</p>
-        <div className="h-32 flex items-center justify-center text-gray-400 italic w-full border-t pt-6 mt-6">Settings coming soon.</div>
+    <div className="w-full min-h-[80vh] flex flex-col items-center justify-center bg-blue-50 py-12">
+      <div className="w-full max-w-2xl mx-auto">
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-10 mb-8">
+          <h1 className="text-4xl font-extrabold text-accent mb-4">Settings</h1>
+          <p className="text-gray-700 mb-8">Manage your profile and account options.</p>
+          <div className="h-32 flex items-center justify-center text-gray-400 italic w-full border-t pt-6 mt-6">Settings coming soon.</div>
+        </div>
       </div>
     </div>
   );
