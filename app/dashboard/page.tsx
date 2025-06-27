@@ -10,6 +10,7 @@ interface Resume {
   createdAt: Date;
   template: string;
   status: 'complete' | 'draft';
+  file_url?: string;
 }
 
 export default function DashboardPage() {
@@ -18,38 +19,42 @@ export default function DashboardPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState<'lastModified' | 'created' | 'title'>('lastModified');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [isLoadingResumes, setIsLoadingResumes] = useState(false);
 
   // Initialize mock data
   useEffect(() => {
-    const mockResumes: Resume[] = [
-      {
-        id: '1',
-        title: 'Software Engineer Resume',
-        lastModified: new Date('2024-06-25'),
-        createdAt: new Date('2024-06-20'),
-        template: 'Modern',
-        status: 'complete'
-      },
-      {
-        id: '2',
-        title: 'Frontend Developer CV',
-        lastModified: new Date('2024-06-24'),
-        createdAt: new Date('2024-06-22'),
-        template: 'Classic',
-        status: 'draft'
-      },
-      {
-        id: '3',
-        title: 'Full Stack Developer Resume',
-        lastModified: new Date('2024-06-23'),
-        createdAt: new Date('2024-06-21'),
-        template: 'Professional',
-        status: 'complete'
+    const fetchResumes = async () => {
+      if (!user || !('id' in user)) return;
+      try {
+        setIsLoadingResumes(true);
+        // Mock data for demonstration
+        const mockResumes: Resume[] = [
+          {
+            id: '1',
+            title: 'Software Engineer Resume',
+            lastModified: new Date('2024-01-15'),
+            createdAt: new Date('2024-01-10'),
+            template: 'Modern',
+            status: 'complete'
+          },
+          {
+            id: '2',
+            title: 'Frontend Developer CV',
+            lastModified: new Date('2024-01-20'),
+            createdAt: new Date('2024-01-18'),
+            template: 'Clean',
+            status: 'draft'
+          }
+        ];
+        setResumes(mockResumes);
+      } catch (error) {
+        console.error('Failed to fetch resumes:', error);
+      } finally {
+        setIsLoadingResumes(false);
       }
-    ];
-    
-    setResumes(mockResumes);
-  }, []);
+    };
+    fetchResumes();
+  }, [user]);
 
   // Filter and sort resumes
   const filteredAndSortedResumes = resumes
@@ -114,10 +119,10 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+    <div className="min-h-screen  w-full">
       {/* Modern Header - Full Width */}
-      <div className="bg-white/80 backdrop-blur-xl border-b border-white/20 shadow-sm sticky top-0 z-10">
-        <div className="max-w-8xl mx-auto px-6 lg:px-8 py-6">
+      <div className="bg-white shadow-sm border-b w-full rounded-2xl">
+        <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-6">
           <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-6">
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-4 mb-2">
@@ -128,7 +133,7 @@ export default function DashboardPage() {
                 </div>
                 <div>
                   <h1 className="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
-                    Welcome back, {user.email.split('@')[0]}
+                    Welcome, {user.email.split('@')[0]}
                   </h1>
                   <p className="text-gray-600 text-lg">
                     Build your career with professional resumes
@@ -158,9 +163,9 @@ export default function DashboardPage() {
       </div>
 
       {/* Main Content - Full Width */}
-      <div className="max-w-8xl mx-auto px-6 lg:px-8 py-8">
+      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-8">
         {/* Modern Stats Cards */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-8">
           <div className="bg-white/60 backdrop-blur-xl rounded-2xl p-6 border border-white/30 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
             <div className="flex items-center justify-between">
               <div>
@@ -225,7 +230,7 @@ export default function DashboardPage() {
           <div className="flex flex-col lg:flex-row gap-6">
             <div className="relative flex-1">
               <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="h-5 w-5 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </div>
@@ -234,7 +239,7 @@ export default function DashboardPage() {
                 placeholder="Search your resumes..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 bg-white/70 border border-white/50 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent backdrop-blur-sm transition-all duration-300 text-gray-900 placeholder-gray-500"
+                className="w-full pl-12 pr-4 py-4 bg-white/70 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-300 focus:border-transparent backdrop-blur-sm transition-all duration-300 text-gray-900 placeholder-gray-500"
               />
             </div>
             <div className="flex flex-col sm:flex-row gap-4">
@@ -244,7 +249,7 @@ export default function DashboardPage() {
                   id="sort"
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as 'lastModified' | 'created' | 'title')}
-                  className="px-4 py-3 bg-white/70 border border-white/50 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent backdrop-blur-sm min-w-[180px] font-medium"
+                  className="px-4 py-3 bg-white/70 border border-white/50 text-gray-700 rounded-xl focus:ring-2 focus:ring-indigo-300 focus:border-transparent backdrop-blur-sm min-w-[180px] font-medium"
                 >
                   <option value="lastModified">Last Modified</option>
                   <option value="created">Date Created</option>
@@ -278,7 +283,7 @@ export default function DashboardPage() {
         {/* Resume Content */}
         {filteredAndSortedResumes.length > 0 ? (
           viewMode === 'grid' ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 gap-4 lg:gap-6">
               {filteredAndSortedResumes.map((resume) => (
                 <div key={resume.id} className="group bg-white/60 backdrop-blur-xl rounded-2xl p-6 border border-white/30 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
                   <div className="flex justify-between items-start mb-4">

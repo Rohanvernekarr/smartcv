@@ -43,9 +43,9 @@ export default function ResumePage() {
   };
 
   return (
-    <div className="w-screen min-h-screen flex flex-col bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="w-screen min-h-screen flex flex-col bg-gradient-to-br items-center ">
       {/* Top Bar: Template & Export */}
-      <div className="w-full flex flex-col md:flex-row items-center justify-between gap-4 px-6 py-4 bg-white border-b border-gray-200 shadow-sm z-10">
+      <div className="w-7xl flex flex-col md:flex-row items-center justify-between gap-4 px-4 py-4 bg-white border-b border-gray-200 shadow-sm z-10">
         <div className="flex items-center gap-4">
           <span className="font-semibold text-gray-700 text-lg">Template:</span>
           <div className="flex gap-2">
