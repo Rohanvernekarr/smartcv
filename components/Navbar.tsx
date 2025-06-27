@@ -89,11 +89,11 @@ export default function Navbar() {
           ? 'bg-white/80 backdrop-blur-lg border-b border-gray-200/50 shadow-lg' 
           : 'bg-white/95 border-b border-gray-200/30 shadow-sm'
       }`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto p-1 px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            {/* Logo */}
+           
             <Link 
-              href="/dashboard" 
+              href="/" 
               className="flex items-center space-x-2 group"
               onClick={closeMobileMenu}
             >
@@ -113,7 +113,7 @@ export default function Navbar() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`flex items-center space-x-2 px-4 py-2 rounded-xl font-medium transition-all duration-200 relative group ${
+                    className={`flex items-center  space-x-2 px-4 py-2 rounded-xl font-bold transition-all duration-200 relative group ${
                       isActive
                         ? 'bg-blue-50 text-blue-700 shadow-sm'
                         : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
