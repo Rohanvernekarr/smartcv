@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="relative w-full bg-gradient-to-br from-blue-50 to-indigo-100 text-black">
+    <footer className="relative w-full bg-blue-50 text-black">
       {/* Decorative top border */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500 to-transparent"></div>
       

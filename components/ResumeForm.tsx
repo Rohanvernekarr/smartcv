@@ -60,6 +60,7 @@ export default function ResumeForm({ onSave, onChange }: { onSave?: (data: any) 
   const sections = [
     { id: 'personal', label: 'Personal Info', icon: User },
     { id: 'experience', label: 'Experience', icon: Briefcase },
+    { id: 'project', label: 'Projects', icon: GraduationCap },
     { id: 'education', label: 'Education', icon: GraduationCap },
     { id: 'additional', label: 'Additional', icon: Award },
   ];
@@ -74,13 +75,14 @@ export default function ResumeForm({ onSave, onChange }: { onSave?: (data: any) 
         </div>
         <button
           type="button"
-          className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors shadow-sm"
+          className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-gray-800 hover:bg-gray-100 transition-colors shadow-sm"
           onClick={() => fileInputRef.current?.click()}
         >
           <Upload size={18} />
           <span className="font-medium">Upload Resume</span>
         </button>
         <input
+          title='label'
           type="file"
           accept=".pdf,.doc,.docx"
           className="hidden"
@@ -122,7 +124,7 @@ export default function ResumeForm({ onSave, onChange }: { onSave?: (data: any) 
                   name="fullName"
                   value={form.fullName}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  className="w-full px-4 py-3 border border-gray-200 text-gray-700  rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                   placeholder="Enter your full name"
                   required
                 />
@@ -133,7 +135,7 @@ export default function ResumeForm({ onSave, onChange }: { onSave?: (data: any) 
                   name="title"
                   value={form.title}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  className="w-full px-4 py-3 border border-gray-200 text-gray-700  rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                   placeholder="e.g., Software Engineer, Marketing Manager"
                   required
                 />
@@ -146,7 +148,7 @@ export default function ResumeForm({ onSave, onChange }: { onSave?: (data: any) 
                 value={form.summary}
                 onChange={handleChange}
                 rows={4}
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
+                className="w-full px-4 py-3 border border-gray-200 text-gray-700  rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
                 placeholder="Write a brief summary of your professional background and key achievements..."
               />
               <p className="text-xs text-gray-500">2-3 sentences highlighting your expertise and career goals</p>
@@ -173,6 +175,7 @@ export default function ResumeForm({ onSave, onChange }: { onSave?: (data: any) 
                 <div key={idx} className="p-6 bg-gray-50 rounded-xl border border-gray-100 relative">
                   {form.experience.length > 1 && (
                     <button
+                      title='label'
                       type="button"
                       onClick={() => removeArrayItem('experience', idx)}
                       className="absolute top-4 right-4 p-1 text-gray-400 hover:text-red-500 transition-colors"
@@ -186,7 +189,7 @@ export default function ResumeForm({ onSave, onChange }: { onSave?: (data: any) 
                       <input
                         value={exp.company}
                         onChange={e => handleArrayChange('experience', idx, 'company', e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-200 text-gray-700  rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         placeholder="Company name"
                       />
                     </div>
@@ -195,7 +198,7 @@ export default function ResumeForm({ onSave, onChange }: { onSave?: (data: any) 
                       <input
                         value={exp.role}
                         onChange={e => handleArrayChange('experience', idx, 'role', e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-200 text-gray-700  rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         placeholder="Job title"
                       />
                     </div>
@@ -204,7 +207,7 @@ export default function ResumeForm({ onSave, onChange }: { onSave?: (data: any) 
                       <input
                         value={exp.start}
                         onChange={e => handleArrayChange('experience', idx, 'start', e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-200 text-gray-700  rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         placeholder="MM/YYYY"
                       />
                     </div>
@@ -213,7 +216,7 @@ export default function ResumeForm({ onSave, onChange }: { onSave?: (data: any) 
                       <input
                         value={exp.end}
                         onChange={e => handleArrayChange('experience', idx, 'end', e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-200 text-gray-700  rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         placeholder="MM/YYYY or Present"
                       />
                     </div>
@@ -224,8 +227,88 @@ export default function ResumeForm({ onSave, onChange }: { onSave?: (data: any) 
                       value={exp.description}
                       onChange={e => handleArrayChange('experience', idx, 'description', e.target.value)}
                       rows={3}
-                      className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                      className="w-full px-3 py-2 border border-gray-200 text-gray-700  rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
                       placeholder="Describe your key responsibilities and achievements..."
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+{activeSection === 'project' && (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h3 className="text-xl font-semibold text-gray-900">Projects</h3>
+              <button
+                type="button"
+                onClick={() => addArrayItem('education', emptyEducation)}
+                className="flex items-center gap-2 px-4 py-2 text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors"
+              >
+                <Plus size={16} />
+                Add Project
+              </button>
+            </div>
+            <div className="space-y-6">
+              {form.education.map((edu, idx) => (
+                <div key={idx} className="p-6 bg-gray-50 rounded-xl border border-gray-100 relative">
+                  {form.education.length > 1 && (
+                    <button
+                      title='label'
+                      type="button"
+                      onClick={() => removeArrayItem('education', idx)}
+                      className="absolute top-4 right-4 p-1 text-gray-400 hover:text-red-500 transition-colors"
+                    >
+                      <X size={16} />
+                    </button>
+                  )}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-gray-700">School/University</label>
+                      <input
+                        value={edu.school}
+                        onChange={e => handleArrayChange('education', idx, 'school', e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-200 text-gray-700  rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="Institution name"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-gray-700">Degree</label>
+                      <input
+                        value={edu.degree}
+                        onChange={e => handleArrayChange('education', idx, 'degree', e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-200 text-gray-700  rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="Degree and field of study"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-gray-700">Start Date</label>
+                      <input
+                        value={edu.start}
+                        onChange={e => handleArrayChange('education', idx, 'start', e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-200 text-gray-700  rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="MM/YYYY"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-gray-700">End Date</label>
+                      <input
+                        value={edu.end}
+                        onChange={e => handleArrayChange('education', idx, 'end', e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-200 text-gray-700  rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="MM/YYYY or Expected"
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">Description (Optional)</label>
+                    <textarea
+                      value={edu.description}
+                      onChange={e => handleArrayChange('education', idx, 'description', e.target.value)}
+                      rows={2}
+                      className="w-full px-3 py-2 border border-gray-200 text-gray-700  rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                      placeholder="Relevant coursework, achievements, GPA..."
                     />
                   </div>
                 </div>
@@ -253,6 +336,7 @@ export default function ResumeForm({ onSave, onChange }: { onSave?: (data: any) 
                 <div key={idx} className="p-6 bg-gray-50 rounded-xl border border-gray-100 relative">
                   {form.education.length > 1 && (
                     <button
+                      title='label'
                       type="button"
                       onClick={() => removeArrayItem('education', idx)}
                       className="absolute top-4 right-4 p-1 text-gray-400 hover:text-red-500 transition-colors"
@@ -266,7 +350,7 @@ export default function ResumeForm({ onSave, onChange }: { onSave?: (data: any) 
                       <input
                         value={edu.school}
                         onChange={e => handleArrayChange('education', idx, 'school', e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-200 text-gray-700  rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         placeholder="Institution name"
                       />
                     </div>
@@ -275,7 +359,7 @@ export default function ResumeForm({ onSave, onChange }: { onSave?: (data: any) 
                       <input
                         value={edu.degree}
                         onChange={e => handleArrayChange('education', idx, 'degree', e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-200 text-gray-700  rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         placeholder="Degree and field of study"
                       />
                     </div>
@@ -284,7 +368,7 @@ export default function ResumeForm({ onSave, onChange }: { onSave?: (data: any) 
                       <input
                         value={edu.start}
                         onChange={e => handleArrayChange('education', idx, 'start', e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-200 text-gray-700  rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         placeholder="MM/YYYY"
                       />
                     </div>
@@ -293,7 +377,7 @@ export default function ResumeForm({ onSave, onChange }: { onSave?: (data: any) 
                       <input
                         value={edu.end}
                         onChange={e => handleArrayChange('education', idx, 'end', e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-200 text-gray-700  rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         placeholder="MM/YYYY or Expected"
                       />
                     </div>
@@ -304,7 +388,7 @@ export default function ResumeForm({ onSave, onChange }: { onSave?: (data: any) 
                       value={edu.description}
                       onChange={e => handleArrayChange('education', idx, 'description', e.target.value)}
                       rows={2}
-                      className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                      className="w-full px-3 py-2 border border-gray-200 text-gray-700  rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
                       placeholder="Relevant coursework, achievements, GPA..."
                     />
                   </div>
@@ -328,10 +412,10 @@ export default function ResumeForm({ onSave, onChange }: { onSave?: (data: any) 
                   name="skills"
                   value={form.skills}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-200 text-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="JavaScript, React, Python, etc."
                 />
-                <p className="text-xs text-gray-500">Separate skills with commas</p>
+                <p className="text-xs text-gray-700">Separate skills with commas</p>
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium text-gray-700">Certifications</label>
@@ -339,27 +423,18 @@ export default function ResumeForm({ onSave, onChange }: { onSave?: (data: any) 
                   name="certifications"
                   value={form.certifications}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-200 text-gray-700  rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="AWS Certified, PMP, etc."
                 />
               </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700">Projects</label>
-                <input
-                  name="projects"
-                  value={form.projects}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="Notable projects or portfolio links"
-                />
-              </div>
+              
               <div className="space-y-2">
                 <label className="text-sm font-medium text-gray-700">Awards & Achievements</label>
                 <input
                   name="awards"
                   value={form.awards}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-200 text-gray-700  rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="Recognition, honors, achievements"
                 />
               </div>
@@ -372,7 +447,7 @@ export default function ResumeForm({ onSave, onChange }: { onSave?: (data: any) 
                   name="languages"
                   value={form.languages}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-200 text-gray-700  rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="English (Native), Spanish (Fluent)"
                 />
               </div>
@@ -385,7 +460,7 @@ export default function ResumeForm({ onSave, onChange }: { onSave?: (data: any) 
                   name="social"
                   value={form.social}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-200 text-gray-700  rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="LinkedIn, GitHub, Portfolio URL"
                 />
               </div>

@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { useAuth } from '../../components/AuthProvider';
 import { useRouter } from 'next/navigation';
 import { analyzeResume } from '../../lib/gemini';
+import FileUploadSection from '../../components/FileUploadSection';
+import AnalysisResult from '../../components/AnalysisResult';
 
 export default function AnalyzePage() {
   const { user, loading } = useAuth() || {};
@@ -34,6 +36,10 @@ export default function AnalyzePage() {
     }
   };
 
+  const handleResumeTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setResumeText(e.target.value);
+  };
+
   const handleAnalyze = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('Analyzing with Gemini...');
@@ -55,27 +61,12 @@ export default function AnalyzePage() {
           Upload your resume and provide a job description. Our AI will compare and suggest improvements instantly using Gemini API.
         </p>
 
-        {/* Upload Section */}
-        <div className="space-y-4">
-          <label className="font-semibold text-lg">Upload Resume</label>
-          <input
-            type="file"
-            accept=".pdf,.doc,.docx,.txt"
-            className="block w-full text-sm text-gray-700 bg-gray-50 border border-gray-300 rounded-md px-4 py-2"
-            onChange={handleFileUpload}
-          />
-          {fileName && (
-            <div className="text-sm text-gray-500">
-              <span className="font-semibold">File:</span> {fileName}
-            </div>
-          )}
-          <textarea
-            className="w-full h-40 p-4 border border-gray-300 rounded-md resize-y text-sm"
-            placeholder="Or paste your resume text..."
-            value={resumeText}
-            onChange={e => setResumeText(e.target.value)}
-          />
-        </div>
+        <FileUploadSection 
+          resumeText={resumeText}
+          fileName={fileName}
+          onFileUpload={handleFileUpload}
+          onResumeTextChange={handleResumeTextChange}
+        />
 
         {/* Job Description & Analyze */}
         <form onSubmit={handleAnalyze} className="space-y-4">
@@ -100,13 +91,7 @@ export default function AnalyzePage() {
           <div className="text-center text-accent font-medium mt-4">{status}</div>
         )}
 
-        {/* AI Result */}
-        {result && (
-          <div className="bg-blue-100 border border-blue-300 rounded-xl p-6 mt-6">
-            <h2 className="text-xl font-bold text-accent mb-2">Gemini AI Feedback</h2>
-            <pre className="whitespace-pre-wrap text-gray-800 text-sm">{JSON.stringify(result, null, 2)}</pre>
-          </div>
-        )}
+        <AnalysisResult result={result} />
       </div>
     </div>
   );
