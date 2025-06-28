@@ -38,7 +38,7 @@ const SecuritySettings = ({ settings, onSettingChange }: SecuritySettingsProps) 
           id="sessionTimeout"
           value={settings.sessionTimeout}
           onChange={(e) => onSettingChange('sessionTimeout', e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="w-full px-3 py-2 border text-gray-700 border-gray-300 rounded-lg focus:ring-1 focus:ring-blue-200 focus:border-transparent"
         >
           <option value="15">15 minutes</option>
           <option value="30">30 minutes</option>
@@ -58,7 +58,7 @@ const SecuritySettings = ({ settings, onSettingChange }: SecuritySettingsProps) 
               <input
                 id="currentPassword"
                 type={showPassword ? 'text' : 'password'}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-10"
+                className="w-full px-3 py-2 border text-gray-700 border-gray-300 rounded-lg focus:ring-1 focus:ring-blue-200 focus:border-transparent pr-10"
                 placeholder="Enter current password"
               />
               <button
@@ -76,7 +76,7 @@ const SecuritySettings = ({ settings, onSettingChange }: SecuritySettingsProps) 
             <input
               id="newPassword"
               type="password"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border text-gray-700 border-gray-300 rounded-lg focus:ring-1 focus:ring-blue-200 focus:border-transparent"
               placeholder="Enter new password"
             />
           </div>
@@ -85,7 +85,7 @@ const SecuritySettings = ({ settings, onSettingChange }: SecuritySettingsProps) 
             <input
               id="confirmPassword"
               type="password"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border text-gray-700 border-gray-300 rounded-lg focus:ring-1 focus:ring-blue-200 focus:border-transparent"
               placeholder="Confirm new password"
             />
           </div>

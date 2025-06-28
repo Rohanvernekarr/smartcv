@@ -19,7 +19,7 @@ const AppearanceSettings = ({ settings, onSettingChange }: AppearanceSettingsPro
           id="theme"
           value={settings.theme}
           onChange={(e) => onSettingChange('theme', e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="w-full px-3 py-2 border text-gray-700 border-gray-300 rounded-lg focus:ring-1 focus:ring-blue-200 focus:border-transparent"
         >
           <option value="light">Light</option>
           <option value="dark">Dark</option>
@@ -33,7 +33,7 @@ const AppearanceSettings = ({ settings, onSettingChange }: AppearanceSettingsPro
           id="language"
           value={settings.language}
           onChange={(e) => onSettingChange('language', e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="w-full px-3 py-2 border text-gray-700 border-gray-300 rounded-lg focus:ring-1 focus:ring-blue-200 focus:border-transparent"
         >
           <option value="en">English</option>
           <option value="es">Spanish</option>
@@ -53,7 +53,7 @@ const AppearanceSettings = ({ settings, onSettingChange }: AppearanceSettingsPro
           id="timezone"
           value={settings.timezone}
           onChange={(e) => onSettingChange('timezone', e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="w-full px-3 py-2 border text-gray-700 border-gray-300 rounded-lg focus:ring-1 focus:ring-blue-200 focus:border-transparent"
         >
           <option value="America/Los_Angeles">Pacific Time (PT)</option>
           <option value="America/New_York">Eastern Time (ET)</option>
@@ -73,7 +73,7 @@ const AppearanceSettings = ({ settings, onSettingChange }: AppearanceSettingsPro
           id="dateFormat"
           value={settings.dateFormat}
           onChange={(e) => onSettingChange('dateFormat', e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="w-full px-3 py-2 border text-gray-700 border-gray-300 rounded-lg focus:ring-1 focus:ring-blue-200 focus:border-transparent"
         >
           <option value="MM/DD/YYYY">MM/DD/YYYY</option>
           <option value="DD/MM/YYYY">DD/MM/YYYY</option>

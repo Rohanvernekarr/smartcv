@@ -24,7 +24,7 @@ const ProfileSettings = ({ settings, onSettingChange }: ProfileSettingsProps) =>
             type="text"
             value={settings.firstName}
             onChange={(e) => onSettingChange('firstName', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 border text-gray-700 border-gray-300 rounded-lg focus:ring-1 focus:ring-blue-200 focus:border-transparent"
             placeholder="Enter your first name"
           />
         </div>
@@ -35,7 +35,7 @@ const ProfileSettings = ({ settings, onSettingChange }: ProfileSettingsProps) =>
             type="text"
             value={settings.lastName}
             onChange={(e) => onSettingChange('lastName', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 border text-gray-700 border-gray-300 rounded-lg focus:ring-1 focus:ring-blue-200 focus:border-transparent"
             placeholder="Enter your last name"
           />
         </div>
@@ -48,7 +48,7 @@ const ProfileSettings = ({ settings, onSettingChange }: ProfileSettingsProps) =>
           type="email"
           value={settings.email}
           onChange={(e) => onSettingChange('email', e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="w-full px-3 py-2 border text-gray-700 border-gray-300 rounded-lg focus:ring-1 focus:ring-blue-200 focus:border-transparent"
           placeholder="Enter your email address"
         />
       </div>
@@ -60,7 +60,7 @@ const ProfileSettings = ({ settings, onSettingChange }: ProfileSettingsProps) =>
           type="tel"
           value={settings.phone}
           onChange={(e) => onSettingChange('phone', e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="w-full px-3 py-2 border text-gray-700 border-gray-300 rounded-lg focus:ring-1 focus:ring-blue-200 focus:border-transparent"
           placeholder="Enter your phone number"
         />
       </div>
@@ -72,7 +72,7 @@ const ProfileSettings = ({ settings, onSettingChange }: ProfileSettingsProps) =>
           value={settings.bio}
           onChange={(e) => onSettingChange('bio', e.target.value)}
           rows={3}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="w-full px-3 py-2 border text-gray-700 border-gray-300 rounded-lg focus:ring-1 focus:ring-blue-200 focus:border-transparent"
           placeholder="Tell us about yourself"
         />
       </div>
@@ -85,7 +85,7 @@ const ProfileSettings = ({ settings, onSettingChange }: ProfileSettingsProps) =>
             type="text"
             value={settings.location}
             onChange={(e) => onSettingChange('location', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 border text-gray-700 border-gray-300 rounded-lg focus:ring-1 focus:ring-blue-200 focus:border-transparent"
             placeholder="Enter your location"
           />
         </div>
@@ -96,7 +96,7 @@ const ProfileSettings = ({ settings, onSettingChange }: ProfileSettingsProps) =>
             type="url"
             value={settings.website}
             onChange={(e) => onSettingChange('website', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 border text-gray-700 border-gray-300 rounded-lg focus:ring-1 focus:ring-blue-200 focus:border-transparent"
             placeholder="Enter your website URL"
           />
         </div>

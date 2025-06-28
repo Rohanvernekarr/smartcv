@@ -32,7 +32,7 @@ const AccountSettings = ({ settings, onSettingChange, onExportData }: AccountSet
           id="defaultCurrency"
           value={settings.defaultCurrency}
           onChange={(e) => onSettingChange('defaultCurrency', e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="w-full px-3 py-2 border text-gray-700 border-gray-300 rounded-lg focus:ring-1 focus:ring-blue-200 focus:border-transparent"
         >
           <option value="USD">USD - US Dollar</option>
           <option value="EUR">EUR - Euro</option>

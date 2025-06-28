@@ -24,10 +24,10 @@ export default function SettingsPage() {
     firstName: '',
     lastName: '',
     email: '',
-    phone: '+1 (555) 123-4567',
-    bio: 'Software developer passionate about creating amazing user experiences.',
-    location: 'San Francisco, CA',
-    website: 'https://johndoe.dev',
+    phone: '',
+    bio: '',
+    location: '',
+    website: '',
     
     // Privacy settings
     profileVisibility: 'public',
@@ -182,8 +182,8 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="w-full min-h-screen bg-gray-50 py-8">
-      <div className="max-w-6xl mx-auto px-4">
+    <div className="w-full min-h-screen py-8">
+      <div className="max-w-6xl mx-auto px-4 ">
         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
           <SettingsHeader />
           <div className="flex">
