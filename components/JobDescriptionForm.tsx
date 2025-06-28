@@ -16,7 +16,7 @@ const JobDescriptionForm = ({ jobDescription, onJobDescriptionChange }: JobDescr
       </label>
       
       <textarea
-        className="w-full h-40 p-4 border border-gray-300 rounded-xl resize-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+        className="w-full h-40 p-4 border text-gray-700 border-gray-300 rounded-xl resize-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
         placeholder="Paste the job description you're applying for. This helps our AI provide more targeted feedback..."
         value={jobDescription}
         onChange={onJobDescriptionChange}

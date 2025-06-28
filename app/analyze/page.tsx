@@ -80,7 +80,7 @@ export default function AnalyzePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-12 px-4">
+    <div className="min-h-screen  py-12 px-4">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <AnalyzeHeader />

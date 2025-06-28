@@ -1,11 +1,94 @@
 'use client';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../components/AuthProvider';
 import { useRouter } from 'next/navigation';
+import { supabase } from '../../lib/supabaseClient';
+import SettingsHeader from '../../components/SettingsHeader';
+import SettingsSidebar from '../../components/SettingsSidebar';
+import ProfileSettings from '../../components/ProfileSettings';
+import PrivacySettings from '../../components/PrivacySettings';
+import NotificationSettings from '../../components/NotificationSettings';
+import AppearanceSettings from '../../components/AppearanceSettings';
+import SecuritySettings from '../../components/SecuritySettings';
+import AccountSettings from '../../components/AccountSettings';
+import { Save } from 'lucide-react';
 
 export default function SettingsPage() {
   const { user, loading } = useAuth() || {};
   const router = useRouter();
+  
+  // Settings state
+  const [activeTab, setActiveTab] = useState('profile');
+  const [settings, setSettings] = useState({
+    // Profile settings
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '+1 (555) 123-4567',
+    bio: 'Software developer passionate about creating amazing user experiences.',
+    location: 'San Francisco, CA',
+    website: 'https://johndoe.dev',
+    
+    // Privacy settings
+    profileVisibility: 'public',
+    showEmail: false,
+    showPhone: false,
+    allowSearchEngines: true,
+    dataCollection: true,
+    
+    // Notification settings
+    emailNotifications: true,
+    pushNotifications: true,
+    smsNotifications: false,
+    marketingEmails: false,
+    securityAlerts: true,
+    activityDigest: 'weekly',
+    
+    // Appearance settings
+    theme: 'light',
+    language: 'en',
+    timezone: 'America/Los_Angeles',
+    dateFormat: 'MM/DD/YYYY',
+    
+    // Security settings
+    twoFactorAuth: false,
+    loginAlerts: true,
+    sessionTimeout: '30',
+    
+    // Account settings
+    autoSave: true,
+    defaultCurrency: 'USD'
+  });
+
+  // Fetch user profile from database
+  useEffect(() => {
+    async function fetchUserProfile() {
+      if (user) {
+        try {
+          const { data, error } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', user.id)
+            .single();
+
+          if (error) {
+            console.error('Error fetching profile:', error);
+          } else if (data) {
+            setSettings(prev => ({
+              ...prev,
+              firstName: data.first_name || '',
+              lastName: data.last_name || '',
+              email: data.email || user.email || '',
+            }));
+          }
+        } catch (error) {
+          console.error('Error fetching profile:', error);
+        }
+      }
+    }
+
+    fetchUserProfile();
+  }, [user]);
 
   React.useEffect(() => {
     if (!loading && !user) router.replace('/login');
@@ -14,15 +97,127 @@ export default function SettingsPage() {
   if (loading) return <div className="p-8">Loading...</div>;
   if (!user) return null;
 
+  const handleSettingChange = (key: string, value: any) => {
+    setSettings((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const handleSave = async () => {
+    if (user) {
+      try {
+        // Update profile in database
+        const { error } = await supabase
+          .from('profiles')
+          .upsert([
+            {
+              id: user.id,
+              email: settings.email,
+              first_name: settings.firstName,
+              last_name: settings.lastName,
+              full_name: `${settings.firstName} ${settings.lastName}`.trim(),
+              updated_at: new Date().toISOString()
+            }
+          ], {
+            onConflict: 'id'
+          });
+
+        if (error) {
+          console.error('Error saving profile:', error);
+          alert('Error saving settings. Please try again.');
+        } else {
+          alert('Settings saved successfully!');
+        }
+      } catch (error) {
+        console.error('Error saving settings:', error);
+        alert('Error saving settings. Please try again.');
+      }
+    }
+  };
+
+  const handleExportData = () => {
+    const dataStr = JSON.stringify(settings, null, 2);
+    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+    const exportFileDefaultName = 'user-settings.json';
+    const linkElement = document.createElement('a');
+    linkElement.setAttribute('href', dataUri);
+    linkElement.setAttribute('download', exportFileDefaultName);
+    linkElement.click();
+  };
+
+  let sectionContent = null;
+  switch (activeTab) {
+    case 'profile':
+      sectionContent = (
+        <ProfileSettings settings={settings} onSettingChange={handleSettingChange} />
+      );
+      break;
+    case 'privacy':
+      sectionContent = (
+        <PrivacySettings settings={settings} onSettingChange={handleSettingChange} />
+      );
+      break;
+    case 'notifications':
+      sectionContent = (
+        <NotificationSettings settings={settings} onSettingChange={handleSettingChange} />
+      );
+      break;
+    case 'appearance':
+      sectionContent = (
+        <AppearanceSettings settings={settings} onSettingChange={handleSettingChange} />
+      );
+      break;
+    case 'security':
+      sectionContent = (
+        <SecuritySettings settings={settings} onSettingChange={handleSettingChange} />
+      );
+      break;
+    case 'account':
+      sectionContent = (
+        <AccountSettings settings={settings} onSettingChange={handleSettingChange} onExportData={handleExportData} />
+      );
+      break;
+    default:
+      sectionContent = (
+        <ProfileSettings settings={settings} onSettingChange={handleSettingChange} />
+      );
+  }
+
   return (
-    <div className="w-full min-h-[80vh] flex flex-col items-center justify-center bg-blue-50 py-12">
-      <div className="w-full max-w-2xl mx-auto">
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-10 mb-8">
-          <h1 className="text-4xl font-extrabold text-accent mb-4">Settings</h1>
-          <p className="text-gray-700 mb-8">Manage your profile and account options.</p>
-          <div className="h-32 flex items-center justify-center text-gray-400 italic w-full border-t pt-6 mt-6">Settings coming soon.</div>
+    <div className="w-full min-h-screen bg-gray-50 py-8">
+      <div className="max-w-6xl mx-auto px-4">
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+          <SettingsHeader />
+          <div className="flex">
+            <SettingsSidebar activeTab={activeTab} onTabChange={setActiveTab} />
+            <div className="flex-1 p-8">
+              <div className="max-w-2xl">
+                <div className="mb-6">
+                  <h2 className="text-2xl font-semibold text-gray-900 capitalize">
+                    {activeTab} Settings
+                  </h2>
+                  <p className="text-gray-600 mt-1">
+                    Customize your {activeTab} preferences and options.
+                  </p>
+                </div>
+                <div className="bg-white">{sectionContent}</div>
+                <div className="mt-8 pt-6 border-t border-gray-200">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-gray-500">
+                      Changes are saved automatically when you make them.
+                    </p>
+                    <button
+                      onClick={handleSave}
+                      className="flex items-center px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    >
+                      <Save className="h-4 w-4 mr-2" />
+                      Save Changes
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   );
-} 
+}
