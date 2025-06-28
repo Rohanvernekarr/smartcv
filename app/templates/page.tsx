@@ -1,28 +1,135 @@
 "use client"
-import React from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '../../components/AuthProvider';
 import { useRouter } from 'next/navigation';
+import TemplateCard from '../../components/TemplateCard';
+import CategoryFilter from '../../components/CategoryFilter';
+import PreviewModal from '../../components/PreviewModal';
+import TemplatesHeader from '../../components/TemplatesHeader';
+import TemplatesActionSection from '../../components/TemplatesActionSection';
+
+interface Template {
+  id: number;
+  name: string;
+  description: string;
+  category: string;
+  rating: number;
+  isPremium: boolean;
+}
 
 export default function TemplatesPage() {
   const { user, loading } = useAuth() || {};
   const router = useRouter();
+  const [selectedTemplate, setSelectedTemplate] = useState(1);
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [previewTemplate, setPreviewTemplate] = useState<Template | null>(null);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
   React.useEffect(() => {
     if (!loading && !user) router.replace('/login');
   }, [user, loading, router]);
 
+  // Sample template data
+  const templates: Template[] = [
+    {
+      id: 1,
+      name: "Modern Professional",
+      description: "Clean and contemporary design perfect for tech and business professionals",
+      category: "Modern",
+      rating: 4.8,
+      isPremium: false
+    },
+    {
+      id: 2,
+      name: "Creative Portfolio",
+      description: "Bold and artistic layout ideal for designers and creative professionals",
+      category: "Creative",
+      rating: 4.9,
+      isPremium: true
+    },
+    {
+      id: 3,
+      name: "Executive Classic",
+      description: "Traditional and elegant format for senior-level positions",
+      category: "Professional",
+      rating: 4.7,
+      isPremium: false
+    },
+    {
+      id: 4,
+      name: "Minimalist Clean",
+      description: "Simple and focused design that highlights your content",
+      category: "Modern",
+      rating: 4.6,
+      isPremium: false
+    },
+    {
+      id: 5,
+      name: "Tech Specialist",
+      description: "Technical layout optimized for developers and engineers",
+      category: "Modern",
+      rating: 4.8,
+      isPremium: true
+    },
+    {
+      id: 6,
+      name: "Academic Scholar",
+      description: "Formal design suited for academic and research positions",
+      category: "Professional",
+      rating: 4.5,
+      isPremium: false
+    }
+  ];
+
+  const categories = ['All', 'Modern', 'Creative', 'Professional'];
+
+  const filteredTemplates = selectedCategory === 'All' 
+    ? templates 
+    : templates.filter(template => template.category === selectedCategory);
+
+  const handlePreview = (template: Template) => {
+    setPreviewTemplate(template);
+    setIsPreviewOpen(true);
+  };
+
   if (loading) return <div className="p-8">Loading...</div>;
   if (!user) return null;
 
   return (
-    <div className="w-full min-h-[80vh] flex flex-col items-center justify-center bg-blue-50 py-12">
-      <div className="w-full max-w-2xl mx-auto">
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-10 mb-8">
-          <h1 className="text-4xl font-extrabold text-accent mb-4">Resume Templates</h1>
-          <p className="text-gray-700 mb-8">Switch and preview beautiful resume templates (coming soon).</p>
-          <div className="h-32 flex items-center justify-center text-gray-400 italic w-full border-t pt-6 mt-6">Template switching coming soon.</div>
+    <div className="min-h-screen w-full ">
+      <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
+        <TemplatesHeader templatesCount={templates.length} />
+
+        {/* Category Filter */}
+        <CategoryFilter 
+          categories={categories}
+          selectedCategory={selectedCategory}
+          onCategoryChange={setSelectedCategory}
+        />
+
+        {/* Templates Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-12">
+          {filteredTemplates.map((template) => (
+            <TemplateCard
+              key={template.id}
+              template={template}
+              isSelected={selectedTemplate === template.id}
+              onSelect={setSelectedTemplate}
+              onPreview={handlePreview}
+            />
+          ))}
         </div>
+
+        {/* Action Section */}
+        <TemplatesActionSection />
       </div>
+
+      {/* Preview Modal */}
+      <PreviewModal 
+        template={previewTemplate}
+        isOpen={isPreviewOpen}
+        onClose={() => setIsPreviewOpen(false)}
+      />
     </div>
   );
-} 
+}

@@ -3,9 +3,15 @@ import React, { useState } from 'react';
 import { useAuth } from '../../components/AuthProvider';
 import { useRouter } from 'next/navigation';
 import { analyzeResume } from '../../lib/gemini';
+import AnalyzeHeader from '../../components/AnalyzeHeader';
 import FileUploadSection from '../../components/FileUploadSection';
+import JobDescriptionForm from '../../components/JobDescriptionForm';
+import AnalyzeButton from '../../components/AnalyzeButton';
+import StatusMessage from '../../components/StatusMessage';
 import AnalysisResult from '../../components/AnalysisResult';
+import FeaturesSection from '../../components/FeaturesSection';
 
+// Main Analyze Page Component
 export default function AnalyzePage() {
   const { user, loading } = useAuth() || {};
   const router = useRouter();
@@ -14,6 +20,7 @@ export default function AnalyzePage() {
   const [result, setResult] = useState<any>(null);
   const [status, setStatus] = useState<string | null>(null);
   const [fileName, setFileName] = useState('');
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   React.useEffect(() => {
     if (!loading && !user) router.replace('/login');
@@ -22,13 +29,15 @@ export default function AnalyzePage() {
   if (loading) return <div className="p-8">Loading...</div>;
   if (!user) return null;
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement> | { target: { files: File[] } }) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    
     setFileName(file.name);
     setStatus('Reading file...');
+    
     try {
-      const text = await file.text(); // MVP extraction
+      const text = await file.text(); // Basic text extraction
       setResumeText(text);
       setStatus(null);
     } catch (err) {
@@ -40,58 +49,81 @@ export default function AnalyzePage() {
     setResumeText(e.target.value);
   };
 
-  const handleAnalyze = async (e: React.FormEvent) => {
+  const handleJobDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setJobDescription(e.target.value);
+  };
+
+  const handleAnalyze = async (e: React.MouseEvent) => {
     e.preventDefault();
-    setStatus('Analyzing with Gemini...');
+    if (!resumeText.trim() || !jobDescription.trim()) {
+      setStatus('Please provide both resume and job description.');
+      return;
+    }
+
+    setIsAnalyzing(true);
+    setStatus('Analyzing with AI...');
     setResult(null);
+    
     try {
-      const aiResult = await analyzeResume({ resume: resumeText, jobDescription });
+      const aiResult = await analyzeResume({ 
+        resume: resumeText, 
+        jobDescription 
+      });
       setResult(aiResult);
       setStatus(null);
     } catch (err) {
       setStatus('Analysis failed. Please try again.');
+      console.error('Analysis error:', err);
+    } finally {
+      setIsAnalyzing(false);
     }
   };
 
   return (
-    <div className="w-full min-h-screen bg-blue-50 py-12 px-4 flex items-center justify-center">
-      <div className="w-full max-w-5xl bg-white rounded-2xl shadow-xl p-8 space-y-8 border border-gray-200">
-        <h1 className="text-4xl font-bold text-accent text-center">AI Resume Analyzer</h1>
-        <p className="text-center text-gray-600 max-w-2xl mx-auto">
-          Upload your resume and provide a job description. Our AI will compare and suggest improvements instantly using Gemini API.
-        </p>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-12 px-4">
+      <div className="max-w-6xl mx-auto">
+        {/* Header */}
+        <AnalyzeHeader />
 
-        <FileUploadSection 
-          resumeText={resumeText}
-          fileName={fileName}
-          onFileUpload={handleFileUpload}
-          onResumeTextChange={handleResumeTextChange}
-        />
+        {/* Main Content */}
+        <div className="bg-white rounded-3xl shadow-xl border border-gray-200 overflow-hidden">
+          <div className="p-8 space-y-8">
+            {/* File Upload Section */}
+            <FileUploadSection
+              resumeText={resumeText}
+              fileName={fileName}
+              onFileUpload={handleFileUpload}
+              onResumeTextChange={handleResumeTextChange}
+              status={status}
+            />
 
-        {/* Job Description & Analyze */}
-        <form onSubmit={handleAnalyze} className="space-y-4">
-          <label className="font-semibold text-lg">Job Description</label>
-          <textarea
-            className="w-full h-32 p-4 border border-gray-300 rounded-md resize-y text-sm"
-            placeholder="Paste the job description..."
-            value={jobDescription}
-            onChange={e => setJobDescription(e.target.value)}
-            required
-          />
-          <button
-            type="submit"
-            className="w-full max-w-xs mx-auto block bg-accent hover:bg-accent-dark text-white font-bold py-2 px-6 rounded-xl transition duration-200"
-          >
-            {status === 'Analyzing with Gemini...' ? 'Analyzing...' : 'Analyze Resume'}
-          </button>
-        </form>
+            {/* Job Description Input */}
+            <JobDescriptionForm
+              jobDescription={jobDescription}
+              onJobDescriptionChange={handleJobDescriptionChange}
+            />
 
-        {/* Status */}
-        {status && (
-          <div className="text-center text-accent font-medium mt-4">{status}</div>
-        )}
+            {/* Analyze Button */}
+            <AnalyzeButton
+              isAnalyzing={isAnalyzing}
+              isDisabled={isAnalyzing || !resumeText.trim() || !jobDescription.trim()}
+              onClick={handleAnalyze}
+            />
 
-        <AnalysisResult result={result} />
+            {/* Status Message */}
+            <StatusMessage status={status} isAnalyzing={isAnalyzing} />
+          </div>
+
+          {/* Results Section */}
+          {(result || isAnalyzing) && (
+            <div className="border-t border-gray-200 p-8">
+              <AnalysisResult result={result} isLoading={isAnalyzing} />
+            </div>
+          )}
+        </div>
+
+        {/* Features Section */}
+        {!result && !isAnalyzing && <FeaturesSection />}
       </div>
     </div>
   );

@@ -138,14 +138,14 @@ export default function DashboardPage() {
               placeholder="Search resumes..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className="w-full px-4 py-3 text-gray-800 border border-gray-500 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
             />
           </div>
           <div className="flex gap-4">
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as any)}
-              className="px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className="px-4 py-3 border text-gray-800 border-gray-500 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               title="Sort resumes by"
             >
               <option value="lastModified">Last Modified</option>
