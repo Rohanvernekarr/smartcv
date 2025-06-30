@@ -3,7 +3,7 @@ import Link from 'next/link';
 export default function Footer() {
   return (
     <footer className="relative w-full bg-blue-50 text-black">
-      {/* Decorative top border */}
+      
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500 to-transparent"></div>
       
       <div className="relative">
@@ -27,7 +27,7 @@ export default function Footer() {
                   Create stunning resumes that get noticed by recruiters.
                 </p>
                 
-                {/* Social Links */}
+                
                 <div className="flex space-x-4">
                   <a 
                     href="https://linkedin.com" 
@@ -76,7 +76,7 @@ export default function Footer() {
                 </div>
               </div>
 
-              {/* Quick Links */}
+             
               <div>
                 <h3 className="text-lg font-semibold text-grey-700 mb-6">Quick Links</h3>
                 <ul className="space-y-3">
@@ -103,7 +103,7 @@ export default function Footer() {
                 </ul>
               </div>
 
-              {/* Support */}
+              
               <div>
                 <h3 className="text-lg font-semibold text-grey-700 mb-6">Support</h3>
                 <ul className="space-y-3">
@@ -138,7 +138,6 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom section */}
         <div className="border-t border-gray-700">
           <div className="px-4 sm:px-6 lg:px-8 py-6">
             <div className="max-w-7xl mx-auto">

@@ -72,7 +72,7 @@ export default function Navbar() {
     setIsMobileMenuOpen(false);
   };
 
-  // Google Icon Component
+  // Google Icon 
   const GoogleIcon = () => (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -105,7 +105,7 @@ export default function Navbar() {
               </span>
             </Link>
 
-            {/* Desktop Navigation */}
+            {/* Desktop */}
             <div className="hidden lg:flex items-center space-x-1">
               {navItems.map((item) => {
                 const isActive = pathname.startsWith(item.href);
@@ -133,7 +133,7 @@ export default function Navbar() {
             <div className="flex items-center space-x-4">
               {user ? (
                 <>
-                  {/* Desktop User Info */}
+                 
                   <div className="hidden lg:flex items-center space-x-3">
                     <div className="flex items-center space-x-2 px-3 py-1.5 bg-gray-50 rounded-full">
                       <div className="w-6 h-6 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
@@ -154,7 +154,7 @@ export default function Navbar() {
                     </button>
                   </div>
 
-                  {/* Mobile User Avatar */}
+                  {/* Mobile User  */}
                   <div className="lg:hidden">
                     <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
                       <span className="text-white text-sm font-medium">
@@ -183,7 +183,7 @@ export default function Navbar() {
                     </button>
                   </div>
 
-                  {/* Mobile Google Login Icon */}
+                  {/* Mobile Google Login */}
                   <div className="lg:hidden">
                     <button
                       onClick={handleGoogleLogin}

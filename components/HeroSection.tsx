@@ -10,12 +10,12 @@ export default function HeroSection({ isVisible }: HeroSectionProps) {
     <section className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 pt-20">
       <div className="max-w-6xl mx-auto text-center">
         <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          {/* Badge */}
+          
           <div className="inline-flex items-center px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-gray-200 shadow-sm mb-8">
             <span className="text-sm font-medium text-gray-600">✨ AI-Powered Resume Intelligence</span>
           </div>
 
-          {/* Main Heading */}
+          
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-gray-900 mb-8 leading-tight">
             <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
               SmartCV
@@ -26,13 +26,13 @@ export default function HeroSection({ isVisible }: HeroSectionProps) {
             </span>
           </h1>
 
-          {/* Subtitle */}
+          
           <p className="text-lg sm:text-xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed">
             Create stunning resumes, get AI-powered insights, and land your dream job. 
             Our intelligent platform helps you stand out in today's competitive market.
           </p>
 
-          {/* CTA Buttons */}
+          
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
             <Link 
               href="/login" 
