@@ -95,7 +95,20 @@ export default function AnalyzePage() {
         resume: resumeText, 
         jobDescription 
       });
-      setResult(aiResult);
+      // Parse the result as JSON if it's a string
+      let parsedResult;
+      try {
+        parsedResult = typeof aiResult === 'string'
+          ? JSON.parse(aiResult.replace(/```json|```/g, '').trim())
+          : aiResult;
+      } catch (parseErr) {
+        setStatus('Failed to parse AI analysis. Please try again.');
+        console.error('Parsing error:', parseErr, aiResult);
+        setResult(null);
+        setIsAnalyzing(false);
+        return;
+      }
+      setResult(parsedResult);
       setStatus(null);
     } catch (err) {
       setStatus('Analysis failed. Please try again.');

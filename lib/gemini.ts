@@ -3,7 +3,7 @@ const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/
 
 
 export async function analyzeResume({ resume, jobDescription }: { resume: string; jobDescription: string }) {
-  const prompt = `Analyze this resume against the following job description. Score the match, list missing keywords/skills, and suggest improvements.\n\nResume:\n${resume}\n\nJob Description:\n${jobDescription}`;
+  const prompt = `Analyze the following resume against the provided job description. Return your analysis as a JSON object with the following structure: {\n  \"overallScore\": number (0-100),\n  \"strengths\": string[],\n  \"weaknesses\": string[],\n  \"suggestions\": string[],\n  \"keywordMatch\": number (0-100),\n  \"sections\": object (optional),\n  \"rawFeedback\": string (optional)\n}\n\nResume:\n${resume}\n\nJob Description:\n${jobDescription}`;
   return await geminiRequest(prompt);
 }
 
@@ -32,5 +32,12 @@ async function geminiRequest(prompt: string) {
     }
     throw new Error(errorMsg);
   }
-  return res.json();
+  const data = await res.json();
+  // Log the raw Gemini response for debugging
+  if (typeof window !== 'undefined') {
+    console.log('Gemini API raw response:', data);
+  }
+  // Try to extract the text response
+  const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+  return text || data;
 } 
