@@ -37,11 +37,37 @@ export default function AnalyzePage() {
     setStatus('Reading file...');
     
     try {
-      const text = await file.text(); // Basic text extraction
+      let text = '';
+      const ext = file.name.split('.').pop()?.toLowerCase();
+      if (ext === 'pdf') {
+        // Dynamically import pdfjs-dist only in the browser
+        const pdfjsLib = await import('pdfjs-dist');
+        pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`;
+        const arrayBuffer = await file.arrayBuffer();
+        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const page = await pdf.getPage(i);
+          const content = await page.getTextContent();
+          text += content.items.map((item: any) => item.str).join(' ') + '\n';
+        }
+      } else if (ext === 'docx') {
+        // Dynamically import mammoth only in the browser
+        const mammoth = await import('mammoth');
+        const arrayBuffer = await file.arrayBuffer();
+        const result = await mammoth.extractRawText({ arrayBuffer });
+        text = result.value;
+      } else if (ext === 'txt') {
+        // Plain text
+        text = await file.text();
+      } else {
+        setStatus('Unsupported file type. Please upload PDF, DOCX, or TXT.');
+        return;
+      }
       setResumeText(text);
       setStatus(null);
     } catch (err) {
-      setStatus('Could not read file. Please paste your resume text.');
+      setStatus('Could not extract text. Please paste your resume text.');
+      console.error('File extraction error:', err);
     }
   };
 
