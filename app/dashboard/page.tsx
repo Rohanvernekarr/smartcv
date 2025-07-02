@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import DashboardHeader from '../../components/DashboardHeader';
-import StatsCards from '../../components/StatsCards';
-import ResumeCard from '../../components/ResumeCard';
+import DashboardHeader from '../../components/dashboard/DashboardHeader';
+import StatsCards from '../../components/dashboard/StatsCards';
+import ResumeCard from '../../components/dashboard/ResumeCard';
 import { useRouter } from 'next/navigation';
 
 interface Resume {

@@ -3,13 +3,13 @@ import React, { useState } from 'react';
 import { useAuth } from '../../components/AuthProvider';
 import { useRouter } from 'next/navigation';
 import { analyzeResume } from '../../lib/gemini';
-import AnalyzeHeader from '../../components/AnalyzeHeader';
-import FileUploadSection from '../../components/FileUploadSection';
-import JobDescriptionForm from '../../components/JobDescriptionForm';
-import AnalyzeButton from '../../components/AnalyzeButton';
-import StatusMessage from '../../components/StatusMessage';
-import AnalysisResult from '../../components/AnalysisResult';
-import FeaturesSection from '../../components/FeaturesSection';
+import AnalyzeHeader from '../../components/analyse/AnalyzeHeader';
+import FileUploadSection from '../../components/analyse/FileUploadSection';
+import JobDescriptionForm from '../../components/analyse/JobDescriptionForm';
+import AnalyzeButton from '../../components/analyse/AnalyzeButton';
+import StatusMessage from '../../components/analyse/StatusMessage';
+import AnalysisResult from '../../components/analyse/AnalysisResult';
+import FeaturesSection from '../../components/analyse/FeaturesSection';
 import { getUserResumes, saveResume } from '../../db/resume';
 
 // Main Analyze Page Component
