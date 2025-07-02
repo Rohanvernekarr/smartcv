@@ -10,6 +10,7 @@ import AnalyzeButton from '../../components/AnalyzeButton';
 import StatusMessage from '../../components/StatusMessage';
 import AnalysisResult from '../../components/AnalysisResult';
 import FeaturesSection from '../../components/FeaturesSection';
+import { getUserResumes, saveResume } from '../../db/resume';
 
 // Main Analyze Page Component
 export default function AnalyzePage() {
@@ -24,6 +25,21 @@ export default function AnalyzePage() {
 
   React.useEffect(() => {
     if (!loading && !user) router.replace('/login');
+    // Fetch latest resume for user
+    if (!loading && user) {
+      (async () => {
+        try {
+          const resumes = await getUserResumes(user.id);
+          if (resumes && resumes.length > 0) {
+            // Assume the latest resume is first (ordered by updated_at desc)
+            setResumeText(resumes[0].data || '');
+            setFileName(resumes[0].file_url ? resumes[0].file_url.split('/').pop() : '');
+          }
+        } catch (err) {
+          console.error('Failed to fetch user resumes:', err);
+        }
+      })();
+    }
   }, [user, loading, router]);
 
   if (loading) return <div className="p-8">Loading...</div>;
@@ -40,9 +56,8 @@ export default function AnalyzePage() {
       let text = '';
       const ext = file.name.split('.').pop()?.toLowerCase();
       if (ext === 'pdf') {
-        // Dynamically import pdfjs-dist only in the browser
         const pdfjsLib = await import('pdfjs-dist');
-        pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`;
+        pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.mjs';
         const arrayBuffer = await file.arrayBuffer();
         const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
         for (let i = 1; i <= pdf.numPages; i++) {
@@ -51,13 +66,11 @@ export default function AnalyzePage() {
           text += content.items.map((item: any) => item.str).join(' ') + '\n';
         }
       } else if (ext === 'docx') {
-        // Dynamically import mammoth only in the browser
         const mammoth = await import('mammoth');
         const arrayBuffer = await file.arrayBuffer();
         const result = await mammoth.extractRawText({ arrayBuffer });
         text = result.value;
       } else if (ext === 'txt') {
-        // Plain text
         text = await file.text();
       } else {
         setStatus('Unsupported file type. Please upload PDF, DOCX, or TXT.');
@@ -65,6 +78,14 @@ export default function AnalyzePage() {
       }
       setResumeText(text);
       setStatus(null);
+      // Save resume as draft after upload
+      if (user) {
+        try {
+          await saveResume(user.id, text, 'draft');
+        } catch (err) {
+          console.error('Failed to save resume draft:', err);
+        }
+      }
     } catch (err) {
       setStatus('Could not extract text. Please paste your resume text.');
       console.error('File extraction error:', err);
@@ -95,7 +116,6 @@ export default function AnalyzePage() {
         resume: resumeText, 
         jobDescription 
       });
-      // Parse the result as JSON if it's a string
       let parsedResult;
       try {
         parsedResult = typeof aiResult === 'string'
@@ -110,6 +130,14 @@ export default function AnalyzePage() {
       }
       setResult(parsedResult);
       setStatus(null);
+      // Save resume as complete after analysis
+      if (user) {
+        try {
+          await saveResume(user.id, resumeText, 'complete');
+        } catch (err) {
+          console.error('Failed to save analyzed resume:', err);
+        }
+      }
     } catch (err) {
       setStatus('Analysis failed. Please try again.');
       console.error('Analysis error:', err);
