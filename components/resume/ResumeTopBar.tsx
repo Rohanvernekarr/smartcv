@@ -1,5 +1,5 @@
 import React from 'react';
-import DownloadPDFButton from './DownloadPDFButton';
+import DownloadPDFButton from '../DownloadPDFButton';
 
 interface ResumeTopBarProps {
   selectedTemplate: string;

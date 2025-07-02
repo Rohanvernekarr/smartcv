@@ -2,10 +2,10 @@
 import React, { useState, useRef } from 'react';
 import { useAuth } from '../../components/AuthProvider';
 import { useRouter } from 'next/navigation';
-import ResumeForm from '../../components/ResumeForm';
+import ResumeForm from '../../components/resume/ResumeForm';
 import { saveResume } from '../../db/resume';
-import ResumeTopBar from '../../components/ResumeTopBar';
-import ResumePreviewContainer from '../../components/ResumePreviewContainer';
+import ResumeTopBar from '../../components/resume/ResumeTopBar';
+import ResumePreviewContainer from '../../components/resume/ResumePreviewContainer';
 
 export default function ResumePage() {
   const { user, loading } = useAuth() || {};

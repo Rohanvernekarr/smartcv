@@ -1,5 +1,5 @@
 import React from 'react';
-import ResumePreview from './ResumePreview';
+import ResumePreview from '../ResumePreview';
 
 interface ResumePreviewContainerProps {
   previewData: any;

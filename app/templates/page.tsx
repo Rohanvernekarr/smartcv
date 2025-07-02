@@ -2,11 +2,11 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../components/AuthProvider';
 import { useRouter } from 'next/navigation';
-import TemplateCard from '../../components/TemplateCard';
-import CategoryFilter from '../../components/CategoryFilter';
-import PreviewModal from '../../components/PreviewModal';
-import TemplatesHeader from '../../components/TemplatesHeader';
-import TemplatesActionSection from '../../components/TemplatesActionSection';
+import TemplateCard from '../../components/template/TemplateCard';
+import CategoryFilter from '../../components/template/CategoryFilter';
+import PreviewModal from '../../components/template/PreviewModal';
+import TemplatesHeader from '../../components/template/TemplatesHeader';
+import TemplatesActionSection from '../../components/template/TemplatesActionSection';
 
 interface Template {
   id: number;
