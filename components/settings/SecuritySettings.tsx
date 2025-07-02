@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
-import ToggleSwitch from './ToggleSwitch';
+import ToggleSwitch from '../ToggleSwitch';
 
 interface SecuritySettingsProps {
   settings: {

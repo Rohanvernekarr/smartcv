@@ -3,14 +3,14 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../components/AuthProvider';
 import { useRouter } from 'next/navigation';
 import { supabase } from '../../lib/supabaseClient';
-import SettingsHeader from '../../components/SettingsHeader';
-import SettingsSidebar from '../../components/SettingsSidebar';
-import ProfileSettings from '../../components/ProfileSettings';
-import PrivacySettings from '../../components/PrivacySettings';
-import NotificationSettings from '../../components/NotificationSettings';
-import AppearanceSettings from '../../components/AppearanceSettings';
-import SecuritySettings from '../../components/SecuritySettings';
-import AccountSettings from '../../components/AccountSettings';
+import SettingsHeader from '../../components/settings/SettingsHeader';
+import SettingsSidebar from '../../components/settings/SettingsSidebar';
+import ProfileSettings from '../../components/settings/ProfileSettings';
+import PrivacySettings from '../../components/settings/PrivacySettings';
+import NotificationSettings from '../../components/settings/NotificationSettings';
+import AppearanceSettings from '../../components/settings/AppearanceSettings';
+import SecuritySettings from '../../components/settings/SecuritySettings';
+import AccountSettings from '../../components/settings/AccountSettings';
 import { Save } from 'lucide-react';
 
 export default function SettingsPage() {

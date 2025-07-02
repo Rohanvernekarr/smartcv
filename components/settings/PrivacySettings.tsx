@@ -1,5 +1,5 @@
 import React from 'react';
-import ToggleSwitch from './ToggleSwitch';
+import ToggleSwitch from '../ToggleSwitch';
 
 interface PrivacySettingsProps {
   settings: {

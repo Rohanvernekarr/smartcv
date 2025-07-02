@@ -1,6 +1,6 @@
 import React from 'react';
 import { Download, Upload, Trash2 } from 'lucide-react';
-import ToggleSwitch from './ToggleSwitch';
+import ToggleSwitch from '../ToggleSwitch';
 
 interface AccountSettingsProps {
   settings: {
