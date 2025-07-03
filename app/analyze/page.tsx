@@ -29,6 +29,7 @@ export default function AnalyzePage() {
     if (!loading && user) {
       (async () => {
         try {
+          console.log('Fetching resumes for user:', user);
           const resumes = await getUserResumes(user.id);
           if (resumes && resumes.length > 0) {
             // Assume the latest resume is first (ordered by updated_at desc)
@@ -36,7 +37,7 @@ export default function AnalyzePage() {
             setFileName(resumes[0].file_url ? resumes[0].file_url.split('/').pop() : '');
           }
         } catch (err) {
-          console.error('Failed to fetch user resumes:', err);
+          console.error('Failed to fetch user resumes:', err, 'user:', user);
         }
       })();
     }
