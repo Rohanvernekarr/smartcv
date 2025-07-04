@@ -93,7 +93,7 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen w-full">
-      <DashboardHeader userEmail={user?.email} onCreateResume={handleCreateResume} />
+      <DashboardHeader userEmail={user?.email ?? ''} onCreateResume={handleCreateResume} />
 
       {/* Main Content - Full Width */}
       <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-8">

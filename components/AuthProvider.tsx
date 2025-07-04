@@ -6,6 +6,7 @@ import type { User } from '@supabase/supabase-js';
 interface AuthContextType {
   user: User | null;
   loading: boolean;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -54,6 +55,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log('Auth state change:', event, session);
       const currentUser = session?.user ?? null;
       setUser(currentUser);
       setLoading(false);
@@ -66,6 +68,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     // Get initial user and save profile if exists
     supabase.auth.getUser().then(async ({ data }: { data: { user: User | null } }) => {
+      console.log('Initial getUser:', data);
       const currentUser = data?.user ?? null;
       setUser(currentUser);
       setLoading(false);
@@ -82,7 +85,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, loading }}>
+    <AuthContext.Provider value={{ user, loading, setUser }}>
       {children}
     </AuthContext.Provider>
   );

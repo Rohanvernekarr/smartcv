@@ -16,7 +16,7 @@ const navItems = [
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
-  const { user } = useAuth() || {};
+  const { user, setUser } = useAuth() || {};
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -33,9 +33,18 @@ export default function Navbar() {
   const handleLogout = async () => {
     setIsLoading(true);
     try {
-      await supabase.auth.signOut();
-      router.push('/login');
+      const { error } = await supabase.auth.signOut();
+      console.log('Sign out result:', error);
+      // Force clear all Supabase auth keys from localStorage
+      Object.keys(localStorage).forEach((key) => {
+        if (key.startsWith('sb-')) localStorage.removeItem(key);
+      });
+      if (setUser) setUser(null);
       setIsMobileMenuOpen(false);
+      router.push('/login');
+      setTimeout(() => {
+        window.location.reload();
+      }, 100);
     } catch (error) {
       console.error('Error signing out:', error);
     } finally {
