@@ -1,15 +1,17 @@
 'use client';
 import React, { useState, useRef } from 'react';
 import { useAuth } from '../../components/AuthProvider';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import ResumeForm from '../../components/resume/ResumeForm';
-import { saveResume } from '../../db/resume';
+import { saveResume, getResumeById } from '../../db/resume';
 import ResumeTopBar from '../../components/resume/ResumeTopBar';
 import ResumePreviewContainer from '../../components/resume/ResumePreviewContainer';
+import { uploadResumeFile } from '../../lib/supabaseClient';
 
 export default function ResumePage() {
   const { user, loading } = useAuth() || {};
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [status, setStatus] = useState<string | null>(null);
   const [previewData, setPreviewData] = useState<any>(null);
   const [selectedTemplate, setSelectedTemplate] = useState('modern');
@@ -17,18 +19,37 @@ export default function ResumePage() {
 
   React.useEffect(() => {
     if (!loading && !user) router.replace('/login');
-  }, [user, loading, router]);
+    const resumeId = searchParams?.get('id');
+    if (!loading && user && resumeId) {
+      (async () => {
+        try {
+          const resume = await getResumeById(resumeId);
+          if (resume && resume.data) {
+            setPreviewData(resume.data);
+          }
+        } catch (err) {
+          setStatus('Failed to load resume for editing.');
+        }
+      })();
+    }
+  }, [user, loading, router, searchParams]);
 
   if (loading) return <div className="p-8">Loading...</div>;
   if (!user) return null;
 
-  const handleSave = async (data: any) => {
+  const handleSave = async (data: any, file?: File | null) => {
     setStatus(null);
     try {
-      await saveResume(user.id, data);
+      let fileUrl;
+      if (file && user) {
+        const ext = file.name.split('.').pop()?.toLowerCase();
+        fileUrl = await uploadResumeFile(user.id, file, ext === 'pdf' ? 'pdf' : ext === 'docx' ? 'docx' : 'json');
+      }
+      await saveResume(user.id, data, 'complete', fileUrl || undefined);
       setStatus('Resume saved!');
     } catch (e: any) {
-      setStatus('Error saving resume: ' + e.message);
+      console.error('Error saving resume:', e, e?.message, e?.details, e?.hint);
+      setStatus('Error saving resume: ' + (e?.message || e?.details || e?.hint || JSON.stringify(e)));
     }
   };
 

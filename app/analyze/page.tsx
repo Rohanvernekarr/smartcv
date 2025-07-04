@@ -11,6 +11,7 @@ import StatusMessage from '../../components/analyse/StatusMessage';
 import AnalysisResult from '../../components/analyse/AnalysisResult';
 import FeaturesSection from '../../components/analyse/FeaturesSection';
 import { getUserResumes, saveResume } from '../../db/resume';
+import { uploadResumeFile } from '../../lib/supabaseClient';
 
 // Main Analyze Page Component
 export default function AnalyzePage() {
@@ -22,6 +23,7 @@ export default function AnalyzePage() {
   const [status, setStatus] = useState<string | null>(null);
   const [fileName, setFileName] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
   React.useEffect(() => {
     if (!loading && !user) router.replace('/login');
@@ -51,6 +53,7 @@ export default function AnalyzePage() {
     if (!file) return;
     
     setFileName(file.name);
+    setUploadedFile(file);
     setStatus('Reading file...');
     
     try {
@@ -113,6 +116,16 @@ export default function AnalyzePage() {
     setResult(null);
     
     try {
+      // Upload file to Supabase Storage if available
+      let fileUrl = null;
+      if (uploadedFile && user) {
+        try {
+          const ext = uploadedFile.name.split('.').pop()?.toLowerCase();
+          fileUrl = await uploadResumeFile(user.id, uploadedFile, ext === 'pdf' ? 'pdf' : ext === 'docx' ? 'docx' : 'json');
+        } catch (err) {
+          console.error('Failed to upload resume file:', err);
+        }
+      }
       const aiResult = await analyzeResume({ 
         resume: resumeText, 
         jobDescription 
@@ -131,10 +144,10 @@ export default function AnalyzePage() {
       }
       setResult(parsedResult);
       setStatus(null);
-      // Save resume as complete after analysis
+      // Save resume as complete after analysis, with fileUrl if available
       if (user) {
         try {
-          await saveResume(user.id, resumeText, 'complete');
+          await saveResume(user.id, resumeText, 'complete', fileUrl || undefined);
         } catch (err) {
           console.error('Failed to save analyzed resume:', err);
         }

@@ -4,7 +4,7 @@ import { Upload, Plus, X, Save, User, Briefcase, GraduationCap, Award, Languages
 const emptyExperience = { company: '', role: '', start: '', end: '', description: '' };
 const emptyEducation = { school: '', degree: '', start: '', end: '', description: '' };
 
-export default function ResumeForm({ onSave, onChange }: { onSave?: (data: any) => void, onChange?: (data: any) => void }) {
+export default function ResumeForm({ onSave, onChange }: { onSave?: (data: any, file?: File | null) => void, onChange?: (data: any) => void }) {
   const [form, setForm] = useState({
     fullName: '',
     title: '',
@@ -20,6 +20,7 @@ export default function ResumeForm({ onSave, onChange }: { onSave?: (data: any) 
   });
   const [activeSection, setActiveSection] = useState('personal');
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const updated = { ...form, [e.target.name]: e.target.value };
@@ -50,11 +51,14 @@ export default function ResumeForm({ onSave, onChange }: { onSave?: (data: any) 
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSave?.(form);
+    onSave?.(form, uploadedFile);
   };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    alert('Resume upload coming soon!');
+    const file = e.target.files?.[0];
+    if (file) {
+      setUploadedFile(file);
+    }
   };
 
   const sections = [
