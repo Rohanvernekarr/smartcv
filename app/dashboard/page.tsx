@@ -1,46 +1,29 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import DashboardHeader from '../../components/dashboard/DashboardHeader';
 import StatsCards from '../../components/dashboard/StatsCards';
 import ResumeCard from '../../components/dashboard/ResumeCard';
 import { useRouter } from 'next/navigation';
-import { getUserResumes } from '../../db/resume';
+import { deleteResume } from '../../db/resume';
 import { useAuth } from '../../components/AuthProvider';
+import { deleteResumeFile } from '../../lib/supabaseClient';
+import { useResumes } from '../../components/ResumeProvider';
 
 export default function DashboardPage() {
   const { user } = useAuth() || {};
-  const [resumes, setResumes] = useState<any[]>([]);
+  const { resumes, setResumes, isLoading: isLoadingResumes, fetchResumes } = useResumes();
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState<'lastModified' | 'created' | 'title'>('lastModified');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [isLoadingResumes, setIsLoadingResumes] = useState(false);
   const router = useRouter();
-
-  // Fetch real resumes for the user
-  useEffect(() => {
-    if (!user || !user.id) return;
-    const fetchResumes = async () => {
-      try {
-        setIsLoadingResumes(true);
-        const data = await getUserResumes(user.id);
-        console.log('Fetched resumes:', data);
-        setResumes(data || []);
-      } catch (error) {
-        console.error('Failed to fetch resumes:', error);
-      } finally {
-        setIsLoadingResumes(false);
-      }
-    };
-    fetchResumes();
-  }, [user]);
 
   // Filter and sort resumes
   const filteredAndSortedResumes = resumes
-    .filter(resume => 
+    .filter((resume: any) => 
       (resume.data?.title || '').toLowerCase().includes(searchTerm.toLowerCase())
     )
-    .sort((a, b) => {
+    .sort((a: any, b: any) => {
       switch (sortBy) {
         case 'title':
           return (a.data?.title || '').localeCompare(b.data?.title || '');
@@ -63,16 +46,27 @@ export default function DashboardPage() {
   const handleDeleteResume = async (resumeId: string) => {
     if (window.confirm('Are you sure you want to delete this resume?')) {
       try {
-        setResumes(prev => prev.filter(resume => resume.id !== resumeId));
+        // Find the resume to get its file_url
+        const resumeToDelete = resumes.find((resume: any) => resume.id === resumeId);
+        if (resumeToDelete && typeof resumeToDelete.file_url === 'string' && resumeToDelete.file_url) {
+          try {
+            await deleteResumeFile(resumeToDelete.file_url);
+          } catch (fileErr) {
+            console.error('Failed to delete resume file from storage:', fileErr);
+          }
+        }
+        await deleteResume(resumeId);
+        setResumes((prev: any[]) => prev.filter((resume: any) => resume.id !== resumeId));
       } catch (error) {
         console.error('Failed to delete resume:', error);
+        alert('Failed to delete resume. Please try again.');
       }
     }
   };
 
   const handleDuplicateResume = async (resumeId: string) => {
     try {
-      const resumeToDuplicate = resumes.find(r => r.id === resumeId);
+      const resumeToDuplicate = resumes.find((r: any) => r.id === resumeId);
       if (resumeToDuplicate) {
         const duplicatedResume: any = {
           ...resumeToDuplicate,
@@ -82,7 +76,7 @@ export default function DashboardPage() {
           updatedAt: new Date(),
           status: 'draft'
         };
-        setResumes(prev => [duplicatedResume, ...prev]);
+        setResumes((prev: any[]) => [duplicatedResume, ...prev]);
       }
     } catch (error) {
       console.error('Failed to duplicate resume:', error);
@@ -174,7 +168,7 @@ export default function DashboardPage() {
           </div>
         ) : (
           <div className={`grid gap-6 ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' : 'grid-cols-1'}`}>
-            {filteredAndSortedResumes.map((resume) => (
+            {filteredAndSortedResumes.map((resume: any) => (
               <ResumeCard
                 key={resume.id}
                 resume={{

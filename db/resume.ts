@@ -52,4 +52,14 @@ export async function saveResumeFileUrl(resumeId: string, fileUrl: string) {
     .eq('id', resumeId);
   if (error) throw error;
   return data;
+}
+
+// Delete a resume by id
+export async function deleteResume(resumeId: string) {
+  const { error } = await supabase
+    .from('resumes')
+    .delete()
+    .eq('id', resumeId);
+  if (error) throw error;
+  return true;
 } 

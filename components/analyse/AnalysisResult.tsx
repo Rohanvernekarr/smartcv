@@ -4,9 +4,10 @@ import DownloadPDFButton from '../DownloadPDFButton';
 interface AnalysisResultProps {
   result: any;
   isLoading: boolean;
+  onAnalyzeAnother?: () => void;
 }
 
-const AnalysisResult = ({ result, isLoading }: AnalysisResultProps) => {
+const AnalysisResult = ({ result, isLoading, onAnalyzeAnother }: AnalysisResultProps) => {
   const pdfRef = useRef<HTMLDivElement>(null);
 
   if (isLoading) {
@@ -205,7 +206,10 @@ const AnalysisResult = ({ result, isLoading }: AnalysisResultProps) => {
       {/* Action Buttons */}
       <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-200">
         <DownloadPDFButton previewRef={pdfRef} fileName="analysis-report.pdf" />
-        <button className="flex-1 border border-gray-300 text-gray-700 px-6 py-3 rounded-xl hover:bg-gray-50 transition-colors font-semibold">
+        <button 
+          className="flex-1 border border-gray-300 text-gray-700 px-6 py-3 rounded-xl hover:bg-gray-50 transition-colors font-semibold"
+          onClick={onAnalyzeAnother}
+        >
           Analyze Another Resume
         </button>
       </div>

@@ -26,4 +26,11 @@ export async function downloadResumeFile(path: string) {
   const { data, error } = await supabase.storage.from('resumes').download(path);
   if (error) throw error;
   return data;
+}
+
+// Delete a file from the 'resumes' storage bucket
+export async function deleteResumeFile(path: string) {
+  const { error } = await supabase.storage.from('resumes').remove([path]);
+  if (error) throw error;
+  return true;
 } 
