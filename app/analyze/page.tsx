@@ -245,10 +245,9 @@ export default function AnalyzePage() {
         {/* Header */}
         <AnalyzeHeader />
 
-        {/* Main Content */}
         <div className="bg-white rounded-3xl shadow-xl border border-gray-200 overflow-hidden">
           <div className="p-8 space-y-8">
-            {/* File Upload Section */}
+         
             <FileUploadSection
               resumeText={resumeText}
               fileName={fileName}
@@ -257,7 +256,7 @@ export default function AnalyzePage() {
               status={status}
             />
 
-            {/* Job Description Input */}
+           
             <JobDescriptionForm
               jobDescription={jobDescription}
               onJobDescriptionChange={handleJobDescriptionChange}
@@ -267,7 +266,11 @@ export default function AnalyzePage() {
             <div className="flex justify-center gap-4">
               <AnalyzeButton
                 isAnalyzing={isAnalyzing}
-                isDisabled={isAnalyzing || !resumeText.trim() || !jobDescription.trim()}
+                isDisabled={
+                  isAnalyzing ||
+                  !(typeof resumeText === 'string' && resumeText.trim()) ||
+                  !(typeof jobDescription === 'string' && jobDescription.trim())
+                }
                 onClick={handleAnalyze}
               />
               {isAnalyzing && (
@@ -281,17 +284,16 @@ export default function AnalyzePage() {
               )}
             </div>
 
-            {/* Status Message */}
+            
             <StatusMessage status={status} isAnalyzing={isAnalyzing} />
           </div>
 
-          {/* Results Section */}
           <div className="border-t border-gray-200 p-8 min-h-[200px]">
             <AnalysisResult result={result} isLoading={isAnalyzing} />
           </div>
         </div>
 
-        {/* Features Section */}
+        
         {!result && !isAnalyzing && <FeaturesSection />}
       </div>
     </div>

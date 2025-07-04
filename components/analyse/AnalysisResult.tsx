@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import DownloadPDFButton from '../DownloadPDFButton';
 
 interface AnalysisResultProps {
   result: any;
@@ -6,6 +7,8 @@ interface AnalysisResultProps {
 }
 
 const AnalysisResult = ({ result, isLoading }: AnalysisResultProps) => {
+  const pdfRef = useRef<HTMLDivElement>(null);
+
   if (isLoading) {
     return (
       <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-8 border border-blue-200">
@@ -185,11 +188,23 @@ const AnalysisResult = ({ result, isLoading }: AnalysisResultProps) => {
         </div>
       )}
 
+      {/* PDF Hidden Content for Download */}
+      <div ref={pdfRef} style={{ display: 'none' }}>
+        <h2>Resume Analysis Report</h2>
+        <p>Overall Score: {overallScore}/100</p>
+        <p>Keyword Match: {keywordMatch}%</p>
+        <h3>Strengths</h3>
+        <ul>{strengths.map((s: string, i: number) => <li key={i}>{s}</li>)}</ul>
+        <h3>Areas to Improve</h3>
+        <ul>{weaknesses.map((w: string, i: number) => <li key={i}>{w}</li>)}</ul>
+        <h3>AI Recommendations</h3>
+        <ul>{suggestions.map((s: string, i: number) => <li key={i}>{s}</li>)}</ul>
+        {rawFeedback && <><h3>AI Feedback</h3><p>{rawFeedback}</p></>}
+      </div>
+
       {/* Action Buttons */}
       <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-200">
-        <button className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition-colors font-semibold">
-          Download Analysis Report
-        </button>
+        <DownloadPDFButton previewRef={pdfRef} fileName="analysis-report.pdf" />
         <button className="flex-1 border border-gray-300 text-gray-700 px-6 py-3 rounded-xl hover:bg-gray-50 transition-colors font-semibold">
           Analyze Another Resume
         </button>

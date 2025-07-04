@@ -8,6 +8,10 @@ interface Resume {
   template: string;
   status: 'complete' | 'draft';
   file_url?: string;
+  data?: {
+    fullName?: string;
+    title?: string;
+  };
 }
 
 interface ResumeCardProps {
@@ -44,13 +48,29 @@ export default function ResumeCard({ resume, onEdit, onDelete, onDuplicate, form
         <div className="flex items-start justify-between mb-4">
           <div className="flex-1 min-w-0">
             <h3 className="text-lg font-semibold text-gray-900 truncate mb-1">
-              {resume.title}
+              {resume.data?.fullName || resume.title}
             </h3>
+            <p className="text-sm text-gray-700">
+              {resume.data?.title || ''}
+            </p>
             <p className="text-sm text-gray-500">
               Last modified: {formatDate(resume.lastModified)}
             </p>
           </div>
         </div>
+
+        {/* Download Button if file_url exists */}
+        {resume.file_url && (
+          <a
+            href={resume.file_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-green-700 mb-4"
+            download
+          >
+            Download File
+          </a>
+        )}
 
         {/* Action Buttons */}
         <div className="flex items-center gap-2 mt-6">

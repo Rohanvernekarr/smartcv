@@ -61,10 +61,21 @@ export default function ResumePreview({ data, template = 'modern' }: ResumePrevi
 
         {/* Grid: Projects, Skills, Certifications, etc. */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-          {data.projects && (
+          {Array.isArray(data.projects) && data.projects.length > 0 && (
             <div>
               <h3 className="font-bold text-gray-800 mb-1 uppercase text-xs tracking-wider">Projects</h3>
-              <p className="text-gray-700 text-sm whitespace-pre-line">{data.projects}</p>
+              <div className="space-y-3">
+                {data.projects.map((proj: any, i: number) => (
+                  <div key={i}>
+                    <div className="flex justify-between items-center">
+                      <span className="font-semibold text-gray-900">{proj.name}</span>
+                      <span className="text-sm text-gray-500">{proj.start} - {proj.end}</span>
+                    </div>
+                    <div className="text-gray-700 font-medium">{proj.role}</div>
+                    <p className="text-gray-600 text-sm mt-1">{proj.description}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
           {data.skills && (

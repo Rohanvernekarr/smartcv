@@ -21,7 +21,7 @@ export default function DashboardHeader({ userEmail, onCreateResume }: Dashboard
               </div>
               <div>
                 <h1 className="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
-                  Welcome, {userEmail.split('@')[0]}
+                  Welcome, {userEmail ? userEmail.split('@')[0] : 'User'}
                 </h1>
                 <p className="text-gray-600 text-lg">
                   Build your career with professional resumes

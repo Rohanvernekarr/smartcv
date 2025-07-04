@@ -3,6 +3,7 @@ import { Upload, Plus, X, Save, User, Briefcase, GraduationCap, Award, Languages
 
 const emptyExperience = { company: '', role: '', start: '', end: '', description: '' };
 const emptyEducation = { school: '', degree: '', start: '', end: '', description: '' };
+const emptyProject = { name: '', role: '', start: '', end: '', description: '' };
 
 export default function ResumeForm({ onSave, onChange }: { onSave?: (data: any, file?: File | null) => void, onChange?: (data: any) => void }) {
   const [form, setForm] = useState({
@@ -11,9 +12,9 @@ export default function ResumeForm({ onSave, onChange }: { onSave?: (data: any, 
     summary: '',
     experience: [emptyExperience],
     education: [emptyEducation],
+    projects: [emptyProject],
     skills: '',
     certifications: '',
-    projects: '',
     awards: '',
     languages: '',
     social: '',
@@ -22,13 +23,30 @@ export default function ResumeForm({ onSave, onChange }: { onSave?: (data: any, 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
+  // Restore form state from localStorage on mount
+  React.useEffect(() => {
+    const savedForm = localStorage.getItem('resume_form_state');
+    if (savedForm) {
+      try {
+        const parsed = JSON.parse(savedForm);
+        setForm(parsed);
+        onChange?.(parsed);
+      } catch {}
+    }
+  }, []);
+
+  // Persist form state to localStorage whenever it changes
+  React.useEffect(() => {
+    localStorage.setItem('resume_form_state', JSON.stringify(form));
+  }, [form]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const updated = { ...form, [e.target.name]: e.target.value };
     setForm(updated);
     onChange?.(updated);
   };
 
-  const handleArrayChange = (section: 'experience' | 'education', idx: number, field: string, value: string) => {
+  const handleArrayChange = (section: 'experience' | 'education' | 'projects', idx: number, field: string, value: string) => {
     const updated = {
       ...form,
       [section]: form[section].map((item: any, i: number) => i === idx ? { ...item, [field]: value } : item),
@@ -37,13 +55,13 @@ export default function ResumeForm({ onSave, onChange }: { onSave?: (data: any, 
     onChange?.(updated);
   };
 
-  const addArrayItem = (section: 'experience' | 'education', empty: any) => {
+  const addArrayItem = (section: 'experience' | 'education' | 'projects', empty: any) => {
     const updated = { ...form, [section]: [...form[section], empty] };
     setForm(updated);
     onChange?.(updated);
   };
 
-  const removeArrayItem = (section: 'experience' | 'education', idx: number) => {
+  const removeArrayItem = (section: 'experience' | 'education' | 'projects', idx: number) => {
     const updated = { ...form, [section]: form[section].filter((_: any, i: number) => i !== idx) };
     setForm(updated);
     onChange?.(updated);
@@ -59,6 +77,37 @@ export default function ResumeForm({ onSave, onChange }: { onSave?: (data: any, 
     if (file) {
       setUploadedFile(file);
     }
+  };
+
+  const handleClearAll = () => {
+    setForm({
+      fullName: '',
+      title: '',
+      summary: '',
+      experience: [emptyExperience],
+      education: [emptyEducation],
+      projects: [emptyProject],
+      skills: '',
+      certifications: '',
+      awards: '',
+      languages: '',
+      social: '',
+    });
+    setUploadedFile(null);
+    localStorage.removeItem('resume_form_state');
+    onChange?.({
+      fullName: '',
+      title: '',
+      summary: '',
+      experience: [emptyExperience],
+      education: [emptyEducation],
+      projects: [emptyProject],
+      skills: '',
+      certifications: '',
+      awards: '',
+      languages: '',
+      social: '',
+    });
   };
 
   const sections = [
@@ -241,13 +290,13 @@ export default function ResumeForm({ onSave, onChange }: { onSave?: (data: any, 
           </div>
         )}
 
-{activeSection === 'project' && (
+        {activeSection === 'project' && (
           <div className="space-y-6">
             <div className="flex items-center justify-between">
               <h3 className="text-xl font-semibold text-gray-900">Projects</h3>
               <button
                 type="button"
-                onClick={() => addArrayItem('education', emptyEducation)}
+                onClick={() => addArrayItem('projects', emptyProject)}
                 className="flex items-center gap-2 px-4 py-2 text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors"
               >
                 <Plus size={16} />
@@ -255,13 +304,13 @@ export default function ResumeForm({ onSave, onChange }: { onSave?: (data: any, 
               </button>
             </div>
             <div className="space-y-6">
-              {form.education.map((edu, idx) => (
+              {form.projects.map((proj, idx) => (
                 <div key={idx} className="p-6 bg-gray-50 rounded-xl border border-gray-100 relative">
-                  {form.education.length > 1 && (
+                  {form.projects.length > 1 && (
                     <button
                       title='label'
                       type="button"
-                      onClick={() => removeArrayItem('education', idx)}
+                      onClick={() => removeArrayItem('projects', idx)}
                       className="absolute top-4 right-4 p-1 text-gray-400 hover:text-red-500 transition-colors"
                     >
                       <X size={16} />
@@ -269,28 +318,28 @@ export default function ResumeForm({ onSave, onChange }: { onSave?: (data: any, 
                   )}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     <div className="space-y-2">
-                      <label className="text-sm font-medium text-gray-700">School/University</label>
+                      <label className="text-sm font-medium text-gray-700">Project Name</label>
                       <input
-                        value={edu.school}
-                        onChange={e => handleArrayChange('education', idx, 'school', e.target.value)}
+                        value={proj.name}
+                        onChange={e => handleArrayChange('projects', idx, 'name', e.target.value)}
                         className="w-full px-3 py-2 border border-gray-200 text-gray-700  rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="Institution name"
+                        placeholder="Project name"
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-sm font-medium text-gray-700">Degree</label>
+                      <label className="text-sm font-medium text-gray-700">Role</label>
                       <input
-                        value={edu.degree}
-                        onChange={e => handleArrayChange('education', idx, 'degree', e.target.value)}
+                        value={proj.role}
+                        onChange={e => handleArrayChange('projects', idx, 'role', e.target.value)}
                         className="w-full px-3 py-2 border border-gray-200 text-gray-700  rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="Degree and field of study"
+                        placeholder="Your role in the project"
                       />
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-gray-700">Start Date</label>
                       <input
-                        value={edu.start}
-                        onChange={e => handleArrayChange('education', idx, 'start', e.target.value)}
+                        value={proj.start}
+                        onChange={e => handleArrayChange('projects', idx, 'start', e.target.value)}
                         className="w-full px-3 py-2 border border-gray-200 text-gray-700  rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         placeholder="MM/YYYY"
                       />
@@ -298,21 +347,21 @@ export default function ResumeForm({ onSave, onChange }: { onSave?: (data: any, 
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-gray-700">End Date</label>
                       <input
-                        value={edu.end}
-                        onChange={e => handleArrayChange('education', idx, 'end', e.target.value)}
+                        value={proj.end}
+                        onChange={e => handleArrayChange('projects', idx, 'end', e.target.value)}
                         className="w-full px-3 py-2 border border-gray-200 text-gray-700  rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="MM/YYYY or Expected"
+                        placeholder="MM/YYYY or Present"
                       />
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700">Description (Optional)</label>
+                    <label className="text-sm font-medium text-gray-700">Description</label>
                     <textarea
-                      value={edu.description}
-                      onChange={e => handleArrayChange('education', idx, 'description', e.target.value)}
-                      rows={2}
+                      value={proj.description}
+                      onChange={e => handleArrayChange('projects', idx, 'description', e.target.value)}
+                      rows={3}
                       className="w-full px-3 py-2 border border-gray-200 text-gray-700  rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-                      placeholder="Relevant coursework, achievements, GPA..."
+                      placeholder="Describe the project, your contributions, and outcomes..."
                     />
                   </div>
                 </div>
@@ -475,8 +524,16 @@ export default function ResumeForm({ onSave, onChange }: { onSave?: (data: any, 
         {/* Save Button */}
         <div className="flex justify-end pt-6 border-t border-gray-200">
           <button
+            type="button"
+            onClick={handleClearAll}
+            className="flex items-center gap-2 px-6 py-3 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors font-medium shadow-sm"
+          >
+            <X size={18} />
+            Clear All
+          </button>
+          <button
             type="submit"
-            className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium shadow-sm"
+            className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium shadow-sm ml-4"
           >
             <Save size={18} />
             Save Resume

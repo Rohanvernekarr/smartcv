@@ -5,52 +5,27 @@ import DashboardHeader from '../../components/dashboard/DashboardHeader';
 import StatsCards from '../../components/dashboard/StatsCards';
 import ResumeCard from '../../components/dashboard/ResumeCard';
 import { useRouter } from 'next/navigation';
-
-interface Resume {
-  id: string;
-  title: string;
-  lastModified: Date;
-  createdAt: Date;
-  template: string;
-  status: 'complete' | 'draft';
-  file_url?: string;
-}
+import { getUserResumes } from '../../db/resume';
+import { useAuth } from '../../components/AuthProvider';
 
 export default function DashboardPage() {
-  const [user] = useState({ email: 'john.doe@example.com' }); // Mock user
-  const [resumes, setResumes] = useState<Resume[]>([]);
+  const { user } = useAuth() || {};
+  const [resumes, setResumes] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState<'lastModified' | 'created' | 'title'>('lastModified');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [isLoadingResumes, setIsLoadingResumes] = useState(false);
   const router = useRouter();
 
-  // Initialize mock data
+  // Fetch real resumes for the user
   useEffect(() => {
+    if (!user || !user.id) return;
     const fetchResumes = async () => {
-      if (!user || !('id' in user)) return;
       try {
         setIsLoadingResumes(true);
-        // Mock data for demonstration
-        const mockResumes: Resume[] = [
-          {
-            id: '1',
-            title: 'Software Engineer Resume',
-            lastModified: new Date('2024-01-15'),
-            createdAt: new Date('2024-01-10'),
-            template: 'Modern',
-            status: 'complete'
-          },
-          {
-            id: '2',
-            title: 'Frontend Developer CV',
-            lastModified: new Date('2024-01-20'),
-            createdAt: new Date('2024-01-18'),
-            template: 'Clean',
-            status: 'draft'
-          }
-        ];
-        setResumes(mockResumes);
+        const data = await getUserResumes(user.id);
+        console.log('Fetched resumes:', data);
+        setResumes(data || []);
       } catch (error) {
         console.error('Failed to fetch resumes:', error);
       } finally {
@@ -63,17 +38,17 @@ export default function DashboardPage() {
   // Filter and sort resumes
   const filteredAndSortedResumes = resumes
     .filter(resume => 
-      resume.title.toLowerCase().includes(searchTerm.toLowerCase())
+      (resume.data?.title || '').toLowerCase().includes(searchTerm.toLowerCase())
     )
     .sort((a, b) => {
       switch (sortBy) {
         case 'title':
-          return a.title.localeCompare(b.title);
+          return (a.data?.title || '').localeCompare(b.data?.title || '');
         case 'created':
-          return b.createdAt.getTime() - a.createdAt.getTime();
+          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
         case 'lastModified':
         default:
-          return b.lastModified.getTime() - a.lastModified.getTime();
+          return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
       }
     });
 
@@ -82,7 +57,7 @@ export default function DashboardPage() {
   };
 
   const handleEditResume = (resumeId: string) => {
-    console.log('Edit resume:', resumeId);
+    router.push(`/resume?id=${resumeId}`);
   };
 
   const handleDeleteResume = async (resumeId: string) => {
@@ -99,12 +74,12 @@ export default function DashboardPage() {
     try {
       const resumeToDuplicate = resumes.find(r => r.id === resumeId);
       if (resumeToDuplicate) {
-        const duplicatedResume: Resume = {
+        const duplicatedResume: any = {
           ...resumeToDuplicate,
           id: Date.now().toString(),
-          title: `${resumeToDuplicate.title} (Copy)`,
+          title: `${resumeToDuplicate.data?.title} (Copy)`,
           createdAt: new Date(),
-          lastModified: new Date(),
+          updatedAt: new Date(),
           status: 'draft'
         };
         setResumes(prev => [duplicatedResume, ...prev]);
@@ -124,7 +99,7 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen w-full">
-      <DashboardHeader userEmail={user.email} onCreateResume={handleCreateResume} />
+      <DashboardHeader userEmail={user?.email} onCreateResume={handleCreateResume} />
 
       {/* Main Content - Full Width */}
       <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-8">
@@ -202,7 +177,15 @@ export default function DashboardPage() {
             {filteredAndSortedResumes.map((resume) => (
               <ResumeCard
                 key={resume.id}
-                resume={resume}
+                resume={{
+                  id: resume.id,
+                  title: resume.data?.title || 'Untitled',
+                  lastModified: new Date(resume.updated_at),
+                  createdAt: new Date(resume.created_at),
+                  template: resume.data?.template || 'Modern',
+                  status: resume.status,
+                  file_url: resume.file_url
+                }}
                 onEdit={handleEditResume}
                 onDelete={handleDeleteResume}
                 onDuplicate={handleDuplicateResume}
