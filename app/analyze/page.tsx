@@ -45,6 +45,54 @@ export default function AnalyzePage() {
     }
   }, [user, loading, router]);
 
+  // Restore analysis state from localStorage on mount
+  React.useEffect(() => {
+    const savedResume = localStorage.getItem('analyze_resumeText');
+    const savedJobDesc = localStorage.getItem('analyze_jobDescription');
+    const savedIsAnalyzing = localStorage.getItem('analyze_isAnalyzing');
+    const savedResult = localStorage.getItem('analyze_result');
+    const savedStatus = localStorage.getItem('analyze_status');
+    const savedFileName = localStorage.getItem('analyze_fileName');
+    if (savedResume) setResumeText(savedResume);
+    if (savedJobDesc) setJobDescription(savedJobDesc);
+    if (savedIsAnalyzing === 'true') setIsAnalyzing(true);
+    if (savedResult) setResult(JSON.parse(savedResult));
+    if (savedStatus) setStatus(savedStatus);
+    if (savedFileName) setFileName(savedFileName);
+  }, []);
+
+  // Persist state to localStorage whenever it changes
+  React.useEffect(() => {
+    localStorage.setItem('analyze_resumeText', resumeText);
+  }, [resumeText]);
+  React.useEffect(() => {
+    localStorage.setItem('analyze_jobDescription', jobDescription);
+  }, [jobDescription]);
+  React.useEffect(() => {
+    localStorage.setItem('analyze_isAnalyzing', isAnalyzing ? 'true' : 'false');
+  }, [isAnalyzing]);
+  React.useEffect(() => {
+    if (result) {
+      localStorage.setItem('analyze_result', JSON.stringify(result));
+    } else {
+      localStorage.removeItem('analyze_result');
+    }
+  }, [result]);
+  React.useEffect(() => {
+    if (status) {
+      localStorage.setItem('analyze_status', status);
+    } else {
+      localStorage.removeItem('analyze_status');
+    }
+  }, [status]);
+  React.useEffect(() => {
+    if (fileName) {
+      localStorage.setItem('analyze_fileName', fileName);
+    } else {
+      localStorage.removeItem('analyze_fileName');
+    }
+  }, [fileName]);
+
   if (loading) return <div className="p-8">Loading...</div>;
   if (!user) return null;
 
@@ -86,8 +134,8 @@ export default function AnalyzePage() {
       if (user) {
         try {
           await saveResume(user.id, text, 'draft');
-        } catch (err) {
-          console.error('Failed to save resume draft:', err);
+        } catch (err: any) {
+          console.error('Failed to save resume draft:', err, err?.message, err?.details, err?.hint);
         }
       }
     } catch (err) {
@@ -114,6 +162,10 @@ export default function AnalyzePage() {
     setIsAnalyzing(true);
     setStatus('Analyzing with AI...');
     setResult(null);
+    // Save analysis state to localStorage
+    localStorage.setItem('analyze_resumeText', resumeText);
+    localStorage.setItem('analyze_jobDescription', jobDescription);
+    localStorage.setItem('analyze_isAnalyzing', 'true');
     
     try {
       // Upload file to Supabase Storage if available
@@ -122,8 +174,8 @@ export default function AnalyzePage() {
         try {
           const ext = uploadedFile.name.split('.').pop()?.toLowerCase();
           fileUrl = await uploadResumeFile(user.id, uploadedFile, ext === 'pdf' ? 'pdf' : ext === 'docx' ? 'docx' : 'json');
-        } catch (err) {
-          console.error('Failed to upload resume file:', err);
+        } catch (err: any) {
+          console.error('Failed to upload resume file:', err, err?.message, err?.details, err?.hint);
         }
       }
       const aiResult = await analyzeResume({ 
@@ -152,12 +204,39 @@ export default function AnalyzePage() {
           console.error('Failed to save analyzed resume:', err);
         }
       }
+      // Clear analysis state from localStorage
+      localStorage.removeItem('analyze_resumeText');
+      localStorage.removeItem('analyze_jobDescription');
+      localStorage.removeItem('analyze_isAnalyzing');
     } catch (err) {
       setStatus('Analysis failed. Please try again.');
       console.error('Analysis error:', err);
+      // Clear analysis state from localStorage on error
+      localStorage.removeItem('analyze_resumeText');
+      localStorage.removeItem('analyze_jobDescription');
+      localStorage.removeItem('analyze_isAnalyzing');
     } finally {
       setIsAnalyzing(false);
     }
+  };
+
+  const clearAnalysisState = () => {
+    setResumeText('');
+    setJobDescription('');
+    setIsAnalyzing(false);
+    setResult(null);
+    setStatus(null);
+    setFileName('');
+    localStorage.removeItem('analyze_resumeText');
+    localStorage.removeItem('analyze_jobDescription');
+    localStorage.removeItem('analyze_isAnalyzing');
+    localStorage.removeItem('analyze_result');
+    localStorage.removeItem('analyze_status');
+    localStorage.removeItem('analyze_fileName');
+  };
+
+  const handleCancelAnalyze = () => {
+    clearAnalysisState();
   };
 
   return (
@@ -184,23 +263,32 @@ export default function AnalyzePage() {
               onJobDescriptionChange={handleJobDescriptionChange}
             />
 
-            {/* Analyze Button */}
-            <AnalyzeButton
-              isAnalyzing={isAnalyzing}
-              isDisabled={isAnalyzing || !resumeText.trim() || !jobDescription.trim()}
-              onClick={handleAnalyze}
-            />
+            {/* Analyze Button and Cancel Button */}
+            <div className="flex justify-center gap-4">
+              <AnalyzeButton
+                isAnalyzing={isAnalyzing}
+                isDisabled={isAnalyzing || !resumeText.trim() || !jobDescription.trim()}
+                onClick={handleAnalyze}
+              />
+              {isAnalyzing && (
+                <button
+                  type="button"
+                  onClick={handleCancelAnalyze}
+                  className="px-6 py-3 bg-gray-200 text-gray-700 rounded-xl font-semibold hover:bg-gray-300 transition-all duration-300"
+                >
+                  Cancel
+                </button>
+              )}
+            </div>
 
             {/* Status Message */}
             <StatusMessage status={status} isAnalyzing={isAnalyzing} />
           </div>
 
           {/* Results Section */}
-          {(result || isAnalyzing) && (
-            <div className="border-t border-gray-200 p-8">
-              <AnalysisResult result={result} isLoading={isAnalyzing} />
-            </div>
-          )}
+          <div className="border-t border-gray-200 p-8 min-h-[200px]">
+            <AnalysisResult result={result} isLoading={isAnalyzing} />
+          </div>
         </div>
 
         {/* Features Section */}
