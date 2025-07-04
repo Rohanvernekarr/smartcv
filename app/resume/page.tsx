@@ -70,7 +70,7 @@ export default function ResumePage() {
         previewRef={previewRef}
       />
 
-      {/* Main Content: Form & Preview */}
+      
       <div className="flex-1 flex flex-col lg:flex-row w-full max-w-[1800px] mx-auto gap-0 mt-6">
         {/* Left: Resume Form */}
         <div className="w-full lg:w-1/2 h-full overflow-y-auto p-4 bg-blue-50 border-r border-gray-100 flex flex-col">
@@ -81,7 +81,7 @@ export default function ResumePage() {
           </div>
         </div>
 
-        {/* Right: Live Preview */}
+        
         <ResumePreviewContainer 
           previewData={previewData}
           selectedTemplate={selectedTemplate}
