@@ -63,7 +63,7 @@ export default function ResumePreview({ data, template = 'modern' }: ResumePrevi
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
           {Array.isArray(data.projects) && data.projects.length > 0 && (
             <div>
-              <h3 className="font-bold text-gray-800 mb-1 uppercase text-xs tracking-wider">Projects</h3>
+              <h2 className="text-xl font-bold text-gray-800 border-b pb-1 mb-3 uppercase tracking-wide">Projects</h2>
               <div className="space-y-3">
                 {data.projects.map((proj: any, i: number) => (
                   <div key={i}>
