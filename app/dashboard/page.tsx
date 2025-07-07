@@ -21,7 +21,10 @@ export default function DashboardPage() {
   // Filter and sort resumes
   const filteredAndSortedResumes = resumes
     .filter((resume: any) => 
-      (resume.data?.title || '').toLowerCase().includes(searchTerm.toLowerCase())
+      typeof resume.data === 'object' &&
+      resume.data !== null &&
+      typeof resume.data.title === 'string' &&
+      resume.data.title.toLowerCase().includes(searchTerm.toLowerCase())
     )
     .sort((a: any, b: any) => {
       switch (sortBy) {
@@ -149,6 +152,8 @@ export default function DashboardPage() {
           </div>
         </div>
 
+        {/* Debug: Show resumes array */}
+       
         {/* Resumes Grid */}
         {isLoadingResumes ? (
           <div className="text-center py-12">
