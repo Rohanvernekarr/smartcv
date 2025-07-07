@@ -131,13 +131,13 @@ export default function AnalyzePage() {
       setResumeText(text);
       setStatus(null);
       // Save resume as draft after upload
-      if (user) {
-        try {
-          await saveResume(user.id, text, 'draft');
-        } catch (err: any) {
-          console.error('Failed to save resume draft:', err, err?.message, err?.details, err?.hint);
-        }
-      }
+      // if (user) {
+      //   try {
+      //     await saveResume(user.id, text, 'draft');
+      //   } catch (err: any) {
+      //     console.error('Failed to save resume draft:', err, err?.message, err?.details, err?.hint);
+      //   }
+      // }
     } catch (err) {
       setStatus('Could not extract text. Please paste your resume text.');
       console.error('File extraction error:', err);
@@ -197,13 +197,13 @@ export default function AnalyzePage() {
       setResult(parsedResult);
       setStatus(null);
       // Save resume as complete after analysis, with fileUrl if available
-      if (user) {
-        try {
-          await saveResume(user.id, resumeText, 'complete', fileUrl || undefined);
-        } catch (err) {
-          console.error('Failed to save analyzed resume:', err);
-        }
-      }
+      // if (user) {
+      //   try {
+      //     await saveResume(user.id, resumeText, 'complete', fileUrl || undefined);
+      //   } catch (err) {
+      //     console.error('Failed to save analyzed resume:', err);
+      //   }
+      // }
       // Clear analysis state from localStorage
       localStorage.removeItem('analyze_resumeText');
       localStorage.removeItem('analyze_jobDescription');

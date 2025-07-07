@@ -190,17 +190,21 @@ const AnalysisResult = ({ result, isLoading, onAnalyzeAnother }: AnalysisResultP
       )}
 
       {/* PDF Hidden Content for Download */}
-      <div ref={pdfRef} style={{ display: 'none' }}>
-        <h2>Resume Analysis Report</h2>
-        <p>Overall Score: {overallScore}/100</p>
-        <p>Keyword Match: {keywordMatch}%</p>
-        <h3>Strengths</h3>
+      <div ref={pdfRef} style={{ display: 'none', padding: 32, fontFamily: 'sans-serif', color: '#222' }}>
+        <h1 style={{ fontSize: 28, fontWeight: 'bold', marginBottom: 8 }}>Resume Analysis Report</h1>
+        <hr style={{ margin: '12px 0' }} />
+        <h2 style={{ fontSize: 20, fontWeight: 'bold', marginTop: 16 }}>Original Resume Text</h2>
+        <pre style={{ background: '#f4f4f4', padding: 12, borderRadius: 6, fontSize: 13, whiteSpace: 'pre-wrap', marginBottom: 16 }}>{result?.resume || ''}</pre>
+        <h2 style={{ fontSize: 20, fontWeight: 'bold', marginTop: 16 }}>AI Analysis</h2>
+        <p><strong>Overall Score:</strong> {overallScore}/100</p>
+        <p><strong>Keyword Match:</strong> {keywordMatch}%</p>
+        <h3 style={{ fontSize: 16, fontWeight: 'bold', marginTop: 12 }}>Strengths</h3>
         <ul>{strengths.map((s: string, i: number) => <li key={i}>{s}</li>)}</ul>
-        <h3>Areas to Improve</h3>
+        <h3 style={{ fontSize: 16, fontWeight: 'bold', marginTop: 12 }}>Areas to Improve</h3>
         <ul>{weaknesses.map((w: string, i: number) => <li key={i}>{w}</li>)}</ul>
-        <h3>AI Recommendations</h3>
+        <h3 style={{ fontSize: 16, fontWeight: 'bold', marginTop: 12 }}>AI Recommendations</h3>
         <ul>{suggestions.map((s: string, i: number) => <li key={i}>{s}</li>)}</ul>
-        {rawFeedback && <><h3>AI Feedback</h3><p>{rawFeedback}</p></>}
+        {rawFeedback && <><h3 style={{ fontSize: 16, fontWeight: 'bold', marginTop: 12 }}>AI Feedback</h3><p>{rawFeedback}</p></>}
       </div>
 
       {/* Action Buttons */}
