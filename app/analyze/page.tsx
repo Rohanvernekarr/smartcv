@@ -289,7 +289,13 @@ export default function AnalyzePage() {
           </div>
 
           <div className="border-t border-gray-200 p-8 min-h-[200px]">
-            <AnalysisResult result={result} isLoading={isAnalyzing} onAnalyzeAnother={clearAnalysisState} />
+            <AnalysisResult 
+              result={result}
+              isLoading={isAnalyzing}
+              onAnalyzeAnother={clearAnalysisState}
+              resumeText={resumeText}
+              jobDescription={jobDescription}
+            />
           </div>
         </div>
 

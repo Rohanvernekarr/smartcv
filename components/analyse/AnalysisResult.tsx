@@ -5,9 +5,11 @@ interface AnalysisResultProps {
   result: any;
   isLoading: boolean;
   onAnalyzeAnother?: () => void;
+  resumeText?: string;
+  jobDescription?: string;
 }
 
-const AnalysisResult = ({ result, isLoading, onAnalyzeAnother }: AnalysisResultProps) => {
+const AnalysisResult = ({ result, isLoading, onAnalyzeAnother, resumeText, jobDescription }: AnalysisResultProps) => {
   const pdfRef = useRef<HTMLDivElement>(null);
 
   if (isLoading) {
@@ -190,11 +192,30 @@ const AnalysisResult = ({ result, isLoading, onAnalyzeAnother }: AnalysisResultP
       )}
 
       {/* PDF Hidden Content for Download */}
-      <div ref={pdfRef} style={{ display: 'none', padding: 32, fontFamily: 'sans-serif', color: '#222' }}>
+      <div
+        ref={pdfRef}
+        style={{
+          position: 'absolute',
+          left: '-9999px',
+          top: 0,
+          width: '800px',
+          background: '#fff',
+          zIndex: -1,
+          padding: 32,
+          fontFamily: 'sans-serif',
+          color: '#222'
+        }}
+      >
         <h1 style={{ fontSize: 28, fontWeight: 'bold', marginBottom: 8 }}>Resume Analysis Report</h1>
         <hr style={{ margin: '12px 0' }} />
         <h2 style={{ fontSize: 20, fontWeight: 'bold', marginTop: 16 }}>Original Resume Text</h2>
-        <pre style={{ background: '#f4f4f4', padding: 12, borderRadius: 6, fontSize: 13, whiteSpace: 'pre-wrap', marginBottom: 16 }}>{result?.resume || ''}</pre>
+        <pre style={{ background: '#f4f4f4', padding: 12, borderRadius: 6, fontSize: 13, whiteSpace: 'pre-wrap', marginBottom: 16 }}>{resumeText || ''}</pre>
+        {jobDescription && (
+          <>
+            <h2 style={{ fontSize: 20, fontWeight: 'bold', marginTop: 16 }}>Job Description</h2>
+            <pre style={{ background: '#f4f4f4', padding: 12, borderRadius: 6, fontSize: 13, whiteSpace: 'pre-wrap', marginBottom: 16 }}>{jobDescription}</pre>
+          </>
+        )}
         <h2 style={{ fontSize: 20, fontWeight: 'bold', marginTop: 16 }}>AI Analysis</h2>
         <p><strong>Overall Score:</strong> {overallScore}/100</p>
         <p><strong>Keyword Match:</strong> {keywordMatch}%</p>
