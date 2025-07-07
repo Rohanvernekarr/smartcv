@@ -59,9 +59,14 @@ export default function PreviewModal({ template, isOpen, onClose }: PreviewModal
           >
             Close
           </button>
+          <div className="relative group inline-block">
           <button className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
             Use Template
           </button>
+          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-zinc-600 text-white text-sm rounded px-2 py-1 whitespace-nowrap shadow-lg z-10">
+            Coming soon
+          </div>
+        </div>
         </div>
       </div>
     </div>

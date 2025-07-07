@@ -31,15 +31,21 @@ export default function DashboardHeader({ userEmail, onCreateResume, onRefreshRe
             </div>
           </div>
           <div className="flex gap-3">
+          <div className="relative group inline-block">
             <button 
               className="bg-white/70 hover:bg-white/90 backdrop-blur-sm text-gray-700 px-6 py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-3 border border-white/50 hover:border-white/80 shadow-md hover:shadow-lg"
-              onClick={() => fileInputRef.current?.click()}
+              
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" />
               </svg>
               Import Resume
             </button>
+            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-zinc-600 text-white text-sm rounded px-2 py-1 whitespace-nowrap shadow-lg z-10">
+            Coming soon
+          </div>
+          </div>
+
             <button
               onClick={onRefreshResumes}
               className="bg-white/70 hover:bg-white/90 backdrop-blur-sm text-gray-700 px-4 py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-3 border border-white/50 hover:border-white/80 shadow-md hover:shadow-lg"

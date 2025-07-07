@@ -28,11 +28,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#f4f6fb] min-h-screen w-full`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#f6f8fb] min-h-screen w-full`}>
         <AuthProvider>
           <ResumeProvider>
             <Navbar />
-            <main className="flex flex-col items-center justify-start px-4 py-10 md:px-12 lg:px-24 bg-[#f4f6fb] min-h-[80vh] w-full">
+            
+            <main className="flex flex-col items-center justify-start px-2 py-10 md:px-12 lg:px-24 bg-[#ffffff] min-h-[80vh] w-full">
               {children}
             </main>
             <Footer />
