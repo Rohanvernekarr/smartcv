@@ -23,12 +23,13 @@ export async function updateResume(resumeId: string, data: any, status?: 'draft'
 }
 
 // Get all resumes for a user
-export async function getUserResumes(userId: string) {
+export async function getUserResumes(userId: string, limit = 20) {
   const { error, data } = await supabase
     .from('resumes')
     .select('*')
     .eq('user_id', userId)
-    .order('updated_at', { ascending: false });
+    .order('updated_at', { ascending: false })
+    .limit(limit);
   if (error) throw error;
   return data;
 }

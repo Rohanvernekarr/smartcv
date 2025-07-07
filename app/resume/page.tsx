@@ -46,7 +46,8 @@ export default function ResumePage() {
         fileUrl = await uploadResumeFile(user.id, file, ext === 'pdf' ? 'pdf' : ext === 'docx' ? 'docx' : 'json');
       }
       console.log('Saving resume:', { userId: user.id, data, status: 'complete', fileUrl });
-      await saveResume(user.id, data, 'complete', fileUrl || undefined);
+      const result = await saveResume(user.id, data, 'complete', fileUrl || undefined);
+      console.log('Save result:', result);
       setStatus('Resume saved!');
     } catch (e: any) {
       console.error('Error saving resume:', e, e?.message, e?.details, e?.hint);
