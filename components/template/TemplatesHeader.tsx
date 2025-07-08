@@ -1,10 +1,6 @@
 import React from 'react';
 
-interface TemplatesHeaderProps {
-  templatesCount: number;
-}
-
-export default function TemplatesHeader({ templatesCount }: TemplatesHeaderProps) {
+export default function TemplatesHeader() {
   return (
     <>
       {/* Header Section */}

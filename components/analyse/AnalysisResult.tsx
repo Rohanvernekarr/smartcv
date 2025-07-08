@@ -47,7 +47,6 @@ const AnalysisResult = ({ result, isLoading, onAnalyzeAnother, resumeText, jobDe
     weaknesses = [],
     suggestions = [],
     keywordMatch = 0,
-    sections = {},
     rawFeedback
   } = analysisData;
 

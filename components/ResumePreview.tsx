@@ -11,6 +11,36 @@ export default function ResumePreview({
 }: ResumePreviewProps) {
   if (!data) return null;
 
+  const renderSection = (section: string, items: unknown[]) => {
+    if (!items || items.length === 0) return null;
+
+    return (
+      <section className="mb-6">
+        <h2 className="text-xl font-bold text-gray-800 border-b pb-1 mb-3 uppercase tracking-wide">
+          {section}
+        </h2>
+        <div className="space-y-4">
+          {items.map((item: any, i: number) => (
+            <div key={i}>
+              <div className="flex justify-between items-center">
+                <span className="font-semibold text-gray-900">
+                  {item.role}
+                </span>
+                <span className="text-sm text-gray-500">
+                  {item.start} - {item.end}
+                </span>
+              </div>
+              <div className="text-gray-700 font-medium">{item.company}</div>
+              <p className="text-gray-600 text-sm mt-1">
+                {item.description}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+    );
+  };
+
   return (
     <div className="w-full flex justify-center items-start print:block overflow-hidden">
       <div
@@ -32,82 +62,16 @@ export default function ResumePreview({
 
         {/* Work Experience */}
         {data.experience?.[0]?.company && (
-          <section className="mb-6">
-            <h2 className="text-xl font-bold text-gray-800 border-b pb-1 mb-3 uppercase tracking-wide">
-              Work Experience
-            </h2>
-            <div className="space-y-4">
-              {data.experience.map((exp: any, i: number) => (
-                <div key={i}>
-                  <div className="flex justify-between items-center">
-                    <span className="font-semibold text-gray-900">
-                      {exp.role}
-                    </span>
-                    <span className="text-sm text-gray-500">
-                      {exp.start} - {exp.end}
-                    </span>
-                  </div>
-                  <div className="text-gray-700 font-medium">{exp.company}</div>
-                  <p className="text-gray-600 text-sm mt-1">
-                    {exp.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </section>
+          renderSection('Work Experience', data.experience as unknown[])}
         )}
 
         {/* Education */}
         {data.education?.[0]?.school && (
-          <section className="mb-6">
-            <h2 className="text-xl font-bold text-gray-800 border-b pb-1 mb-3 uppercase tracking-wide">
-              Education
-            </h2>
-            <div className="space-y-4">
-              {data.education.map((edu: any, i: number) => (
-                <div key={i}>
-                  <div className="flex justify-between items-center">
-                    <span className="font-semibold text-gray-900">
-                      {edu.degree}
-                    </span>
-                    <span className="text-sm text-gray-500">
-                      {edu.start} - {edu.end}
-                    </span>
-                  </div>
-                  <div className="text-gray-700 font-medium">{edu.school}</div>
-                  <p className="text-gray-600 text-sm mt-1">
-                    {edu.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </section>
+          renderSection('Education', data.education as unknown[])}
         )}
 
         {data.projects?.[0]?.name && (
-          <section className="mb-6">
-            <h2 className="text-xl font-bold text-gray-800 border-b pb-1 mb-3 uppercase tracking-wide">
-              Projects
-            </h2>
-            <div className="space-y-3">
-              {data.projects.map((proj: any, i: number) => (
-                <div key={i}>
-                  <div className="flex justify-between items-center">
-                    <span className="font-semibold text-gray-900">
-                      {proj.name}
-                    </span>
-                    <span className="text-sm text-gray-500">
-                      {proj.start} - {proj.end}
-                    </span>
-                  </div>
-                  <div className="text-gray-700 font-medium">{proj.role}</div>
-                  <p className="text-gray-600 text-sm mt-1">
-                    {proj.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </section>
+          renderSection('Projects', data.projects as unknown[])}
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">

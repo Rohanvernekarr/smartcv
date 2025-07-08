@@ -97,7 +97,7 @@ export default function SettingsPage() {
   if (loading) return <div className="p-8">Loading...</div>;
   if (!user) return null;
 
-  const handleSettingChange = (key: string, value: any) => {
+  const handleSettingChange = (key: string, value: unknown) => {
     setSettings((prev) => ({ ...prev, [key]: value }));
   };
 

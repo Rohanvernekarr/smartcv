@@ -27,7 +27,7 @@ export default function ResumePage() {
           if (resume && resume.data) {
             setPreviewData(resume.data);
           }
-        } catch (err) {
+        } catch {
           setStatus('Failed to load resume for editing.');
         }
       })();
@@ -49,9 +49,9 @@ export default function ResumePage() {
       const result = await saveResume(user.id, data, 'complete', fileUrl || undefined);
       console.log('Save result:', result);
       setStatus('Resume saved!');
-    } catch (e: any) {
-      console.error('Error saving resume:', e, e?.message, e?.details, e?.hint);
-      setStatus('Error saving resume: ' + (e?.message || e?.details || e?.hint || JSON.stringify(e)));
+    } catch (e: unknown) {
+      console.error('Error saving resume:', e, (e as Error)?.message, (e as Error)?.details, (e as Error)?.hint);
+      setStatus('Error saving resume: ' + ((e as Error)?.message || (e as Error)?.details || (e as Error)?.hint || JSON.stringify(e)));
     }
   };
 

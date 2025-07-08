@@ -115,7 +115,7 @@ export default function AnalyzePage() {
         for (let i = 1; i <= pdf.numPages; i++) {
           const page = await pdf.getPage(i);
           const content = await page.getTextContent();
-          text += content.items.map((item: any) => item.str).join(' ') + '\n';
+          text += content.items.map((item: unknown) => (item as { str: string }).str).join(' ') + '\n';
         }
       } else if (ext === 'docx') {
         const mammoth = await import('mammoth');
@@ -169,11 +169,10 @@ export default function AnalyzePage() {
     
     try {
       // Upload file to Supabase Storage if available
-      let fileUrl = null;
       if (uploadedFile && user) {
         try {
           const ext = uploadedFile.name.split('.').pop()?.toLowerCase();
-          fileUrl = await uploadResumeFile(user.id, uploadedFile, ext === 'pdf' ? 'pdf' : ext === 'docx' ? 'docx' : 'json');
+          await uploadResumeFile(user.id, uploadedFile, ext === 'pdf' ? 'pdf' : ext === 'docx' ? 'docx' : 'json');
         } catch (err) {
           console.error('Failed to upload resume file:', err);
         }

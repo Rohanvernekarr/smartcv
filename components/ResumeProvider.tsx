@@ -17,7 +17,7 @@ export function ResumeProvider({ children }: { children: React.ReactNode }) {
     try {
       const data = await getUserResumes(user.id);
       setResumes(data || []);
-    } catch (e) {
+    } catch {
       // Optionally handle error
     } finally {
       setIsLoading(false);

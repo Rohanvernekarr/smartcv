@@ -5,7 +5,7 @@ export default function DownloadPDFButton({ previewRef, fileName = 'resume.pdf' 
     if (previewRef.current) {
       try {
         // @ts-expect-error: No types for html2pdf.js
-        let html2pdfModule = await import('html2pdf.js');
+        const html2pdfModule = await import('html2pdf.js');
         const html2pdf = html2pdfModule.default || html2pdfModule;
         html2pdf().from(previewRef.current).set({
           margin: 0.5,
@@ -15,7 +15,6 @@ export default function DownloadPDFButton({ previewRef, fileName = 'resume.pdf' 
         }).save();
       } catch (err) {
         alert('PDF download failed. See console for details.');
-        // eslint-disable-next-line no-console
         console.error('PDF download error:', err);
       }
     } else {

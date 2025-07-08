@@ -7,7 +7,7 @@ export async function analyzeResume({ resume, jobDescription }: { resume: string
   return await geminiRequest(prompt);
 }
 
-export async function generateResume({ userData }: { userData: any }) {
+export async function generateResume({ userData }: { userData: unknown }) {
   const prompt = `Generate a professional resume in JSON format using the following user data:\n${JSON.stringify(userData)}`;
   return await geminiRequest(prompt);
 }
@@ -23,7 +23,7 @@ async function geminiRequest(prompt: string) {
     try {
       const errorBody = await res.json();
       errorMsg += `: ${JSON.stringify(errorBody)}`;
-    } catch (e) {
+    } catch {
       // If response is not JSON, fallback to text
       try {
         const errorText = await res.text();
