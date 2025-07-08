@@ -4,7 +4,13 @@ import React, { createContext, useContext, useState, useCallback } from 'react';
 import { getUserResumes } from '../db/resume';
 import { useAuth } from './AuthProvider';
 
-const ResumeContext = createContext<unknown>(null);
+interface ResumeContextType {
+  resumes: unknown[];
+  setResumes: React.Dispatch<React.SetStateAction<unknown[]>>;
+  isLoading: boolean;
+  fetchResumes: () => Promise<void>;
+}
+const ResumeContext = createContext<ResumeContextType | null>(null);
 
 export function ResumeProvider({ children }: { children: React.ReactNode }) {
   const { user } = useAuth() || {};
