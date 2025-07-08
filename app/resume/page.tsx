@@ -50,13 +50,15 @@ export default function ResumePage() {
       console.log('Save result:', result);
       setStatus('Resume saved!');
     } catch (e: unknown) {
+      type ErrorWithDetails = { message?: string; details?: string; hint?: string };
       let details = '';
       let hint = '';
       let message = '';
       if (typeof e === 'object' && e !== null) {
-        if ('details' in e && typeof (e as any).details === 'string') details = (e as any).details;
-        if ('hint' in e && typeof (e as any).hint === 'string') hint = (e as any).hint;
-        if ('message' in e && typeof (e as any).message === 'string') message = (e as any).message;
+        const err = e as ErrorWithDetails;
+        if (typeof err.details === 'string') details = err.details;
+        if (typeof err.hint === 'string') hint = err.hint;
+        if (typeof err.message === 'string') message = err.message;
       }
       console.error('Error saving resume:', e, message, details, hint);
       setStatus('Error saving resume: ' + (message || details || hint || JSON.stringify(e)));
