@@ -10,6 +10,28 @@ import { useAuth } from '../../components/AuthProvider';
 import { deleteResumeFile } from '../../lib/supabaseClient';
 import { useResumes } from '../../components/ResumeProvider';
 
+interface DashboardResume {
+  id: string;
+  status: 'complete' | 'draft';
+  data: {
+    title?: string;
+    template?: string;
+  };
+  updated_at?: string;
+  created_at?: string;
+  file_url?: string;
+}
+
+function isDashboardResume(r: unknown): r is DashboardResume {
+  return (
+    typeof r === 'object' &&
+    r !== null &&
+    'id' in r && typeof (r as { id: unknown }).id === 'string' &&
+    'status' in r && ((r as { status: unknown }).status === 'complete' || (r as { status: unknown }).status === 'draft') &&
+    'data' in r && typeof (r as { data: unknown }).data === 'object'
+  );
+}
+
 export default function DashboardPage() {
   const { user } = useAuth() || {};
   const { resumes, setResumes, isLoading: isLoadingResumes, fetchResumes } = useResumes();
@@ -19,13 +41,8 @@ export default function DashboardPage() {
   const router = useRouter();
 
   // Filter and sort resumes
-  const isResume = (resume: unknown): resume is Record<string, unknown> =>
-    typeof resume === 'object' && resume !== null;
-  const isResumeWithData = (resume: Record<string, unknown>): resume is Record<string, unknown> & { data: Record<string, unknown> } =>
-    'data' in resume && typeof resume.data === 'object' && resume.data !== null;
   const filteredAndSortedResumes = resumes
-    .filter(isResume)
-    .filter(isResumeWithData)
+    .filter(isDashboardResume)
     .filter((resume) =>
       typeof resume.data.title === 'string' &&
       resume.data.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -33,12 +50,12 @@ export default function DashboardPage() {
     .sort((a, b) => {
       switch (sortBy) {
         case 'title':
-          return (a.data.title as string).localeCompare(b.data.title as string);
+          return (a.data.title ?? '').localeCompare(b.data.title ?? '');
         case 'created':
-          return new Date(b.created_at as string).getTime() - new Date(a.created_at as string).getTime();
+          return new Date(b.created_at ?? '').getTime() - new Date(a.created_at ?? '').getTime();
         case 'lastModified':
         default:
-          return new Date(b.updated_at as string).getTime() - new Date(a.updated_at as string).getTime();
+          return new Date(b.updated_at ?? '').getTime() - new Date(a.updated_at ?? '').getTime();
       }
     });
 
@@ -60,8 +77,8 @@ export default function DashboardPage() {
       try {
         // Find the resume to get its file_url
         const resumeToDelete = resumes.find(
-          (resume): resume is Record<string, unknown> =>
-            isResume(resume) && 'id' in resume && resume.id === resumeId
+          (resume): resume is DashboardResume =>
+            isDashboardResume(resume) && resume.id === resumeId
         );
         if (
           resumeToDelete &&
@@ -78,8 +95,8 @@ export default function DashboardPage() {
         await deleteResume(resumeId);
         setResumes((prev: unknown[]) =>
           prev.filter(
-            (resume): resume is Record<string, unknown> =>
-              isResume(resume) && 'id' in resume && resume.id !== resumeId
+            (resume): resume is DashboardResume =>
+              isDashboardResume(resume) && resume.id !== resumeId
           )
         );
       } catch (error) {
@@ -92,19 +109,19 @@ export default function DashboardPage() {
   const handleDuplicateResume = async (resumeId: string) => {
     try {
       const resumeToDuplicate = resumes.find(
-        (r): r is Record<string, unknown> & { data: Record<string, unknown> } =>
-          isResume(r) && 'id' in r && r.id === resumeId && isResumeWithData(r)
+        (r): r is DashboardResume & { data: Record<string, unknown> } =>
+          isDashboardResume(r) && r.id === resumeId && typeof r.data === 'object' && r.data !== null
       );
       if (resumeToDuplicate) {
-        const duplicatedResume: Record<string, unknown> = {
+        const duplicatedResume: DashboardResume = {
           ...resumeToDuplicate,
           id: Date.now().toString(),
           data: {
             ...resumeToDuplicate.data,
             title: `${resumeToDuplicate.data.title as string} (Copy)`
           },
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
           status: 'draft'
         };
         setResumes((prev: unknown[]) => [duplicatedResume, ...prev]);
@@ -128,11 +145,7 @@ export default function DashboardPage() {
 
       {/* Main Content - Full Width */}
       <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-8">
-        <StatsCards resumes={resumes.filter((r): r is { id: string; status: 'complete' | 'draft' } =>
-          typeof r === 'object' && r !== null &&
-          'id' in r && typeof (r as any).id === 'string' &&
-          'status' in r && ((r as any).status === 'complete' || (r as any).status === 'draft')
-        )} />
+        <StatsCards resumes={resumes.filter(isDashboardResume)} />
 
         {/* Search and Filters */}
         <div className="flex flex-col lg:flex-row gap-4 mb-8">
@@ -212,15 +225,15 @@ export default function DashboardPage() {
           <div className={`grid gap-6 ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' : 'grid-cols-1'}`}>
             {filteredAndSortedResumes.map((resume) => (
               <ResumeCard
-                key={String(resume.id)}
+                key={resume.id}
                 resume={{
-                  id: String(resume.id),
-                  title: typeof resume.data.title === 'string' ? resume.data.title : 'Untitled',
-                  lastModified: new Date(resume.updated_at as string),
-                  createdAt: new Date(resume.created_at as string),
-                  template: typeof resume.data.template === 'string' ? resume.data.template : 'Modern',
-                  status: resume.status as string,
-                  file_url: typeof resume.file_url === 'string' ? resume.file_url : undefined
+                  id: resume.id,
+                  title: resume.data.title ?? 'Untitled',
+                  lastModified: new Date(resume.updated_at ?? ''),
+                  createdAt: new Date(resume.created_at ?? ''),
+                  template: resume.data.template ?? 'Modern',
+                  status: resume.status,
+                  file_url: resume.file_url
                 }}
                 onEdit={handleEditResume}
                 onDelete={handleDeleteResume}
