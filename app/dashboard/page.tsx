@@ -128,7 +128,11 @@ export default function DashboardPage() {
 
       {/* Main Content - Full Width */}
       <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-8">
-        <StatsCards resumes={resumes} />
+        <StatsCards resumes={resumes.filter((r): r is { id: string; status: 'complete' | 'draft' } =>
+          typeof r === 'object' && r !== null &&
+          'id' in r && typeof (r as any).id === 'string' &&
+          'status' in r && ((r as any).status === 'complete' || (r as any).status === 'draft')
+        )} />
 
         {/* Search and Filters */}
         <div className="flex flex-col lg:flex-row gap-4 mb-8">
