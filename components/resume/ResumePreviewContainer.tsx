@@ -2,7 +2,7 @@ import React from 'react';
 import ResumePreview from '../ResumePreview';
 
 interface ResumePreviewContainerProps {
-  previewData: any;
+  previewData: unknown;
   selectedTemplate: string;
   previewRef: React.RefObject<HTMLDivElement | null>;
 }

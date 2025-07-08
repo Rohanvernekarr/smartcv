@@ -4,11 +4,11 @@ import React, { createContext, useContext, useState, useCallback } from 'react';
 import { getUserResumes } from '../db/resume';
 import { useAuth } from './AuthProvider';
 
-const ResumeContext = createContext<any>(null);
+const ResumeContext = createContext<unknown>(null);
 
 export function ResumeProvider({ children }: { children: React.ReactNode }) {
   const { user } = useAuth() || {};
-  const [resumes, setResumes] = useState<any[]>([]);
+  const [resumes, setResumes] = useState<unknown[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchResumes = useCallback(async () => {

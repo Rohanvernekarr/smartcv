@@ -1,7 +1,7 @@
 import { supabase } from '../lib/supabaseClient';
 
 // Save a new resume (draft or complete)
-export async function saveResume(userId: string, data: any, status: 'draft' | 'complete' = 'draft', fileUrl?: string) {
+export async function saveResume(userId: string, data: unknown, status: 'draft' | 'complete' = 'draft', fileUrl?: string) {
   const { error, data: result } = await supabase
     .from('resumes')
     .insert([{ user_id: userId, data, status, file_url: fileUrl || null }]);
@@ -10,8 +10,8 @@ export async function saveResume(userId: string, data: any, status: 'draft' | 'c
 }
 
 // Update an existing resume (by id)
-export async function updateResume(resumeId: string, data: any, status?: 'draft' | 'complete', fileUrl?: string) {
-  const updateObj: any = { data };
+export async function updateResume(resumeId: string, data: unknown, status?: 'draft' | 'complete', fileUrl?: string) {
+  const updateObj: Record<string, unknown> = { data };
   if (status) updateObj.status = status;
   if (fileUrl) updateObj.file_url = fileUrl;
   const { error, data: result } = await supabase

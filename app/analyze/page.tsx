@@ -10,7 +10,7 @@ import AnalyzeButton from '../../components/analyse/AnalyzeButton';
 import StatusMessage from '../../components/analyse/StatusMessage';
 import AnalysisResult from '../../components/analyse/AnalysisResult';
 import FeaturesSection from '../../components/analyse/FeaturesSection';
-import { getUserResumes, saveResume } from '../../db/resume';
+import { getUserResumes } from '../../db/resume';
 import { uploadResumeFile } from '../../lib/supabaseClient';
 
 // Main Analyze Page Component
@@ -19,7 +19,7 @@ export default function AnalyzePage() {
   const router = useRouter();
   const [resumeText, setResumeText] = useState('');
   const [jobDescription, setJobDescription] = useState('');
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<string | null>(null);
   const [status, setStatus] = useState<string | null>(null);
   const [fileName, setFileName] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -134,8 +134,8 @@ export default function AnalyzePage() {
       // if (user) {
       //   try {
       //     await saveResume(user.id, text, 'draft');
-      //   } catch (err: any) {
-      //     console.error('Failed to save resume draft:', err, err?.message, err?.details, err?.hint);
+      //   } catch (err) {
+      //     console.error('Failed to save resume draft:', err);
       //   }
       // }
     } catch (err) {
@@ -174,8 +174,8 @@ export default function AnalyzePage() {
         try {
           const ext = uploadedFile.name.split('.').pop()?.toLowerCase();
           fileUrl = await uploadResumeFile(user.id, uploadedFile, ext === 'pdf' ? 'pdf' : ext === 'docx' ? 'docx' : 'json');
-        } catch (err: any) {
-          console.error('Failed to upload resume file:', err, err?.message, err?.details, err?.hint);
+        } catch (err) {
+          console.error('Failed to upload resume file:', err);
         }
       }
       const aiResult = await analyzeResume({ 

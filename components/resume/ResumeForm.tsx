@@ -38,8 +38,8 @@ export default function ResumeForm({
   onSave,
   onChange,
 }: {
-  onSave?: (data: any, file?: File | null) => void;
-  onChange?: (data: any) => void;
+  onSave?: (data: unknown, file?: File | null) => void;
+  onChange?: (data: unknown) => void;
 }) {
   const [form, setForm] = useState({
     fullName: "",
@@ -91,7 +91,7 @@ export default function ResumeForm({
   ) => {
     const updated = {
       ...form,
-      [section]: form[section].map((item: any, i: number) =>
+      [section]: form[section].map((item: unknown, i: number) =>
         i === idx ? { ...item, [field]: value } : item
       ),
     };
@@ -101,7 +101,7 @@ export default function ResumeForm({
 
   const addArrayItem = (
     section: "experience" | "education" | "projects",
-    empty: any
+    empty: unknown
   ) => {
     const updated = { ...form, [section]: [...form[section], empty] };
     setForm(updated);
@@ -114,7 +114,7 @@ export default function ResumeForm({
   ) => {
     const updated = {
       ...form,
-      [section]: form[section].filter((_: any, i: number) => i !== idx),
+      [section]: form[section].filter((_: unknown, i: number) => i !== idx),
     };
     setForm(updated);
     onChange?.(updated);

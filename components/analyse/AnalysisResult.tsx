@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import DownloadPDFButton from '../DownloadPDFButton';
 
 interface AnalysisResultProps {
-  result: any;
+  result: unknown;
   isLoading: boolean;
   onAnalyzeAnother?: () => void;
   resumeText?: string;

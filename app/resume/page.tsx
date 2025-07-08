@@ -13,7 +13,7 @@ export default function ResumePage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [status, setStatus] = useState<string | null>(null);
-  const [previewData, setPreviewData] = useState<any>(null);
+  const [previewData, setPreviewData] = useState<unknown>(null);
   const [selectedTemplate, setSelectedTemplate] = useState('modern');
   const previewRef = useRef<HTMLDivElement>(null);
 
@@ -37,7 +37,7 @@ export default function ResumePage() {
   if (loading) return <div className="p-8">Loading...</div>;
   if (!user) return null;
 
-  const handleSave = async (data: any, file?: File | null) => {
+  const handleSave = async (data: unknown, file?: File | null) => {
     setStatus(null);
     try {
       let fileUrl;
@@ -55,7 +55,7 @@ export default function ResumePage() {
     }
   };
 
-  const handleFormChange = (data: any) => {
+  const handleFormChange = (data: unknown) => {
     setPreviewData(data);
   };
 

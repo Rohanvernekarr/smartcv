@@ -1,7 +1,7 @@
 import React from "react";
 
 interface ResumePreviewProps {
-  data: any;
+  data: unknown;
   template?: string;
 }
 

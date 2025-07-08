@@ -20,21 +20,23 @@ export default function DashboardPage() {
 
   // Filter and sort resumes
   const filteredAndSortedResumes = resumes
-    .filter((resume: any) => 
-      typeof resume.data === 'object' &&
-      resume.data !== null &&
-      typeof resume.data.title === 'string' &&
-      resume.data.title.toLowerCase().includes(searchTerm.toLowerCase())
+    .filter((resume: unknown) => 
+      typeof resume === 'object' &&
+      resume !== null &&
+      typeof (resume as any).data === 'object' &&
+      (resume as any).data !== null &&
+      typeof (resume as any).data.title === 'string' &&
+      (resume as any).data.title.toLowerCase().includes(searchTerm.toLowerCase())
     )
-    .sort((a: any, b: any) => {
+    .sort((a: unknown, b: unknown) => {
       switch (sortBy) {
         case 'title':
-          return (a.data?.title || '').localeCompare(b.data?.title || '');
+          return ((a as any).data?.title || '').localeCompare((b as any).data?.title || '');
         case 'created':
-          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+          return new Date((b as any).created_at).getTime() - new Date((a as any).created_at).getTime();
         case 'lastModified':
         default:
-          return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
+          return new Date((b as any).updated_at).getTime() - new Date((a as any).updated_at).getTime();
       }
     });
 
@@ -55,16 +57,16 @@ export default function DashboardPage() {
     if (window.confirm('Are you sure you want to delete this resume?')) {
       try {
         // Find the resume to get its file_url
-        const resumeToDelete = resumes.find((resume: any) => resume.id === resumeId);
-        if (resumeToDelete && typeof resumeToDelete.file_url === 'string' && resumeToDelete.file_url) {
+        const resumeToDelete = resumes.find((resume: unknown) => (resume as any).id === resumeId);
+        if (resumeToDelete && typeof (resumeToDelete as any).file_url === 'string' && (resumeToDelete as any).file_url) {
           try {
-            await deleteResumeFile(resumeToDelete.file_url);
+            await deleteResumeFile((resumeToDelete as any).file_url);
           } catch (fileErr) {
             console.error('Failed to delete resume file from storage:', fileErr);
           }
         }
         await deleteResume(resumeId);
-        setResumes((prev: any[]) => prev.filter((resume: any) => resume.id !== resumeId));
+        setResumes((prev: unknown[]) => prev.filter((resume: unknown) => (resume as any).id !== resumeId));
       } catch (error) {
         console.error('Failed to delete resume:', error);
         alert('Failed to delete resume. Please try again.');
@@ -74,17 +76,17 @@ export default function DashboardPage() {
 
   const handleDuplicateResume = async (resumeId: string) => {
     try {
-      const resumeToDuplicate = resumes.find((r: any) => r.id === resumeId);
+      const resumeToDuplicate = resumes.find((r: unknown) => (r as any).id === resumeId);
       if (resumeToDuplicate) {
-        const duplicatedResume: any = {
+        const duplicatedResume: unknown = {
           ...resumeToDuplicate,
           id: Date.now().toString(),
-          title: `${resumeToDuplicate.data?.title} (Copy)`,
+          title: `${(resumeToDuplicate as any).data?.title} (Copy)`,
           createdAt: new Date(),
           updatedAt: new Date(),
           status: 'draft'
         };
-        setResumes((prev: any[]) => [duplicatedResume, ...prev]);
+        setResumes((prev: unknown[]) => [duplicatedResume, ...prev]);
       }
     } catch (error) {
       console.error('Failed to duplicate resume:', error);
@@ -178,17 +180,17 @@ export default function DashboardPage() {
           </div>
         ) : (
           <div className={`grid gap-6 ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' : 'grid-cols-1'}`}>
-            {filteredAndSortedResumes.map((resume: any) => (
+            {filteredAndSortedResumes.map((resume: unknown) => (
               <ResumeCard
-                key={resume.id}
+                key={(resume as any).id}
                 resume={{
-                  id: resume.id,
-                  title: resume.data?.title || 'Untitled',
-                  lastModified: new Date(resume.updated_at),
-                  createdAt: new Date(resume.created_at),
-                  template: resume.data?.template || 'Modern',
-                  status: resume.status,
-                  file_url: resume.file_url
+                  id: (resume as any).id,
+                  title: (resume as any).data?.title || 'Untitled',
+                  lastModified: new Date((resume as any).updated_at),
+                  createdAt: new Date((resume as any).created_at),
+                  template: (resume as any).data?.template || 'Modern',
+                  status: (resume as any).status,
+                  file_url: (resume as any).file_url
                 }}
                 onEdit={handleEditResume}
                 onDelete={handleDeleteResume}
