@@ -1,24 +1,45 @@
 import React from "react";
 
-interface ResumePreviewProps {
-  data: unknown;
-  template?: string;
-}
-
 interface Experience {
   role?: string;
   start?: string;
   end?: string;
   company?: string;
   description?: string;
+  school?: string;
+  name?: string;
+}
+
+interface Resume {
+  fullName?: string;
+  title?: string;
+  summary?: string;
+  experience?: Experience[];
+  education?: Experience[];
+  projects?: Experience[];
+  skills?: string;
+  certifications?: string;
+  awards?: string;
+  languages?: string;
+  social?: string;
+}
+
+interface ResumePreviewProps {
+  data: unknown;
+  template?: string;
 }
 
 export default function ResumePreview({
   data,
   template = "modern",
 }: ResumePreviewProps) {
-  if (!data || typeof data !== 'object' || Array.isArray(data)) return null;
-  const resume = data as Record<string, any>;
+  function isResume(obj: unknown): obj is Resume {
+    if (!obj || typeof obj !== 'object' || Array.isArray(obj)) return false;
+    // Optionally check for at least one expected property
+    return 'fullName' in obj || 'title' in obj || 'summary' in obj;
+  }
+  if (!isResume(data)) return null;
+  const resume = data;
 
   const renderSection = (section: string, items: Experience[]) => {
     if (!items || items.length === 0) return null;
@@ -70,15 +91,15 @@ export default function ResumePreview({
         </div>
 
         {/* Work Experience */}
-        {resume.experience?.[0]?.company &&
-          renderSection('Work Experience', resume.experience as Experience[])}
+        {resume.experience && resume.experience.length > 0 && resume.experience[0]?.company &&
+          renderSection('Work Experience', resume.experience)}
 
         {/* Education */}
-        {resume.education?.[0]?.school &&
-          renderSection('Education', resume.education as Experience[])}
+        {resume.education && resume.education.length > 0 && resume.education[0]?.school &&
+          renderSection('Education', resume.education)}
 
-        {resume.projects?.[0]?.name &&
-          renderSection('Projects', resume.projects as Experience[])}
+        {resume.projects && resume.projects.length > 0 && resume.projects[0]?.name &&
+          renderSection('Projects', resume.projects)}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
           {resume.skills && (

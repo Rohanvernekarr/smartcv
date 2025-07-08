@@ -37,7 +37,7 @@ const AnalysisResult = ({ result, isLoading, onAnalyzeAnother, resumeText, jobDe
   let analysisData;
   try {
     analysisData = typeof result === 'string' ? JSON.parse(result) : result;
-  } catch (e) {
+  } catch {
     analysisData = { rawFeedback: result };
   }
 

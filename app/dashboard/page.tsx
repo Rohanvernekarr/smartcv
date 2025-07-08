@@ -144,7 +144,12 @@ export default function DashboardPage() {
           <div className="flex gap-4">
             <select
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as any)}
+              onChange={(e) => {
+                const value = e.target.value;
+                if (value === 'lastModified' || value === 'created' || value === 'title') {
+                  setSortBy(value);
+                }
+              }}
               className="px-4 py-3 border text-gray-800 border-gray-500 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               title="Sort resumes by"
             >
