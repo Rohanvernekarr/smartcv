@@ -68,7 +68,7 @@ export default function ResumeForm({
         onChange?.(parsed);
       } catch {}
     }
-  }, [onChange]);
+  }, []); // <--- Only run once on mount
 
   // Persist form state to localStorage whenever it changes
   React.useEffect(() => {
