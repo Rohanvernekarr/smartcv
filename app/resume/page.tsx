@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, Suspense } from 'react';
 import { useAuth } from '../../components/AuthProvider';
 import { useRouter, useSearchParams } from 'next/navigation';
 import ResumeForm from '../../components/resume/ResumeForm';
@@ -74,31 +74,31 @@ export default function ResumePage() {
   };
 
   return (
-    <div className="w-screen min-h-screen flex flex-col bg-gradient-to-br items-center">
-      <ResumeTopBar 
-        selectedTemplate={selectedTemplate}
-        onTemplateChange={handleTemplateChange}
-        previewRef={previewRef}
-      />
-
-      
-      <div className="flex-1 flex flex-col lg:flex-row w-full max-w-[1800px] mx-auto gap-0 mt-6">
-        {/* Left: Resume Form */}
-        <div className="w-full lg:w-1/2 h-full overflow-y-auto p-4 bg-blue-50 border-r border-gray-100 flex flex-col">
-          <div className="rounded-2xl shadow-lg border border-gray-100 p-6 h-fit bg-white">
-            <h1 className="text-3xl font-extrabold text-indigo-700 mb-8">Create Resume</h1>
-            <ResumeForm onSave={handleSave} onChange={handleFormChange} />
-            {status && <div className="mt-4 text-sm text-center text-indigo-600 font-semibold">{status}</div>}
-          </div>
-        </div>
-
-        
-        <ResumePreviewContainer 
-          previewData={previewData}
+    <Suspense fallback={<div>Loading...</div>}>
+      <div className="w-screen min-h-screen flex flex-col bg-gradient-to-br items-center">
+        <ResumeTopBar 
           selectedTemplate={selectedTemplate}
+          onTemplateChange={handleTemplateChange}
           previewRef={previewRef}
         />
+
+        <div className="flex-1 flex flex-col lg:flex-row w-full max-w-[1800px] mx-auto gap-0 mt-6">
+          {/* Left: Resume Form */}
+          <div className="w-full lg:w-1/2 h-full overflow-y-auto p-4 bg-blue-50 border-r border-gray-100 flex flex-col">
+            <div className="rounded-2xl shadow-lg border border-gray-100 p-6 h-fit bg-white">
+              <h1 className="text-3xl font-extrabold text-indigo-700 mb-8">Create Resume</h1>
+              <ResumeForm onSave={handleSave} onChange={handleFormChange} />
+              {status && <div className="mt-4 text-sm text-center text-indigo-600 font-semibold">{status}</div>}
+            </div>
+          </div>
+
+          <ResumePreviewContainer 
+            previewData={previewData}
+            selectedTemplate={selectedTemplate}
+            previewRef={previewRef}
+          />
+        </div>
       </div>
-    </div>
+    </Suspense>
   );
 }
