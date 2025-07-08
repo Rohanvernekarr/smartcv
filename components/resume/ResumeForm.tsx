@@ -92,7 +92,7 @@ export default function ResumeForm({
     const updated = {
       ...form,
       [section]: form[section].map((item: unknown, i: number) =>
-        i === idx ? { ...item, [field]: value } : item
+        i === idx ? { ...(item as Record<string, unknown>), [field]: value } : item
       ),
     };
     setForm(updated);
