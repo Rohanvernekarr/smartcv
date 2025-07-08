@@ -10,7 +10,7 @@ export default function CTASection() {
             Ready to land your dream job?
           </h2>
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Join thousands of professionals who've already transformed their careers with SmartCV.
+            Join thousands of professionals who&#39;ve already transformed their careers with SmartCV.
           </p>
           <Link 
             href="/login" 

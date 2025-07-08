@@ -19,24 +19,26 @@ export default function DashboardPage() {
   const router = useRouter();
 
   // Filter and sort resumes
+  const isResume = (resume: unknown): resume is Record<string, unknown> =>
+    typeof resume === 'object' && resume !== null;
+  const isResumeWithData = (resume: Record<string, unknown>): resume is Record<string, unknown> & { data: Record<string, unknown> } =>
+    'data' in resume && typeof resume.data === 'object' && resume.data !== null;
   const filteredAndSortedResumes = resumes
-    .filter((resume: unknown) => 
-      typeof resume === 'object' &&
-      resume !== null &&
-      typeof (resume as any).data === 'object' &&
-      (resume as any).data !== null &&
-      typeof (resume as any).data.title === 'string' &&
-      (resume as any).data.title.toLowerCase().includes(searchTerm.toLowerCase())
+    .filter(isResume)
+    .filter(isResumeWithData)
+    .filter((resume) =>
+      typeof resume.data.title === 'string' &&
+      resume.data.title.toLowerCase().includes(searchTerm.toLowerCase())
     )
-    .sort((a: unknown, b: unknown) => {
+    .sort((a, b) => {
       switch (sortBy) {
         case 'title':
-          return ((a as any).data?.title || '').localeCompare((b as any).data?.title || '');
+          return (a.data.title as string).localeCompare(b.data.title as string);
         case 'created':
-          return new Date((b as any).created_at).getTime() - new Date((a as any).created_at).getTime();
+          return new Date(b.created_at as string).getTime() - new Date(a.created_at as string).getTime();
         case 'lastModified':
         default:
-          return new Date((b as any).updated_at).getTime() - new Date((a as any).updated_at).getTime();
+          return new Date(b.updated_at as string).getTime() - new Date(a.updated_at as string).getTime();
       }
     });
 
@@ -57,16 +59,29 @@ export default function DashboardPage() {
     if (window.confirm('Are you sure you want to delete this resume?')) {
       try {
         // Find the resume to get its file_url
-        const resumeToDelete = resumes.find((resume: unknown) => (resume as any).id === resumeId);
-        if (resumeToDelete && typeof (resumeToDelete as any).file_url === 'string' && (resumeToDelete as any).file_url) {
+        const resumeToDelete = resumes.find(
+          (resume): resume is Record<string, unknown> =>
+            isResume(resume) && 'id' in resume && resume.id === resumeId
+        );
+        if (
+          resumeToDelete &&
+          'file_url' in resumeToDelete &&
+          typeof resumeToDelete.file_url === 'string' &&
+          resumeToDelete.file_url
+        ) {
           try {
-            await deleteResumeFile((resumeToDelete as any).file_url);
+            await deleteResumeFile(resumeToDelete.file_url);
           } catch (fileErr) {
             console.error('Failed to delete resume file from storage:', fileErr);
           }
         }
         await deleteResume(resumeId);
-        setResumes((prev: unknown[]) => prev.filter((resume: unknown) => (resume as any).id !== resumeId));
+        setResumes((prev: unknown[]) =>
+          prev.filter(
+            (resume): resume is Record<string, unknown> =>
+              isResume(resume) && 'id' in resume && resume.id !== resumeId
+          )
+        );
       } catch (error) {
         console.error('Failed to delete resume:', error);
         alert('Failed to delete resume. Please try again.');
@@ -76,14 +91,20 @@ export default function DashboardPage() {
 
   const handleDuplicateResume = async (resumeId: string) => {
     try {
-      const resumeToDuplicate = resumes.find((r: unknown) => (r as any).id === resumeId);
+      const resumeToDuplicate = resumes.find(
+        (r): r is Record<string, unknown> & { data: Record<string, unknown> } =>
+          isResume(r) && 'id' in r && r.id === resumeId && isResumeWithData(r)
+      );
       if (resumeToDuplicate) {
-        const duplicatedResume: unknown = {
+        const duplicatedResume: Record<string, unknown> = {
           ...resumeToDuplicate,
           id: Date.now().toString(),
-          title: `${(resumeToDuplicate as any).data?.title} (Copy)`,
-          createdAt: new Date(),
-          updatedAt: new Date(),
+          data: {
+            ...resumeToDuplicate.data,
+            title: `${resumeToDuplicate.data.title as string} (Copy)`
+          },
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
           status: 'draft'
         };
         setResumes((prev: unknown[]) => [duplicatedResume, ...prev]);
@@ -180,17 +201,17 @@ export default function DashboardPage() {
           </div>
         ) : (
           <div className={`grid gap-6 ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' : 'grid-cols-1'}`}>
-            {filteredAndSortedResumes.map((resume: unknown) => (
+            {filteredAndSortedResumes.map((resume) => (
               <ResumeCard
-                key={(resume as any).id}
+                key={String(resume.id)}
                 resume={{
-                  id: (resume as any).id,
-                  title: (resume as any).data?.title || 'Untitled',
-                  lastModified: new Date((resume as any).updated_at),
-                  createdAt: new Date((resume as any).created_at),
-                  template: (resume as any).data?.template || 'Modern',
-                  status: (resume as any).status,
-                  file_url: (resume as any).file_url
+                  id: String(resume.id),
+                  title: typeof resume.data.title === 'string' ? resume.data.title : 'Untitled',
+                  lastModified: new Date(resume.updated_at as string),
+                  createdAt: new Date(resume.created_at as string),
+                  template: typeof resume.data.template === 'string' ? resume.data.template : 'Modern',
+                  status: resume.status as string,
+                  file_url: typeof resume.file_url === 'string' ? resume.file_url : undefined
                 }}
                 onEdit={handleEditResume}
                 onDelete={handleDeleteResume}

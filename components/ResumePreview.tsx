@@ -5,6 +5,14 @@ interface ResumePreviewProps {
   template?: string;
 }
 
+interface Experience {
+  role?: string;
+  start?: string;
+  end?: string;
+  company?: string;
+  description?: string;
+}
+
 export default function ResumePreview({
   data,
   template = "modern",
@@ -12,7 +20,7 @@ export default function ResumePreview({
   if (!data || typeof data !== 'object' || Array.isArray(data)) return null;
   const resume = data as Record<string, any>;
 
-  const renderSection = (section: string, items: unknown[]) => {
+  const renderSection = (section: string, items: Experience[]) => {
     if (!items || items.length === 0) return null;
 
     return (
@@ -21,7 +29,7 @@ export default function ResumePreview({
           {section}
         </h2>
         <div className="space-y-4">
-          {items.map((item: any, i: number) => (
+          {items.map((item, i) => (
             <div key={i}>
               <div className="flex justify-between items-center">
                 <span className="font-semibold text-gray-900">
@@ -63,14 +71,14 @@ export default function ResumePreview({
 
         {/* Work Experience */}
         {resume.experience?.[0]?.company &&
-          renderSection('Work Experience', resume.experience as unknown[])}
+          renderSection('Work Experience', resume.experience as Experience[])}
 
         {/* Education */}
         {resume.education?.[0]?.school &&
-          renderSection('Education', resume.education as unknown[])}
+          renderSection('Education', resume.education as Experience[])}
 
         {resume.projects?.[0]?.name &&
-          renderSection('Projects', resume.projects as unknown[])}
+          renderSection('Projects', resume.projects as Experience[])}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
           {resume.skills && (

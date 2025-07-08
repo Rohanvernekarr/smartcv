@@ -29,7 +29,7 @@ export default function HeroSection({ isVisible }: HeroSectionProps) {
           
           <p className="text-lg sm:text-xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed">
             Create stunning resumes, get AI-powered insights, and land your dream job. 
-            Our intelligent platform helps you stand out in today's competitive market.
+            Our intelligent platform helps you stand out in today&#39;s competitive market.
           </p>
 
           
