@@ -209,7 +209,7 @@ export default function ResumeForm({
       </div>
 
       {/* Section Navigation */}
-      <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg">
+      <div className="flex flex-row flex-nowrap overflow-x-auto space-x-1 bg-gray-100 p-1 rounded-lg scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
         {sections.map((section) => {
           const IconComponent = section.icon;
           return (
@@ -217,7 +217,7 @@ export default function ResumeForm({
               key={section.id}
               type="button"
               onClick={() => setActiveSection(section.id)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-md transition-all flex-1 justify-center ${
+              className={`flex items-center gap-2 px-4 py-2 min-w-[120px] rounded-md transition-all flex-shrink-0 justify-center ${
                 activeSection === section.id
                   ? "bg-white text-blue-600 shadow-sm font-medium"
                   : "text-gray-600 hover:text-gray-900"

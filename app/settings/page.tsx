@@ -183,12 +183,13 @@ export default function SettingsPage() {
 
   return (
     <div className="w-full min-h-screen py-8">
-      <div className="max-w-6xl mx-auto px-4 ">
+      <div className="max-w-6xl mx-auto px-2 sm:px-4 ">
         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
           <SettingsHeader />
-          <div className="flex">
+          <div className="flex flex-col md:flex-row">
             <SettingsSidebar activeTab={activeTab} onTabChange={setActiveTab} />
-            <div className="flex-1 p-8">
+            <div className="block md:hidden border-b border-gray-200 mx-4" />
+            <div className="flex-1 p-4 sm:p-8">
               <div className="max-w-2xl">
                 <div className="mb-6">
                   <h2 className="text-2xl font-semibold text-gray-900 capitalize">
