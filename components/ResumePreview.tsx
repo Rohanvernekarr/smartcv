@@ -9,7 +9,8 @@ export default function ResumePreview({
   data,
   template = "modern",
 }: ResumePreviewProps) {
-  if (!data) return null;
+  if (!data || typeof data !== 'object' || Array.isArray(data)) return null;
+  const resume = data as Record<string, any>;
 
   const renderSection = (section: string, items: unknown[]) => {
     if (!items || items.length === 0) return null;
@@ -50,78 +51,75 @@ export default function ResumePreview({
         {/* Header */}
         <div className="flex flex-col items-center border-b pb-6 mb-6">
           <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 mb-1">
-            {data.fullName}
+            {resume.fullName}
           </h1>
           <div className="text-lg text-blue-700 font-semibold mb-2">
-            {data.title}
+            {resume.title}
           </div>
           <p className="text-gray-600 text-center max-w-2xl text-sm">
-            {data.summary}
+            {resume.summary}
           </p>
         </div>
 
         {/* Work Experience */}
-        {data.experience?.[0]?.company && (
-          renderSection('Work Experience', data.experience as unknown[])}
-        )}
+        {resume.experience?.[0]?.company &&
+          renderSection('Work Experience', resume.experience as unknown[])}
 
         {/* Education */}
-        {data.education?.[0]?.school && (
-          renderSection('Education', data.education as unknown[])}
-        )}
+        {resume.education?.[0]?.school &&
+          renderSection('Education', resume.education as unknown[])}
 
-        {data.projects?.[0]?.name && (
-          renderSection('Projects', data.projects as unknown[])}
-        )}
+        {resume.projects?.[0]?.name &&
+          renderSection('Projects', resume.projects as unknown[])}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-          {data.skills && (
+          {resume.skills && (
             <div>
               <h3 className="font-bold text-gray-800 mb-1 uppercase text-xs tracking-wider">
                 Skills
               </h3>
               <p className="text-gray-700 text-sm whitespace-pre-line">
-                {data.skills}
+                {resume.skills}
               </p>
             </div>
           )}
-          {data.certifications && (
+          {resume.certifications && (
             <div>
               <h3 className="font-bold text-gray-800 mb-1 uppercase text-xs tracking-wider">
                 Certifications
               </h3>
               <p className="text-gray-700 text-sm whitespace-pre-line">
-                {data.certifications}
+                {resume.certifications}
               </p>
             </div>
           )}
-          {data.awards && (
+          {resume.awards && (
             <div>
               <h3 className="font-bold text-gray-800 mb-1 uppercase text-xs tracking-wider">
                 Awards
               </h3>
               <p className="text-gray-700 text-sm whitespace-pre-line">
-                {data.awards}
+                {resume.awards}
               </p>
             </div>
           )}
-          {data.languages && (
+          {resume.languages && (
             <div>
               <h3 className="font-bold text-gray-800 mb-1 uppercase text-xs tracking-wider">
                 Languages
               </h3>
               <p className="text-gray-700 text-sm whitespace-pre-line">
-                {data.languages}
+                {resume.languages}
               </p>
             </div>
           )}
-          {data.social && (
+          {resume.social && (
             <div>
               <h3 className="font-bold text-gray-800 mb-1 uppercase text-xs tracking-wider">
                 Social
               </h3>
               <p className="text-gray-700 text-sm whitespace-pre-line">
-                {data.social}
+                {resume.social}
               </p>
             </div>
           )}
