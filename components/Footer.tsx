@@ -30,7 +30,7 @@ export default function Footer() {
                 
                 <div className="flex space-x-4">
                   <a 
-                    href="https://linkedin.com" 
+                    href="https://www.linkedin.com/in/rohan-vernekar-b57913283/" 
                     target="_blank" 
                     rel="noopener noreferrer" 
                     aria-label="LinkedIn"
@@ -41,7 +41,7 @@ export default function Footer() {
                     </svg>
                   </a>
                   <a 
-                    href="https://twitter.com" 
+                    href="https://x.com/Rohanvrnkr" 
                     target="_blank" 
                     rel="noopener noreferrer" 
                     aria-label="Twitter"
@@ -52,7 +52,7 @@ export default function Footer() {
                     </svg>
                   </a>
                   <a 
-                    href="https://github.com" 
+                    href="https://github.com/Rohanvernekarr" 
                     target="_blank" 
                     rel="noopener noreferrer" 
                     aria-label="GitHub"
@@ -63,7 +63,7 @@ export default function Footer() {
                     </svg>
                   </a>
                   <a 
-                    href="https://instagram.com" 
+                    href="https://www.instagram.com/rohanvrnkr/" 
                     target="_blank" 
                     rel="noopener noreferrer" 
                     aria-label="Instagram"
@@ -108,27 +108,27 @@ export default function Footer() {
                 <h3 className="text-lg font-semibold text-grey-700 mb-6">Support</h3>
                 <ul className="space-y-3">
                   <li>
-                    <Link href="/help" className="text-gray-700 hover:text-blue-400 transition-colors duration-200 hover:translate-x-1 transform inline-block">
+                    <Link href="#" className="text-gray-700 hover:text-blue-400 transition-colors duration-200 hover:translate-x-1 transform inline-block">
                       Help Center
                     </Link>
                   </li>
                   <li>
-                    <Link href="/about" className="text-gray-700 hover:text-blue-400 transition-colors duration-200 hover:translate-x-1 transform inline-block">
+                    <Link href="#" className="text-gray-700 hover:text-blue-400 transition-colors duration-200 hover:translate-x-1 transform inline-block">
                       About Us
                     </Link>
                   </li>
                   <li>
-                    <Link href="/contact" className="text-gray-700 hover:text-blue-400 transition-colors duration-200 hover:translate-x-1 transform inline-block">
+                    <Link href="#" className="text-gray-700 hover:text-blue-400 transition-colors duration-200 hover:translate-x-1 transform inline-block">
                       Contact
                     </Link>
                   </li>
                   <li>
-                    <Link href="/privacy" className="text-gray-700 hover:text-blue-400 transition-colors duration-200 hover:translate-x-1 transform inline-block">
+                    <Link href="#" className="text-gray-700 hover:text-blue-400 transition-colors duration-200 hover:translate-x-1 transform inline-block">
                       Privacy Policy
                     </Link>
                   </li>
                   <li>
-                    <Link href="/terms" className="text-gray-700 hover:text-blue-400 transition-colors duration-200 hover:translate-x-1 transform inline-block">
+                    <Link href="#" className="text-gray-700 hover:text-blue-400 transition-colors duration-200 hover:translate-x-1 transform inline-block">
                       Terms of Service
                     </Link>
                   </li>
