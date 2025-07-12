@@ -151,7 +151,7 @@ export default function Footer() {
                   <span className="text-gray-600">for job seekers</span>
                 </div>
                 <div className="flex items-center space-x-4 text-sm text-gray-600">
-                  <span>🚀 Version 1.0</span>
+                  <span>Version 1.0</span>
                   <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
                   <span>All systems operational</span>
                 </div>
