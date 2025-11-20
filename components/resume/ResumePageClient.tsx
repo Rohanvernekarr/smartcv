@@ -3,7 +3,7 @@ import React, { useState, useRef } from 'react';
 import { useAuth } from '../../components/AuthProvider';
 import { useRouter, useSearchParams } from 'next/navigation';
 import ResumeForm from '../../components/resume/ResumeForm';
-import { saveResume, getResumeById } from '../../db/resume';
+import { saveResume, getResumeById, updateResume } from '../../db/resume';
 import ResumeTopBar from '../../components/resume/ResumeTopBar';
 import ResumePreviewContainer from '../../components/resume/ResumePreviewContainer';
 import { uploadResumeFile } from '../../lib/supabaseClient';
@@ -45,10 +45,29 @@ export default function ResumePageClient() {
         const ext = file.name.split('.').pop()?.toLowerCase();
         fileUrl = await uploadResumeFile(user.id, file, ext === 'pdf' ? 'pdf' : ext === 'docx' ? 'docx' : 'json');
       }
-      console.log('Saving resume:', { userId: user.id, data, status: 'complete', fileUrl });
-      const result = await saveResume(user.id, data, 'complete', fileUrl || undefined);
-      console.log('Save result:', result);
-      setStatus('Resume saved!');
+      
+      const resumeId = searchParams?.get('id');
+      
+      if (resumeId) {
+        // Update existing resume
+        console.log('Updating resume:', { resumeId, data, status: 'complete', fileUrl });
+        const result = await updateResume(resumeId, data, 'complete', fileUrl || undefined);
+        console.log('Update result:', result);
+        setStatus('Resume updated successfully!');
+      } else {
+        // Save new resume
+        console.log('Saving new resume:', { userId: user.id, data, status: 'complete', fileUrl });
+        const result = await saveResume(user.id, data, 'complete', fileUrl || undefined);
+        console.log('Save result:', result);
+        setStatus('Resume saved successfully!');
+        
+        // Update URL with new resume ID if available
+        if (result && result[0]?.id) {
+          const newUrl = new URL(window.location.href);
+          newUrl.searchParams.set('id', result[0].id);
+          window.history.replaceState({}, '', newUrl);
+        }
+      }
     } catch (e: unknown) {
       type ErrorWithDetails = { message?: string; details?: string; hint?: string };
       let details = '';
@@ -60,8 +79,8 @@ export default function ResumePageClient() {
         if (typeof err.hint === 'string') hint = err.hint;
         if (typeof err.message === 'string') message = err.message;
       }
-      console.error('Error saving resume:', e, message, details, hint);
-      setStatus('Error saving resume: ' + (message || details || hint || JSON.stringify(e)));
+      console.error('Error saving/updating resume:', e, message, details, hint);
+      setStatus('Error: ' + (message || details || hint || 'Failed to save resume'));
     }
   };
 
@@ -74,19 +93,27 @@ export default function ResumePageClient() {
   };
 
   return (
-    <div className="w-screen min-h-screen flex flex-col bg-gradient-to-br items-center">
+    <div className="w-screen h-screen flex flex-col bg-white items-center overflow-hidden">
       <ResumeTopBar 
         selectedTemplate={selectedTemplate}
         onTemplateChange={handleTemplateChange}
         previewRef={previewRef}
       />
-      <div className="flex-1 flex flex-col lg:flex-row w-full max-w-[1800px] mx-auto gap-0 mt-6">
+      <div className="flex-1 flex flex-col lg:flex-row w-full max-w-[1800px] mx-auto gap-0 overflow-hidden">
         {/* Left: Resume Form */}
-        <div className="w-full lg:w-1/2 h-full overflow-y-auto p-4 bg-blue-50 border-r border-gray-100 flex flex-col">
-          <div className="rounded-2xl shadow-lg border border-gray-100 p-6 h-fit bg-white">
-            <h1 className="text-3xl font-extrabold text-indigo-700 mb-8">Create Resume</h1>
+        <div className="w-full lg:w-1/2 h-full overflow-y-auto p-6  border-r border-zinc-200 flex flex-col">
+          <div className="rounded-lg shadow-sm border border-zinc-200 p-6 bg-white">
+            <h1 className="text-3xl font-bold text-zinc-900 mb-8">Create Resume</h1>
             <ResumeForm onSave={handleSave} onChange={handleFormChange} />
-            {status && <div className="mt-4 text-sm text-center text-indigo-600 font-semibold">{status}</div>}
+            {status && (
+              <div className={`mt-4 p-3 text-sm text-center rounded-lg font-medium ${
+                status.includes('Error') || status.includes('Failed')
+                  ? 'bg-red-50 text-red-700 border border-red-200'
+                  : 'bg-zinc-100 text-zinc-900 border border-zinc-300'
+              }`}>
+                {status}
+              </div>
+            )}
           </div>
         </div>
         <ResumePreviewContainer 

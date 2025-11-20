@@ -2,9 +2,9 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="relative w-full bg-blue-50 text-black">
+    <footer className="relative w-full text-black">
       
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500 to-transparent"></div>
+      <div className="absolute top-0 left-0 right-0 h-px bg-zinc-900 to-transparent"></div>
       
       <div className="relative">
         {/* Main footer content */}
@@ -15,10 +15,10 @@ export default function Footer() {
               {/* Brand Section */}
               <div className="lg:col-span-2">
                 <div className="flex items-center space-x-3 mb-6">
-                  <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+                  <div className="w-10 h-10 bg-black rounded-xl flex items-center justify-center">
                     <span className="text-white font-bold text-lg">CV</span>
                   </div>
-                  <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  <span className="text-2xl font-bold bg-black bg-clip-text text-transparent">
                     SmartCV
                   </span>
                 </div>

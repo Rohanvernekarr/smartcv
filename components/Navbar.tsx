@@ -95,21 +95,21 @@ export default function Navbar() {
     <>
       <nav className={`sticky top-0 z-50 w-full transition-all duration-300 ${
         isScrolled 
-          ? 'bg-white backdrop-blur-lg border-b border-gray-200/50 shadow-lg' 
-          : 'bg-white border-b border-gray-200/30 shadow-sm'
+          ? 'bg-white backdrop-blur-lg border-b border-zinc-200 shadow-md' 
+          : 'bg-white border-b border-zinc-200'
       }`}>
         <div className="max-w-7xl mx-auto p-1 px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-20">
            
             <Link 
               href="/" 
               className="flex items-center space-x-2 group"
               onClick={closeMobileMenu}
             >
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-sm transform group-hover:scale-105 transition-transform duration-200">
+              <div className="w-8 h-8 bg-zinc-900 rounded-lg flex items-center justify-center text-white font-bold text-sm transform group-hover:scale-105 transition-transform duration-200">
                 CV
               </div>
-              <span className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              <span className="text-3xl font-bold text-zinc-900">
                 SmartCV
               </span>
             </Link>
@@ -122,17 +122,14 @@ export default function Navbar() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`flex items-center  space-x-2 px-4 py-2 rounded-xl font-bold transition-all duration-200 relative group ${
+                    className={`flex items-center  space-x-2 px-4 py-2 rounded-xl font-medium transition-all duration-200 relative group ${
                       isActive
-                        ? 'bg-blue-50 text-blue-700 shadow-sm'
-                        : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                        ? 'bg-zinc-900 text-white'
+                        : 'text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900'
                     }`}
                   >
                     <span className="text-lg">{item.icon}</span>
                     <span className="text-sm">{item.label}</span>
-                    {isActive && (
-                      <div className="absolute inset-0 bg-blue-100/50 rounded-xl -z-10 animate-pulse"></div>
-                    )}
                   </Link>
                 );
               })}
@@ -144,20 +141,20 @@ export default function Navbar() {
                 <>
                  
                   <div className="hidden lg:flex items-center space-x-3">
-                    <div className="flex items-center space-x-2 px-3 py-1.5 bg-gray-50 rounded-full">
-                      <div className="w-6 h-6 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
+                    <div className="flex items-center space-x-2 px-3 py-1.5 bg-zinc-100 rounded-full border border-zinc-200">
+                      <div className="w-6 h-6 bg-zinc-900 rounded-full flex items-center justify-center">
                         <span className="text-white text-xs font-medium">
                           {user.email?.charAt(0).toUpperCase()}
                         </span>
                       </div>
-                      <span className="text-sm text-gray-600 font-medium max-w-[120px] truncate">
+                      <span className="text-sm text-zinc-700 font-medium max-w-[120px] truncate">
                         {user.email}
                       </span>
                     </div>
                     <button
                       onClick={handleLogout}
                       disabled={isLoading}
-                      className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors duration-200 disabled:opacity-50"
+                      className="px-4 py-2 text-sm font-medium text-zinc-700 hover:text-zinc-900 hover:bg-zinc-100 rounded-lg border border-zinc-200 transition-colors duration-200 disabled:opacity-50"
                     >
                       {isLoading ? 'Signing out...' : 'Sign out'}
                     </button>
@@ -165,7 +162,7 @@ export default function Navbar() {
 
                   {/* Mobile User  */}
                   <div className="lg:hidden">
-                    <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
+                    <div className="w-8 h-8 bg-zinc-900 rounded-full flex items-center justify-center border border-zinc-300">
                       <span className="text-white text-sm font-medium">
                         {user.email?.charAt(0).toUpperCase()}
                       </span>
@@ -179,10 +176,10 @@ export default function Navbar() {
                     <button
                       onClick={handleGoogleLogin}
                       disabled={isLoading}
-                      className="flex items-center space-x-2 px-4 py-2 bg-white border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="flex items-center space-x-2 px-4 py-2 bg-white border border-zinc-300 rounded-lg font-medium text-zinc-700 hover:bg-zinc-50 hover:border-zinc-400 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {isLoading ? (
-                        <div className="w-4 h-4 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
+                        <div className="w-4 h-4 border-2 border-zinc-300 border-t-zinc-900 rounded-full animate-spin"></div>
                       ) : (
                         <GoogleIcon />
                       )}
@@ -197,11 +194,11 @@ export default function Navbar() {
                     <button
                       onClick={handleGoogleLogin}
                       disabled={isLoading}
-                      className="p-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 shadow-sm disabled:opacity-50"
+                      className="p-2 bg-white border border-zinc-300 rounded-lg hover:bg-zinc-50 hover:border-zinc-400 transition-all duration-200 disabled:opacity-50"
                       aria-label="Sign in with Google"
                     >
                       {isLoading ? (
-                        <div className="w-5 h-5 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
+                        <div className="w-5 h-5 border-2 border-zinc-300 border-t-zinc-900 rounded-full animate-spin"></div>
                       ) : (
                         <GoogleIcon />
                       )}
@@ -213,7 +210,7 @@ export default function Navbar() {
               {/* Mobile Menu Button */}
               <button
                 onClick={toggleMobileMenu}
-                className="lg:hidden p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors duration-200"
+                className="lg:hidden p-2 rounded-lg text-zinc-700 hover:text-zinc-900 hover:bg-zinc-100 border border-zinc-200 transition-colors duration-200"
                 aria-label="Toggle menu"
               >
                 <div className="w-5 h-5 flex flex-col justify-center space-y-1">
@@ -238,7 +235,7 @@ export default function Navbar() {
             ? 'max-h-96 opacity-100' 
             : 'max-h-0 opacity-0 overflow-hidden'
         }`}>
-          <div className="px-4 py-4 bg-white/95 backdrop-blur-sm border-t border-gray-200/50">
+          <div className="px-4 py-4 bg-white/95 backdrop-blur-sm border-t border-zinc-200">
             <div className="space-y-2">
               {navItems.map((item) => {
                 const isActive = pathname.startsWith(item.href);
@@ -249,37 +246,37 @@ export default function Navbar() {
                     onClick={closeMobileMenu}
                     className={`flex items-center space-x-3 px-4 py-3 rounded-xl font-medium transition-all duration-200 ${
                       isActive
-                        ? 'bg-blue-50 text-blue-700 border border-blue-200'
-                        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                        ? 'bg-zinc-900 text-white border border-zinc-900'
+                        : 'text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900 border border-zinc-200'
                     }`}
                   >
                     <span className="text-xl">{item.icon}</span>
                     <span>{item.label}</span>
                     {isActive && (
-                      <div className="ml-auto w-2 h-2 bg-blue-500 rounded-full"></div>
+                      <div className="ml-auto w-2 h-2 bg-white rounded-full"></div>
                     )}
                   </Link>
                 );
               })}
               
-              <div className="border-t border-gray-200 my-4"></div>
+              <div className="border-t border-zinc-200 my-4"></div>
               
               {user ? (
                 <div className="px-4 py-2">
                   <div className="flex items-center space-x-3 mb-3">
-                    <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
+                    <div className="w-8 h-8 bg-zinc-900 rounded-full flex items-center justify-center border border-zinc-300">
                       <span className="text-white text-sm font-medium">
                         {user.email?.charAt(0).toUpperCase()}
                       </span>
                     </div>
-                    <span className="text-sm text-gray-600 font-medium">
+                    <span className="text-sm text-zinc-700 font-medium">
                       {user.email}
                     </span>
                   </div>
                   <button
                     onClick={handleLogout}
                     disabled={isLoading}
-                    className="w-full px-4 py-2 text-left text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200 font-medium disabled:opacity-50"
+                    className="w-full px-4 py-2 text-left text-red-600 hover:bg-red-50 rounded-lg border border-red-200 transition-colors duration-200 font-medium disabled:opacity-50"
                   >
                     {isLoading ? 'Signing out...' : 'Sign out'}
                   </button>
@@ -289,10 +286,10 @@ export default function Navbar() {
                   <button
                     onClick={handleGoogleLogin}
                     disabled={isLoading}
-                    className="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-white border border-gray-300 rounded-xl font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 shadow-sm disabled:opacity-50"
+                    className="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-white border border-zinc-300 rounded-xl font-medium text-zinc-700 hover:bg-zinc-50 hover:border-zinc-400 transition-all duration-200 disabled:opacity-50"
                   >
                     {isLoading ? (
-                      <div className="w-5 h-5 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
+                      <div className="w-5 h-5 border-2 border-zinc-300 border-t-zinc-900 rounded-full animate-spin"></div>
                     ) : (
                       <GoogleIcon />
                     )}

@@ -140,7 +140,7 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen w-full">
+    <div className="min-h-screen w-full ">
       <DashboardHeader userEmail={user?.email ?? ''} onCreateResume={handleCreateResume} onRefreshResumes={handleRefreshResumes} />
 
       {/* Main Content - Full Width */}
@@ -155,7 +155,7 @@ export default function DashboardPage() {
               placeholder="Search resumes..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-4 py-3 text-gray-800 border border-gray-500 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className="w-full px-4 py-3 text-zinc-900 bg-white border border-zinc-300 rounded-lg focus:ring-2 focus:ring-zinc-400 focus:border-transparent"
             />
           </div>
           <div className="flex gap-4">
@@ -167,17 +167,17 @@ export default function DashboardPage() {
                   setSortBy(value);
                 }
               }}
-              className="px-4 py-3 border text-gray-800 border-gray-500 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className="px-4 py-3 border text-zinc-900 bg-white border-zinc-300 rounded-lg focus:ring-2 focus:ring-zinc-400 focus:border-transparent"
               title="Sort resumes by"
             >
               <option value="lastModified">Last Modified</option>
               <option value="created">Created Date</option>
               <option value="title">Title</option>
             </select>
-            <div className="flex border border-gray-200 rounded-xl overflow-hidden">
+            <div className="flex border border-zinc-300 rounded-lg overflow-hidden bg-white">
               <button
                 onClick={() => setViewMode('grid')}
-                className={`px-4 py-3 ${viewMode === 'grid' ? 'bg-indigo-600 text-white' : 'bg-white text-gray-600'}`}
+                className={`px-4 py-3 transition-colors ${viewMode === 'grid' ? 'bg-zinc-900 text-white' : 'bg-white text-zinc-600 hover:bg-zinc-50'}`}
                 title="Grid view"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -186,7 +186,7 @@ export default function DashboardPage() {
               </button>
               <button
                 onClick={() => setViewMode('list')}
-                className={`px-4 py-3 ${viewMode === 'list' ? 'bg-indigo-600 text-white' : 'bg-white text-gray-600'}`}
+                className={`px-4 py-3 transition-colors ${viewMode === 'list' ? 'bg-zinc-900 text-white' : 'bg-white text-zinc-600 hover:bg-zinc-50'}`}
                 title="List view"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -202,21 +202,21 @@ export default function DashboardPage() {
         {/* Resumes Grid */}
         {isLoadingResumes ? (
           <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Loading resumes...</p>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-zinc-900 mx-auto"></div>
+            <p className="mt-4 text-zinc-600">Loading resumes...</p>
           </div>
         ) : filteredAndSortedResumes.length === 0 ? (
-          <div className="text-center py-12">
-            <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="text-center py-12 bg-white rounded-lg border border-zinc-200">
+            <div className="w-24 h-24 bg-zinc-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-12 h-12 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">No resumes found</h3>
-            <p className="text-gray-600 mb-6">Create your first resume to get started</p>
+            <h3 className="text-lg font-semibold text-zinc-900 mb-2">No resumes found</h3>
+            <p className="text-zinc-600 mb-6">Create your first resume to get started</p>
             <button
               onClick={handleCreateResume}
-              className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300"
+              className="bg-zinc-900 hover:bg-zinc-800 text-white px-6 py-3 rounded-lg font-medium transition-all"
             >
               Create New Resume
             </button>

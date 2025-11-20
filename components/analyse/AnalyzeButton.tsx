@@ -12,7 +12,7 @@ const AnalyzeButton = ({ isAnalyzing, isDisabled, onClick }: AnalyzeButtonProps)
       <button
         onClick={onClick}
         disabled={isDisabled}
-        className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-12 py-4 rounded-xl font-bold text-lg hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+        className="bg-black text-white px-12 py-4 rounded-xl font-bold text-lg  disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
       >
         {isAnalyzing ? (
           <span className="flex items-center">

@@ -24,13 +24,13 @@ interface ResumeCardProps {
 
 export default function ResumeCard({ resume, onEdit, onDelete, onDuplicate, formatDate }: ResumeCardProps) {
   return (
-    <div className="group relative bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-white/50 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+    <div className="group relative bg-white rounded-lg p-6 border border-zinc-200 shadow-sm hover:shadow-md transition-all duration-200 hover:border-zinc-300">
       {/* Status Badge */}
       <div className="absolute top-4 right-4">
         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
           resume.status === 'complete' 
-            ? 'bg-green-100 text-green-800' 
-            : 'bg-yellow-100 text-yellow-800'
+            ? 'bg-zinc-100 text-zinc-800 border border-zinc-300' 
+            : 'bg-zinc-50 text-zinc-600 border border-zinc-200'
         }`}>
           {resume.status === 'complete' ? 'Complete' : 'Draft'}
         </span>
@@ -38,7 +38,7 @@ export default function ResumeCard({ resume, onEdit, onDelete, onDuplicate, form
 
       {/* Template Badge */}
       <div className="absolute top-4 left-4">
-        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-zinc-100 text-zinc-700 border border-zinc-300">
           {resume.template}
         </span>
       </div>
@@ -47,13 +47,13 @@ export default function ResumeCard({ resume, onEdit, onDelete, onDuplicate, form
       <div className="mt-8">
         <div className="flex items-start justify-between mb-4">
           <div className="flex-1 min-w-0">
-            <h3 className="text-lg font-semibold text-gray-900 truncate mb-1">
+            <h3 className="text-lg font-semibold text-zinc-900 truncate mb-1">
               {resume.data?.fullName || resume.title}
             </h3>
-            <p className="text-sm text-gray-700">
+            <p className="text-sm text-zinc-700">
               {resume.data?.title || ''}
             </p>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-zinc-500 mt-1">
               Last modified: {formatDate(resume.lastModified)}
             </p>
           </div>
@@ -65,9 +65,12 @@ export default function ResumeCard({ resume, onEdit, onDelete, onDuplicate, form
             href={resume.file_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-green-700 mb-4"
+            className="inline-flex items-center gap-2 bg-zinc-100 text-zinc-700 px-4 py-2 rounded-lg border border-zinc-300 hover:bg-zinc-200 transition-colors mb-4 text-sm font-medium"
             download
           >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
             Download File
           </a>
         )}
@@ -76,14 +79,14 @@ export default function ResumeCard({ resume, onEdit, onDelete, onDuplicate, form
         <div className="flex items-center gap-2 mt-6">
           <button
             onClick={() => onEdit(resume.id)}
-            className="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-4 py-2 rounded-xl font-medium text-sm transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg"
+            className="flex-1 bg-zinc-900 hover:bg-zinc-800 text-white px-4 py-2 rounded-lg font-medium text-sm transition-all shadow-sm"
           >
             Edit Resume
           </button>
           
           <div className="relative group/actions">
             <button 
-              className="p-2 text-gray-400 hover:text-gray-600 transition-colors rounded-lg hover:bg-gray-100"
+              className="p-2 text-zinc-400 hover:text-zinc-700 transition-colors rounded-lg hover:bg-zinc-100 border border-zinc-200"
               title="More actions"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -92,11 +95,11 @@ export default function ResumeCard({ resume, onEdit, onDelete, onDuplicate, form
             </button>
             
             {/* Dropdown Menu */}
-            <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-200 opacity-0 invisible group-hover/actions:opacity-100 group-hover/actions:visible transition-all duration-200 z-10">
+            <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-zinc-200 opacity-0 invisible group-hover/actions:opacity-100 group-hover/actions:visible transition-all duration-200 z-10">
               <div className="py-2">
                 <button
                   onClick={() => onDuplicate(resume.id)}
-                  className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+                  className="w-full px-4 py-2 text-left text-sm text-zinc-700 hover:bg-zinc-50 flex items-center gap-2"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />

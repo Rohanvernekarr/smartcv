@@ -4,20 +4,22 @@ import { supabase } from '../lib/supabaseClient';
 export async function saveResume(userId: string, data: unknown, status: 'draft' | 'complete' = 'draft', fileUrl?: string) {
   const { error, data: result } = await supabase
     .from('resumes')
-    .insert([{ user_id: userId, data, status, file_url: fileUrl || null }]);
+    .insert([{ user_id: userId, data, status, file_url: fileUrl || null }])
+    .select();
   if (error) throw error;
   return result;
 }
 
 // Update an existing resume (by id)
 export async function updateResume(resumeId: string, data: unknown, status?: 'draft' | 'complete', fileUrl?: string) {
-  const updateObj: Record<string, unknown> = { data };
+  const updateObj: Record<string, unknown> = { data, updated_at: new Date().toISOString() };
   if (status) updateObj.status = status;
   if (fileUrl) updateObj.file_url = fileUrl;
   const { error, data: result } = await supabase
     .from('resumes')
     .update(updateObj)
-    .eq('id', resumeId);
+    .eq('id', resumeId)
+    .select();
   if (error) throw error;
   return result;
 }
