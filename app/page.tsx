@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../components/AuthProvider';
 import { useRouter } from 'next/navigation';
-import AnimatedBackground from '../components/AnimatedBackground';
 import HeroSection from '../components/HeroSection';
 import FeaturesSection from '../components/analyse/FeaturesSection';
 import CTASection from '../components/CTASection';

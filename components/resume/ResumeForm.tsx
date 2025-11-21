@@ -32,6 +32,8 @@ const emptyProject = {
   start: "",
   end: "",
   description: "",
+  github: "",
+  live: "",
 };
 const emptyLink = {
   label: "",
@@ -40,6 +42,10 @@ const emptyLink = {
 const emptySkill = {
   category: "",
   items: "",
+};
+const emptyCertification = {
+  name: "",
+  date: "",
 };
 
 export default function ResumeForm({
@@ -61,7 +67,7 @@ export default function ResumeForm({
     education: [emptyEducation],
     projects: [emptyProject],
     skills: [emptySkill],
-    certifications: "",
+    certifications: [emptyCertification],
     awards: "",
     languages: "",
     social: "",
@@ -96,7 +102,7 @@ export default function ResumeForm({
   };
 
   const handleArrayChange = (
-    section: "experience" | "education" | "projects" | "links" | "skills",
+    section: "experience" | "education" | "projects" | "links" | "skills" | "certifications",
     idx: number,
     field: string,
     value: string
@@ -112,7 +118,7 @@ export default function ResumeForm({
   };
 
   const addArrayItem = (
-    section: "experience" | "education" | "projects" | "links" | "skills",
+    section: "experience" | "education" | "projects" | "links" | "skills" | "certifications",
     empty: unknown
   ) => {
     const updated = { ...form, [section]: [...form[section], empty] };
@@ -121,7 +127,7 @@ export default function ResumeForm({
   };
 
   const removeArrayItem = (
-    section: "experience" | "education" | "projects" | "links" | "skills",
+    section: "experience" | "education" | "projects" | "links" | "skills" | "certifications",
     idx: number
   ) => {
     const updated = {
@@ -159,7 +165,7 @@ export default function ResumeForm({
       education: [emptyEducation],
       projects: [emptyProject],
       skills: [emptySkill],
-      certifications: "",
+      certifications: [emptyCertification],
       awards: "",
       languages: "",
       social: "",
@@ -168,6 +174,7 @@ export default function ResumeForm({
 
   const sections = [
     { id: "personal", label: "Personal Info", icon: User },
+    { id: "skills", label: "Skills", icon: Award },
     { id: "experience", label: "Experience", icon: Briefcase },
     { id: "project", label: "Projects", icon: GraduationCap },
     { id: "education", label: "Education", icon: GraduationCap },
@@ -312,6 +319,111 @@ export default function ResumeForm({
                   </div>
                 ))}
               </div>
+            </div>
+             {/* Contact Information Section */}
+            <div className="space-y-4 pt-6 border-t border-zinc-200">
+              <h3 className="text-lg font-semibold text-zinc-900">Contact Information</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-zinc-700">
+                    Phone Number
+                  </label>
+                  <input
+                    name="phone"
+                    value={form.phone}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border border-zinc-300 text-zinc-900 bg-white rounded-lg focus:ring-2 focus:ring-zinc-400 focus:border-transparent"
+                    placeholder="+1-123-456-7890"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-zinc-700">
+                    Email Address
+                  </label>
+                  <input
+                    name="email"
+                    type="email"
+                    value={form.email}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border border-zinc-300 text-zinc-900 bg-white rounded-lg focus:ring-2 focus:ring-zinc-400 focus:border-transparent"
+                    placeholder="name@example.com"
+                  />
+                </div>
+                <div className="space-y-2 md:col-span-2">
+                  <label className="text-sm font-medium text-zinc-700">
+                    Location
+                  </label>
+                  <input
+                    name="location"
+                    value={form.location}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border border-zinc-300 text-zinc-900 bg-white rounded-lg focus:ring-2 focus:ring-zinc-400 focus:border-transparent"
+                    placeholder="City, State, Country"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Skills Section */}
+        {activeSection === "skills" && (
+          <div className="space-y-6">
+            <h3 className="text-xl font-semibold text-zinc-900">
+              Skills
+            </h3>
+            
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <label className="text-sm font-medium text-zinc-700 flex items-center gap-2">
+                  <Award size={16} />
+                  Skill Categories
+                </label>
+                <button
+                  type="button"
+                  onClick={() => addArrayItem("skills", emptySkill)}
+                  className="flex items-center gap-2 px-4 py-2 bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 transition-colors"
+                >
+                  <Plus size={16} />
+                  Add Skill Category
+                </button>
+              </div>
+              {form.skills.map((skill, idx) => (
+                <div key={idx} className="p-4 border border-zinc-200 rounded-lg bg-zinc-50 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-zinc-700">
+                      Skill Category {idx + 1}
+                    </span>
+                    {form.skills.length > 1 && (
+                      <button
+                        title="Remove skill category"
+                        type="button"
+                        onClick={() => removeArrayItem("skills", idx)}
+                        className="text-red-600 hover:text-red-800"
+                      >
+                        <X size={16} />
+                      </button>
+                    )}
+                  </div>
+                  <input
+                    value={skill.category}
+                    onChange={(e) =>
+                      handleArrayChange("skills", idx, "category", e.target.value)
+                    }
+                    className="w-full px-4 py-2 border border-zinc-300 text-zinc-900 bg-white rounded-lg focus:ring-2 focus:ring-zinc-400 focus:border-transparent"
+                    placeholder="e.g., Technical skills, Web Development, Cloud"
+                  />
+                  <textarea
+                    value={skill.items}
+                    onChange={(e) =>
+                      handleArrayChange("skills", idx, "items", e.target.value)
+                    }
+                    className="w-full px-4 py-2 border border-zinc-300 text-zinc-900 bg-white rounded-lg focus:ring-2 focus:ring-zinc-400 focus:border-transparent"
+                    rows={2}
+                    placeholder="e.g., TypeScript, JavaScript, Go, Python, Linux, Git, DSA."
+                  />
+                </div>
+              ))}
             </div>
           </div>
         )}
@@ -495,7 +607,7 @@ export default function ResumeForm({
                         placeholder="Project name"
                       />
                     </div>
-                    <div className="space-y-2">
+                    {/* <div className="space-y-2">
                       <label className="text-sm font-medium text-zinc-700">
                         Role
                       </label>
@@ -512,7 +624,7 @@ export default function ResumeForm({
                         className="w-full px-3 py-2 border border-zinc-300 text-zinc-900 bg-white rounded-lg focus:ring-2 focus:ring-zinc-400 focus:border-transparent"
                         placeholder="Your role in the project"
                       />
-                    </div>
+                    </div> */}
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-zinc-700">
                         Start Date
@@ -547,6 +659,44 @@ export default function ResumeForm({
                         }
                         className="w-full px-3 py-2 border border-zinc-300 text-zinc-900 bg-white rounded-lg focus:ring-2 focus:ring-zinc-400 focus:border-transparent"
                         placeholder="MM/YYYY or Present"
+                      />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-zinc-700">
+                        GitHub URL (Optional)
+                      </label>
+                      <input
+                        value={proj.github}
+                        onChange={(e) =>
+                          handleArrayChange(
+                            "projects",
+                            idx,
+                            "github",
+                            e.target.value
+                          )
+                        }
+                        className="w-full px-3 py-2 border border-zinc-300 text-zinc-900 bg-white rounded-lg focus:ring-2 focus:ring-zinc-400 focus:border-transparent"
+                        placeholder="https://github.com/username/repo"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-zinc-700">
+                        Live URL (Optional)
+                      </label>
+                      <input
+                        value={proj.live}
+                        onChange={(e) =>
+                          handleArrayChange(
+                            "projects",
+                            idx,
+                            "live",
+                            e.target.value
+                          )
+                        }
+                        className="w-full px-3 py-2 border border-zinc-300 text-zinc-900 bg-white rounded-lg focus:ring-2 focus:ring-zinc-400 focus:border-transparent"
+                        placeholder="https://example.com"
                       />
                     </div>
                   </div>
@@ -711,73 +861,62 @@ export default function ResumeForm({
               Additional Information
             </h3>
             
-            {/* Skills Section */}
+           
+
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <label className="text-sm font-medium text-zinc-700 flex items-center gap-2">
-                  <Award size={16} />
-                  Skills
+                <label className="text-sm font-medium text-zinc-700">
+                  Certifications
                 </label>
                 <button
                   type="button"
-                  onClick={() => addArrayItem("skills", emptySkill)}
+                  onClick={() => addArrayItem("certifications", emptyCertification)}
                   className="flex items-center gap-2 px-4 py-2 bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 transition-colors"
                 >
                   <Plus size={16} />
-                  Add Skill Category
+                  Add Certification
                 </button>
               </div>
-              {form.skills.map((skill, idx) => (
+              {form.certifications.map((cert, idx) => (
                 <div key={idx} className="p-4 border border-zinc-200 rounded-lg bg-zinc-50 space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-medium text-zinc-700">
-                      Skill Category {idx + 1}
+                      Certification {idx + 1}
                     </span>
-                    {form.skills.length > 1 && (
+                    {form.certifications.length > 1 && (
                       <button
-                        title="sd"
+                        title="Remove certification"
                         type="button"
-                        onClick={() => removeArrayItem("skills", idx)}
+                        onClick={() => removeArrayItem("certifications", idx)}
                         className="text-red-600 hover:text-red-800"
                       >
                         <X size={16} />
                       </button>
                     )}
                   </div>
-                  <input
-                    value={skill.category}
-                    onChange={(e) =>
-                      handleArrayChange("skills", idx, "category", e.target.value)
-                    }
-                    className="w-full px-4 py-2 border border-zinc-300 text-zinc-900 bg-white rounded-lg focus:ring-2 focus:ring-zinc-400 focus:border-transparent"
-                    placeholder="e.g., Technical skills, Web Development, Cloud"
-                  />
-                  <textarea
-                    value={skill.items}
-                    onChange={(e) =>
-                      handleArrayChange("skills", idx, "items", e.target.value)
-                    }
-                    className="w-full px-4 py-2 border border-zinc-300 text-zinc-900 bg-white rounded-lg focus:ring-2 focus:ring-zinc-400 focus:border-transparent"
-                    rows={2}
-                    placeholder="e.g., TypeScript, JavaScript, Go, Python, Linux, Git, DSA."
-                  />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <input
+                      value={cert.name}
+                      onChange={(e) =>
+                        handleArrayChange("certifications", idx, "name", e.target.value)
+                      }
+                      className="w-full px-4 py-2 border border-zinc-300 text-zinc-900 bg-white rounded-lg focus:ring-2 focus:ring-zinc-400 focus:border-transparent"
+                      placeholder="Certification name"
+                    />
+                    <input
+                      value={cert.date}
+                      onChange={(e) =>
+                        handleArrayChange("certifications", idx, "date", e.target.value)
+                      }
+                      className="w-full px-4 py-2 border border-zinc-300 text-zinc-900 bg-white rounded-lg focus:ring-2 focus:ring-zinc-400 focus:border-transparent"
+                      placeholder="Date (e.g., 2024)"
+                    />
+                  </div>
                 </div>
               ))}
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-zinc-700">
-                  Certifications
-                </label>
-                <input
-                  name="certifications"
-                  value={form.certifications}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 border border-zinc-300 text-zinc-900 bg-white rounded-lg focus:ring-2 focus:ring-zinc-400 focus:border-transparent"
-                  placeholder="AWS Certified, PMP, etc."
-                />
-              </div>
 
               <div className="space-y-2">
                 <label className="text-sm font-medium text-zinc-700">
@@ -806,49 +945,7 @@ export default function ResumeForm({
               </div> */}
             </div>
 
-            {/* Contact Information Section */}
-            <div className="space-y-4 pt-6 border-t border-zinc-200">
-              <h3 className="text-lg font-semibold text-zinc-900">Contact Information</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-zinc-700">
-                    Phone Number
-                  </label>
-                  <input
-                    name="phone"
-                    value={form.phone}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border border-zinc-300 text-zinc-900 bg-white rounded-lg focus:ring-2 focus:ring-zinc-400 focus:border-transparent"
-                    placeholder="+1-123-456-7890"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-zinc-700">
-                    Email Address
-                  </label>
-                  <input
-                    name="email"
-                    type="email"
-                    value={form.email}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border border-zinc-300 text-zinc-900 bg-white rounded-lg focus:ring-2 focus:ring-zinc-400 focus:border-transparent"
-                    placeholder="name@example.com"
-                  />
-                </div>
-                <div className="space-y-2 md:col-span-2">
-                  <label className="text-sm font-medium text-zinc-700">
-                    Location
-                  </label>
-                  <input
-                    name="location"
-                    value={form.location}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border border-zinc-300 text-zinc-900 bg-white rounded-lg focus:ring-2 focus:ring-zinc-400 focus:border-transparent"
-                    placeholder="City, State, Country"
-                  />
-                </div>
-              </div>
-            </div>
+           
 
            
           </div>

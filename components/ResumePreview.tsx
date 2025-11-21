@@ -9,6 +9,8 @@ interface Experience {
   school?: string;
   degree?: string;
   name?: string;
+  github?: string;
+  live?: string;
 }
 
 interface Link {
@@ -33,7 +35,7 @@ interface Resume {
   education?: Experience[];
   projects?: Experience[];
   skills?: Skill[];
-  certifications?: string;
+  certifications?: { name: string; date: string; }[];
   awards?: string;
   languages?: string;
   social?: string;
@@ -92,7 +94,7 @@ export default function ResumePreview({
         }}
       >
         {/* Header - Name Section */}
-        <div style={{ textAlign: 'center', marginBottom: '16px', paddingBottom: '12px', borderBottom: '2px solid #18181b' }}>
+        <div style={{ textAlign: 'center', marginBottom: '10px', paddingBottom: '12px' }}>
           <h1 style={{ fontSize: '23px', fontWeight: 'bold', color: '#18181b', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.025em' }}>
             {resume.fullName || 'NAME SURNAME'}
           </h1>
@@ -114,7 +116,7 @@ export default function ResumePreview({
                   >
                     {link.label || link.url}
                   </a>
-                  {idx < resume.links.length - 1 && resume.links[idx + 1]?.url && <span>|</span>}
+                  {/* {idx < resume.links.length - 1 && resume.links[idx + 1]?.url && <span>|</span>} */}
                 </React.Fragment>
               ) : null
             ))}
@@ -154,7 +156,6 @@ export default function ResumePreview({
             </div>
           </section>
         )}
-
         {/* Work Experience */}
         {resume.experience && resume.experience.length > 0 && resume.experience[0]?.company && (
           <section style={{ marginBottom: '16px' }}>
@@ -172,7 +173,7 @@ export default function ResumePreview({
                       {exp.start} – {exp.end}
                     </span>
                   </div>
-                  <div style={{ fontSize: '13px', color: '#3f3f46', fontStyle: 'italic', marginBottom: '8px', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+                  <div style={{ fontSize: '15px', color: '#3f3f46',fontWeight: 'bold', fontStyle: 'italic', marginBottom: '8px', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
                     {exp.company}
                   </div>
                   {renderDescription(exp.description)}
@@ -192,9 +193,45 @@ export default function ResumePreview({
               {resume.projects.map((proj, i) => (
                 <div key={i} style={{ marginBottom: '16px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '4px' }}>
-                    <h3 style={{ fontWeight: 'bold', color: '#18181b', fontSize: '13px', textTransform: 'uppercase' }}>
-                      {proj.name}
-                    </h3>
+                    <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', flexWrap: 'wrap' }}>
+                      <h3 style={{ fontWeight: 'bold', color: '#18181b', fontSize: '13px', textTransform: 'uppercase' }}>
+                        {proj.name}
+                      </h3>
+                      {(proj.github || proj.live) && (
+                        <span style={{ fontSize: '13px', color: '#3f3f46' }}>
+                           <React.Fragment>
+                          {proj.github && (
+                            <>
+                              <span>| </span>
+                              <a 
+                                href={proj.github} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                style={{ color: '#3f3f46', textDecoration: 'underline' }}
+                              >
+                                GitHub
+                              </a>
+                            </>
+                          )}
+                          </React.Fragment>
+                           <React.Fragment>
+                          {proj.live && (
+                            <>
+                              <span> | </span>
+                              <a 
+                                href={proj.live} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                style={{ color: '#3f3f46', textDecoration: 'underline' }}
+                              >
+                                Live
+                              </a>
+                            </>
+                          )}
+                          </React.Fragment>
+                        </span>
+                      )}
+                    </div>
                     {(proj.start || proj.end) && (
                       <span style={{ fontSize: '13px', color: '#3f3f46', fontStyle: 'italic', whiteSpace: 'nowrap', marginLeft: '16px' }}>
                         {proj.start} – {proj.end}
@@ -209,16 +246,23 @@ export default function ResumePreview({
         )}
 
         {/* Certifications */}
-        {resume.certifications && (
+        {resume.certifications && Array.isArray(resume.certifications) && resume.certifications.length > 0 && resume.certifications[0]?.name && (
           <section style={{ marginBottom: '16px' }}>
             <h2 style={{ fontSize: '14px', fontWeight: 'bold', color: '#18181b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>
               CERTIFICATIONS, TRAINING & ACHIEVEMENTS
             </h2>
             <div style={{ borderTop: '1px solid #18181b', paddingTop: '8px' }}>
-              {resume.certifications.split('\n').filter(line => line.trim()).map((cert, i) => (
-                <p key={i} style={{ color: '#3f3f46', fontSize: '13px', lineHeight: '1.5', marginBottom: '4px', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
-                  {cert.trim().startsWith('•') ? cert.trim() : `• ${cert.trim()}`}
-                </p>
+              {resume.certifications.map((cert, i) => (
+                <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '4px' }}>
+                  <span style={{ color: '#3f3f46', fontSize: '13px', lineHeight: '1.5', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+                    • {cert.name}
+                  </span>
+                  {cert.date && (
+                    <span style={{ fontSize: '13px', color: '#3f3f46', fontStyle: 'italic', whiteSpace: 'nowrap', marginLeft: '16px' }}>
+                      {cert.date}
+                    </span>
+                  )}
+                </div>
               ))}
             </div>
           </section>

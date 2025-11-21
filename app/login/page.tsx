@@ -5,7 +5,6 @@ import { supabase } from '../../lib/supabaseClient';
 import { useAuth } from '../../components/AuthProvider';
 import LoginHero from '../../components/LoginHero';
 import LoginForm from '../../components/LoginForm';
-import FloatingShapes from '../../components/FloatingShapes';
 
 export default function LoginPage() {
   const { user } = useAuth() || {};
