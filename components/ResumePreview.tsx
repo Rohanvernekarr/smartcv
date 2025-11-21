@@ -11,6 +11,7 @@ interface Experience {
   name?: string;
   github?: string;
   live?: string;
+  grade?: string;
 }
 
 interface Link {
@@ -141,7 +142,7 @@ export default function ResumePreview({
 
         {/* Skills Section */}
         {resume.skills && Array.isArray(resume.skills) && resume.skills.length > 0 && resume.skills[0]?.category && (
-          <section style={{ marginBottom: '0px' }}>
+          <section style={{ marginBottom: '10px' }}>
             <h2 style={{ fontSize: '14px', fontWeight: 'bold', color: '#18181b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>
               SKILLS
             </h2>
@@ -164,8 +165,8 @@ export default function ResumePreview({
             </h2>
             <div style={{ borderTop: '1px solid #18181b', paddingTop: '8px' }}>
               {resume.experience.map((exp, i) => (
-                <div key={i} style={{ marginBottom: '12px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '4px' }}>
+                <div key={i} style={{ marginBottom: '8px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0px' }}>
                     <h3 style={{ fontWeight: 'bold', color: '#18181b', fontSize: '13px', textTransform: 'uppercase' }}>
                       {exp.role}
                     </h3>
@@ -173,7 +174,7 @@ export default function ResumePreview({
                       {exp.start} – {exp.end}
                     </span>
                   </div>
-                  <div style={{ fontSize: '15px', color: '#3f3f46',fontWeight: 'bold', fontStyle: 'italic', marginBottom: '8px', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+                  <div style={{ fontSize: '15px', color: '#3f3f46',fontWeight: 'bold', fontStyle: 'italic', marginBottom: '4px', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
                     {exp.company}
                   </div>
                   {renderDescription(exp.description)}
@@ -191,8 +192,8 @@ export default function ResumePreview({
             </h2>
             <div style={{ borderTop: '1px solid #18181b', paddingTop: '8px' }}>
               {resume.projects.map((proj, i) => (
-                <div key={i} style={{ marginBottom: '16px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '4px' }}>
+                <div key={i} style={{ marginBottom: '8px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0px' }}>
                     <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', flexWrap: 'wrap' }}>
                       <h3 style={{ fontWeight: 'bold', color: '#18181b', fontSize: '13px', textTransform: 'uppercase' }}>
                         {proj.name}
@@ -276,8 +277,8 @@ export default function ResumePreview({
             </h2>
             <div style={{ borderTop: '1px solid #18181b', paddingTop: '8px' }}>
               {resume.education.map((edu, i) => (
-                <div key={i} style={{ marginBottom: '12px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0' }}>
+                <div key={i} style={{ marginBottom: '4px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0px' }}>
                     <h3 style={{ fontWeight: 'bold', color: '#18181b', fontSize: '13px', textTransform: 'uppercase' }}>
                       {edu.school}
                     </h3>
@@ -288,6 +289,12 @@ export default function ResumePreview({
                   <div style={{ fontSize: '13px', color: '#3f3f46', fontStyle: 'italic', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
                     {edu.degree}
                   </div>
+                  {edu.grade && (
+                    <div style={{ fontSize: '11px', color: '#3f3f46', marginTop: '2px' }}>
+                      <span style={{ fontWeight: 'bold' }}>Grade:</span> {edu.grade}
+                    </div>
+                  )}
+                  {renderDescription(edu.description)}
                 </div>
               ))}
             </div>

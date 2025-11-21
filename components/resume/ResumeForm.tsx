@@ -25,6 +25,7 @@ const emptyEducation = {
   start: "",
   end: "",
   description: "",
+  grade: "",
 };
 const emptyProject = {
   name: "",
@@ -826,6 +827,26 @@ export default function ResumeForm({
                         }
                         className="w-full px-3 py-2 border border-zinc-300 text-zinc-900 bg-white rounded-lg focus:ring-2 focus:ring-zinc-400 focus:border-transparent"
                         placeholder="MM/YYYY or Expected"
+                      />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-zinc-700">
+                        CGPA/Percentage (Optional)
+                      </label>
+                      <input
+                        value={edu.grade}
+                        onChange={(e) =>
+                          handleArrayChange(
+                            "education",
+                            idx,
+                            "grade",
+                            e.target.value
+                          )
+                        }
+                        className="w-full px-3 py-2 border border-zinc-300 text-zinc-900 bg-white rounded-lg focus:ring-2 focus:ring-zinc-400 focus:border-transparent"
+                        placeholder="e.g., 3.8/4.0 or 85%"
                       />
                     </div>
                   </div>
