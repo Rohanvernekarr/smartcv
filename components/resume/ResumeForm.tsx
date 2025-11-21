@@ -52,9 +52,11 @@ const emptyCertification = {
 export default function ResumeForm({
   onSave,
   onChange,
+  initialData,
 }: {
   onSave?: (data: unknown, file?: File | null) => void;
   onChange?: (data: unknown) => void;
+  initialData?: unknown;
 }) {
   const [form, setForm] = useState({
     fullName: "",
@@ -76,18 +78,51 @@ export default function ResumeForm({
   const [activeSection, setActiveSection] = useState("personal");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [isInitialized, setIsInitialized] = useState(false);
 
-  // Restore form state from localStorage on mount
+  // Restore form state from localStorage on mount OR from initialData
   React.useEffect(() => {
+    // Only initialize once
+    if (isInitialized) return;
+    
+    // If initialData is provided (editing existing resume), use it
+    if (initialData && typeof initialData === 'object') {
+      const data = initialData as Record<string, unknown>;
+      setForm({
+        fullName: (data.fullName as string) || "",
+        title: (data.title as string) || "",
+        phone: (data.phone as string) || "",
+        email: (data.email as string) || "",
+        location: (data.location as string) || "",
+        links: (data.links as typeof emptyLink[]) || [emptyLink],
+        summary: (data.summary as string) || "",
+        experience: (data.experience as typeof emptyExperience[]) || [emptyExperience],
+        education: (data.education as typeof emptyEducation[]) || [emptyEducation],
+        projects: (data.projects as typeof emptyProject[]) || [emptyProject],
+        skills: (data.skills as typeof emptySkill[]) || [emptySkill],
+        certifications: (data.certifications as typeof emptyCertification[]) || [emptyCertification],
+        awards: (data.awards as string) || "",
+        languages: (data.languages as string) || "",
+        social: (data.social as string) || "",
+      });
+      onChange?.(initialData);
+      setIsInitialized(true);
+      return;
+    }
+    
+    // Otherwise, try to restore from localStorage
     const savedForm = localStorage.getItem("resume_form_state");
     if (savedForm) {
       try {
         const parsed = JSON.parse(savedForm);
         setForm(parsed);
         onChange?.(parsed);
+        setIsInitialized(true);
       } catch {}
+    } else {
+      setIsInitialized(true);
     }
-  }, []); // <--- Only run once on mount
+  }, [initialData]); // Only re-run when initialData changes
 
   // Persist form state to localStorage whenever it changes
   React.useEffect(() => {

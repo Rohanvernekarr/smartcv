@@ -104,7 +104,7 @@ export default function ResumePageClient() {
         <div className="w-full lg:w-1/2 h-full overflow-y-auto p-6  border-r border-zinc-200 flex flex-col">
           <div className="rounded-lg shadow-sm border border-zinc-200 p-6 bg-white">
             <h1 className="text-3xl font-bold text-zinc-900 mb-8">Create Resume</h1>
-            <ResumeForm onSave={handleSave} onChange={handleFormChange} />
+            <ResumeForm onSave={handleSave} onChange={handleFormChange} initialData={previewData} />
             {status && (
               <div className={`mt-4 p-3 text-sm text-center rounded-lg font-medium ${
                 status.includes('Error') || status.includes('Failed')
