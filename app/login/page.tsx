@@ -41,7 +41,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center font-mono px-4 sm:px-6 lg:px-8 relative overflow-hidden">
 
       {/* Main Content */}
       <div className="w-full max-w-6xl mx-auto relative z-10">

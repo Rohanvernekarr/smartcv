@@ -23,12 +23,12 @@ export default function PreviewModal({ template, isOpen, onClose }: PreviewModal
       <div className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <div>
-            <h3 className="text-xl font-semibold text-gray-900">{template.name}</h3>
-            <p className="text-gray-600">{template.description}</p>
+            <h3 className="text-xl font-mono text-gray-900">{template.name}</h3>
+            <p className="text-gray-600 font-mono">{template.description}</p>
           </div>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 transition-colors"
+            className="text-gray-400 font-mono hover:text-gray-600 transition-colors"
             title="Close preview"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -55,15 +55,15 @@ export default function PreviewModal({ template, isOpen, onClose }: PreviewModal
         <div className="flex items-center justify-end space-x-3 p-6 border-t border-gray-200">
           <button
             onClick={onClose}
-            className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            className="px-4 py-2 text-gray-700 font-mono border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
           >
             Close
           </button>
           <div className="relative group inline-block">
-          <button className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+          <button className="px-6 py-2 bg-zinc-500 font-mono text-white rounded-lg hover:bg-zinc-600 transition-colors">
             Use Template
           </button>
-          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-zinc-600 text-white text-sm rounded px-2 py-1 whitespace-nowrap shadow-lg z-10">
+          <div className="absolute bottom-full font-mono left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-zinc-600 text-white text-sm rounded px-2 py-1 whitespace-nowrap shadow-lg z-10">
             Coming soon
           </div>
         </div>

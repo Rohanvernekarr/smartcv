@@ -1,8 +1,8 @@
 "use client"
 
 import React, { createContext, useContext, useState, useCallback } from 'react';
-import { getUserResumes } from '../db/resume';
-import { useAuth } from './AuthProvider';
+import { getUserResumes } from '../../db/resume';
+import { useAuth } from '../AuthProvider';
 
 interface ResumeContextType {
   resumes: unknown[];

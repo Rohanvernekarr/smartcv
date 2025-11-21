@@ -93,7 +93,7 @@ export default function ResumePageClient() {
   };
 
   return (
-    <div className="w-screen h-screen flex flex-col bg-white items-center overflow-hidden">
+    <div className="w-screen h-screen flex flex-col font-mono bg-white items-center overflow-hidden">
       <ResumeTopBar 
         selectedTemplate={selectedTemplate}
         onTemplateChange={handleTemplateChange}

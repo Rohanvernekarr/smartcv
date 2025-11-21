@@ -25,9 +25,9 @@ export default function LandingPage() {
   if (user) return null;
 
   return (
-    <div className="relative w-full -mx-4 md:-mx-12 lg:-mx-24 -mt-10 overflow-hidden">
+    <div className="relative w-full -mx-4 md:-mx-12 lg:-mx-24 -mt-10 font-mono overflow-hidden">
       
-      <div className="relative z-10">
+      <div className="relative z-10 font-mono">
         <HeroSection isVisible={isVisible} />
         <FeaturesSection />
         <CTASection />

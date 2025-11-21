@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="relative w-full text-black">
+    <footer className="relative w-full text-black font-mono">
       
       <div className="absolute top-0 left-0 right-0 h-px bg-zinc-900 to-transparent"></div>
       

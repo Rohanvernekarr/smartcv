@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { deleteResume } from '../../db/resume';
 import { useAuth } from '../../components/AuthProvider';
 import { deleteResumeFile } from '../../lib/supabaseClient';
-import { useResumes } from '../../components/ResumeProvider';
+import { useResumes } from '../../components/resume/ResumeProvider';
 
 interface DashboardResume {
   id: string;
@@ -140,7 +140,7 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen w-full ">
+    <div className="min-h-screen w-full font-mono ">
       <DashboardHeader userEmail={user?.email ?? ''} onCreateResume={handleCreateResume} onRefreshResumes={handleRefreshResumes} />
 
       {/* Main Content - Full Width */}

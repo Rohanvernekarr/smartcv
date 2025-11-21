@@ -23,7 +23,7 @@ export default function Sidebar() {
 
   return (
     <aside className="h-screen w-64 bg-white/90 backdrop-blur border-r border-gray-200 shadow-lg rounded-r-3xl flex flex-col p-6 sticky top-0 z-20">
-      <div className="mb-10 text-3xl font-extrabold tracking-tight text-blue-700">SmartCV</div>
+      <div className="mb-10 text-3xl font-extrabold tracking-tight text-zinc-700">SmartCV</div>
       <nav className="flex-1 space-y-1">
         {navItems.map((item) => (
           <Link

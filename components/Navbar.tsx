@@ -4,13 +4,14 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { useAuth } from './AuthProvider';
 import { supabase } from '../lib/supabaseClient';
+import { LayoutDashboard, FileText, Search, Layout } from 'lucide-react';
 
 const navItems = [
-  { href: '/dashboard', label: 'Dashboard', icon: '📊' },
-  { href: '/resume', label: 'Create Resume', icon: '📝' },
-  { href: '/analyze', label: 'Analyze', icon: '🔍' },
-  { href: '/templates', label: 'Templates', icon: '📋' },
-  { href: '/settings', label: 'Settings', icon: '⚙️' },
+  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/resume', label: 'Create Resume', icon: FileText },
+  { href: '/analyze', label: 'Analyze', icon: Search },
+  { href: '/templates', label: 'Templates', icon: Layout },
+  // { href: '/settings', label: 'Settings', icon: Settings },
 ];
 
 export default function Navbar() {
@@ -93,13 +94,13 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className={`sticky top-0 z-50 w-full transition-all duration-300 ${
+      <nav className={`sticky top-0 z-50 w-full transition-all font-mono duration-300 ${
         isScrolled 
           ? 'bg-white backdrop-blur-lg border-b border-zinc-200 shadow-md' 
           : 'bg-white border-b border-zinc-200'
       }`}>
         <div className="max-w-7xl mx-auto p-1 px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
+          <div className="flex items-center justify-between h-16">
            
             <Link 
               href="/" 
@@ -128,7 +129,7 @@ export default function Navbar() {
                         : 'text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900'
                     }`}
                   >
-                    <span className="text-lg">{item.icon}</span>
+                    <item.icon className="w-4 h-4" />
                     <span className="text-sm">{item.label}</span>
                   </Link>
                 );
@@ -250,7 +251,7 @@ export default function Navbar() {
                         : 'text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900 border border-zinc-200'
                     }`}
                   >
-                    <span className="text-xl">{item.icon}</span>
+                    <item.icon className="w-5 h-5" />
                     <span>{item.label}</span>
                     {isActive && (
                       <div className="ml-auto w-2 h-2 bg-white rounded-full"></div>
