@@ -10,7 +10,7 @@ const FeaturesSection = () => {
       ),
       title: "AI-Powered Analysis",
       description: "Advanced AI analyzes your resume against job requirements and industry standards.",
-      bgColor: "bg-blue-100"
+      bgColor: "bg-zinc-100"
     },
     {
       icon: (
@@ -20,7 +20,7 @@ const FeaturesSection = () => {
       ),
       title: "Detailed Scoring",
       description: "Get comprehensive scores and metrics to understand your resume's effectiveness.",
-      bgColor: "bg-green-100"
+      bgColor: "bg-zinc-100"
     },
     {
       icon: (
@@ -30,7 +30,7 @@ const FeaturesSection = () => {
       ),
       title: "Instant Feedback",
       description: "Receive actionable suggestions and improvements in seconds, not days.",
-      bgColor: "bg-purple-100"
+      bgColor: "bg-zinc-100"
     }
   ];
 

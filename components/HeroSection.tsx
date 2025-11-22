@@ -8,11 +8,11 @@ interface HeroSectionProps {
 
 export default function HeroSection({ isVisible }: HeroSectionProps) {
   return (
-    <section className="min-h-screen flex items-center px-4 sm:px-6 lg:px-16 mt-[-20px] ">
+    <section className="min-h-screen flex items-center px-4 sm:px-6 lg:px-16 lg:mt-[-20px]  ">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 w-full items-center">
 
         <div className="text-center lg:text-left">
-          <div className="inline-flex items-center px-4 py-2 bg-white backdrop-blur-sm rounded-full border border-zinc-300 shadow-sm mb-8">
+          <div className="inline-flex items-center px-4 py-2 bg-white backdrop-blur-sm rounded-full border border-zinc-300 shadow-sm mb-8 mt-2">
             <span className="text-sm font-medium text-zinc-700">
               ✨ AI-Powered Resume Intelligence
             </span>
