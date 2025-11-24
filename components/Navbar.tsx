@@ -123,14 +123,14 @@ export default function Navbar() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`flex items-center  space-x-2 px-4 py-2 rounded-xl font-medium transition-all duration-200 relative group ${
+                    className={`flex items-center  space-x-2 px-4 py-3 rounded-xl font-medium transition-all duration-200 relative group ${
                       isActive
                         ? 'bg-zinc-900 text-white'
                         : 'text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900'
                     }`}
                   >
                     <item.icon className="w-4 h-4" />
-                    <span className="text-sm">{item.label}</span>
+                    <span className="text-md">{item.label}</span>
                   </Link>
                 );
               })}
